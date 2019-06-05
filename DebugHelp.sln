@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugHelp", "DebugHelp\Debu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSVCRTTI", "MSVCRTTI\MSVCRTTI.csproj", "{4582F35B-2DC0-411A-8A8B-1B8B982172CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GDBClient", "GDBClient\GDBClient.csproj", "{D3A0B6B7-691C-449A-96B5-E19DFD012169}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4582F35B-2DC0-411A-8A8B-1B8B982172CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4582F35B-2DC0-411A-8A8B-1B8B982172CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4582F35B-2DC0-411A-8A8B-1B8B982172CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3A0B6B7-691C-449A-96B5-E19DFD012169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3A0B6B7-691C-449A-96B5-E19DFD012169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3A0B6B7-691C-449A-96B5-E19DFD012169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3A0B6B7-691C-449A-96B5-E19DFD012169}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
