@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Henke37.DebugHelp.Gdb {
-	public class GdbClient {
+	public class GdbClient : ProcessMemoryAccessor {
 		TcpClient socket;
 
 		public string Host = "localhost";
@@ -47,7 +47,8 @@ namespace Henke37.DebugHelp.Gdb {
 		}
 
 		#region public commands
-		public byte[] ReadMemory(uint addr, uint size) {
+		
+		public override void ReadBytes(uint addr, uint size, byte[] readBuff) {
 			string reply = SendCommand("m{addr:x},{size:x}");
 			if(reply == "") throw new UnsupportedCommandException();
 			if(reply.StartsWith("E")) {
@@ -55,21 +56,22 @@ namespace Henke37.DebugHelp.Gdb {
 			}
 
 			int readLen = reply.Length / 2;
-			byte[] readBuf = new byte[readLen];
 
-			for(int i = 0; i < readLen; ++i) {
-				readBuf[i] = Convert.ToByte(reply.Substring(i * 2, 2), 16);
+			if(readLen<size) {
+				throw new IncompleteReadException();
 			}
 
-			return readBuf;
+			for(int i = 0; i < readLen; ++i) {
+				readBuff[i] = Convert.ToByte(reply.Substring(i * 2, 2), 16);
+			}
 		}
 
-		public void WriteMemory(uint addr, byte[] buff) {
+		public override void WriteBytes(byte[] srcBuff, uint dstAddr, uint size) {
 			var sb = new StringBuilder();
-			sb.AppendFormat("M {0:x},{1:x}:", addr, buff.Length);
+			sb.AppendFormat("M {0:x},{1:x}:", dstAddr, size);
 
-			for(int i = 0; i < buff.Length; ++i) {
-				sb.AppendFormat("{0:x2}", buff[i]);
+			for(int i = 0; i < size; ++i) {
+				sb.AppendFormat("{0:x2}", srcBuff[i]);
 			}
 			string reply = SendCommand(sb.ToString());
 			if(reply == "") throw new UnsupportedCommandException();

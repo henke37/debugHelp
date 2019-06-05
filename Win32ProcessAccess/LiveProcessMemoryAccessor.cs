@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 
-namespace Henke37.DebugHelp {
+namespace Henke37.DebugHelp.Win32 {
 	public sealed class LiveProcessMemoryAccessor : ProcessMemoryAccessor {
 		private Process process;
 
