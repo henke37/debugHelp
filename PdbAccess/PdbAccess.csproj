@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Henke37</Authors>
@@ -8,6 +7,7 @@
     <RootNamespace>Henke37.DebugHelp.PdbAccess</RootNamespace>
     <Description>Marginally easier to use interface for the COM pdb parser in the dia2 library.</Description>
     <NeutralLanguage>en</NeutralLanguage>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

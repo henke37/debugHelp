@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <ProjectGuid>{F95563D3-569B-4D59-BD8B-C9E69CD62FB7}</ProjectGuid>
 	<TargetFramework>netstandard20</TargetFramework>
@@ -15,5 +14,6 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Henke37.DebugHelp.Core</PackageId>
     <Version>1.0.0-alpha</Version>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 </Project>
