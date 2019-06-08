@@ -13,6 +13,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Support for accessing live Win32 processes.</Description>
     <Version>1.0.0-alpha</Version>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\DebugHelp\DebugHelp.csproj">

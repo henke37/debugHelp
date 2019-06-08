@@ -12,6 +12,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.0-alpha</Version>
     <Description>Code to interact with gdbserver to debug processes on remote hosts.</Description>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\DebugHelp\DebugHelp.csproj">

@@ -12,6 +12,7 @@
     <Authors>Henke37</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Support for the Microsoft Visual Studio style of Runtime Type Information.</Description>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\DebugHelp\DebugHelp.csproj">
