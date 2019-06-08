@@ -2,7 +2,6 @@
  <PropertyGroup>
     <ProjectGuid>{4582F35B-2DC0-411A-8A8B-1B8B982172CD}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Henke37.DebugHelp.RTTI.MSVC</RootNamespace>
     <AssemblyName>MSVCRTTI</AssemblyName>
 	<TargetFramework>netstandard20</TargetFramework>
