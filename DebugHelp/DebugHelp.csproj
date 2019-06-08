@@ -16,15 +16,4 @@
     <PackageId>Henke37.DebugHelp.Core</PackageId>
     <Version>1.0.0-alpha</Version>
   </PropertyGroup>
-  <ItemGroup>
-    <COMReference Include="Dia2Lib">
-      <Guid>{106173A0-0173-4E5C-84E7-E915422BE997}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
 </Project>

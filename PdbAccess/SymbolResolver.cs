@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Henke37.DebugHelp {
+namespace Henke37.DebugHelp.PdbAccess {
 	public class SymbolResolver {
 		private DiaSource source;
 		private IDiaSession session;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Henke37.DebugHelp {
+namespace Henke37.DebugHelp.PdbAccess {
 	[Flags]
 	public enum NameSearchOptions : uint {
 		None,

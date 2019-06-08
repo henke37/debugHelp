@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugHelp", "DebugHelp\DebugHelp.csproj", "{F95563D3-569B-4D59-BD8B-C9E69CD62FB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebugHelp", "DebugHelp\DebugHelp.csproj", "{F95563D3-569B-4D59-BD8B-C9E69CD62FB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSVCRTTI", "MSVCRTTI\MSVCRTTI.csproj", "{4582F35B-2DC0-411A-8A8B-1B8B982172CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GDBClient", "GDBClient\GDBClient.csproj", "{D3A0B6B7-691C-449A-96B5-E19DFD012169}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32ProcessAccess", "Win32ProcessAccess\Win32ProcessAccess.csproj", "{E57BAFA0-7748-4011-913D-1258E90AF6C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdbAccess", "PdbAccess\PdbAccess.csproj", "{28897B05-26A9-4122-823D-42AC57720E20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E57BAFA0-7748-4011-913D-1258E90AF6C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E57BAFA0-7748-4011-913D-1258E90AF6C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E57BAFA0-7748-4011-913D-1258E90AF6C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28897B05-26A9-4122-823D-42AC57720E20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28897B05-26A9-4122-823D-42AC57720E20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28897B05-26A9-4122-823D-42AC57720E20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28897B05-26A9-4122-823D-42AC57720E20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
