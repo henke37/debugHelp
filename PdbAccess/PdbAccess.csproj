@@ -6,6 +6,7 @@
     <PackageId>Henke37.DebugHelp.PdbAccess</PackageId>
     <Version>1.0.0-alpha</Version>
     <RootNamespace>Henke37.DebugHelp.PdbAccess</RootNamespace>
+    <Description>Marginally easier to use interface for the COM pdb parser in the dia2 library.</Description>
   </PropertyGroup>
 
   <ItemGroup>
