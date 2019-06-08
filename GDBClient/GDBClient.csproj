@@ -1,27 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
- <PropertyGroup>
-    <ProjectGuid>{D3A0B6B7-691C-449A-96B5-E19DFD012169}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Henke37.DebugHelp.Gdb</RootNamespace>
-    <AssemblyName>GDBClient</AssemblyName>
-	<TargetFramework>netstandard20</TargetFramework>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <PackageId>Henke37.DebugHelp.Gdb</PackageId>
-    <Authors>Henke37</Authors>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-alpha</Version>
-    <Description>Code to interact with gdbserver to debug processes on remote hosts.</Description>
-    <NeutralLanguage>en</NeutralLanguage>
-	<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
-	<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
-	<PackageLicenseUrl>https://spdx.org/licenses/AGPL-3.0-or-later.html</PackageLicenseUrl>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DebugHelp\DebugHelp.csproj">
-      <Project>{f95563d3-569b-4d59-bd8b-c9e69cd62fb7}</Project>
-      <Name>DebugHelp</Name>
-    </ProjectReference>
-  </ItemGroup>
+	<PropertyGroup>
+		<ProjectGuid>{D3A0B6B7-691C-449A-96B5-E19DFD012169}</ProjectGuid>
+		<OutputType>Library</OutputType>
+		<RootNamespace>Henke37.DebugHelp.Gdb</RootNamespace>
+		<AssemblyName>GDBClient</AssemblyName>
+		<TargetFrameworks>net452;netstandard20</TargetFrameworks>
+		<FileAlignment>512</FileAlignment>
+		<Deterministic>true</Deterministic>
+		<PackageId>Henke37.DebugHelp.Gdb</PackageId>
+		<Authors>Henke37</Authors>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Version>1.0.2-alpha</Version>
+		<Description>Code to interact with gdbserver to debug processes on remote hosts.</Description>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
+		<PackageLicenseUrl>https://spdx.org/licenses/AGPL-3.0-or-later.html</PackageLicenseUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DebugHelp\DebugHelp.csproj">
+		<Project>{f95563d3-569b-4d59-bd8b-c9e69cd62fb7}</Project>
+		<Name>DebugHelp</Name>
+		</ProjectReference>
+	</ItemGroup>
 </Project>

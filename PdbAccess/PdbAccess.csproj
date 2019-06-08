@@ -1,27 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>Henke37</Authors>
-    <PackageId>Henke37.DebugHelp.PdbAccess</PackageId>
-    <Version>1.0.0-alpha</Version>
-    <RootNamespace>Henke37.DebugHelp.PdbAccess</RootNamespace>
-    <Description>Marginally easier to use interface for the COM pdb parser in the dia2 library.</Description>
-    <NeutralLanguage>en</NeutralLanguage>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
-	<PackageLicenseUrl>https://spdx.org/licenses/MIT.html</PackageLicenseUrl>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net452;netstandard20</TargetFrameworks>
+		<Authors>Henke37</Authors>
+		<PackageId>Henke37.DebugHelp.PdbAccess</PackageId>
+		<Version>1.0.2-alpha</Version>
+		<RootNamespace>Henke37.DebugHelp.PdbAccess</RootNamespace>
+		<Description>Marginally easier to use interface for the COM pdb parser in the dia2 library.</Description>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
+		<PackageLicenseUrl>https://spdx.org/licenses/MIT.html</PackageLicenseUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <COMReference Include="Dia2Lib.dll">
-      <Guid>106173a0-0173-4e5c-84e7-e915422be997</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-    </COMReference>
-  </ItemGroup>
+	<ItemGroup>
+		<COMReference Include="Dia2Lib.dll">
+			<Guid>106173a0-0173-4e5c-84e7-e915422be997</Guid>
+			<VersionMajor>2</VersionMajor>
+			<VersionMinor>0</VersionMinor>
+			<WrapperTool>tlbimp</WrapperTool>
+			<Lcid>0</Lcid>
+			<Isolated>false</Isolated>
+		</COMReference>
+	</ItemGroup>
 
 </Project>

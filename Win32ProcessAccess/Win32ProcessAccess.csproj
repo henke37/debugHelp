@@ -1,28 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <ProjectGuid>{E57BAFA0-7748-4011-913D-1258E90AF6C2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Henke37.DebugHelp.Win32</RootNamespace>
-    <AssemblyName>Win32ProcessAccess</AssemblyName>
-	<TargetFramework>netstandard20</TargetFramework>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PackageId>Henke37.DebugHelp.Win32</PackageId>
-    <Authors>Henke37</Authors>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>Support for accessing live Win32 processes.</Description>
-    <Version>1.0.0-alpha</Version>
-    <NeutralLanguage>en</NeutralLanguage>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
-	<PackageLicenseUrl>https://spdx.org/licenses/MIT.html</PackageLicenseUrl>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DebugHelp\DebugHelp.csproj">
-      <Project>{f95563d3-569b-4d59-bd8b-c9e69cd62fb7}</Project>
-      <Name>DebugHelp</Name>
-    </ProjectReference>
-  </ItemGroup>
+	<PropertyGroup>
+		<ProjectGuid>{E57BAFA0-7748-4011-913D-1258E90AF6C2}</ProjectGuid>
+		<OutputType>Library</OutputType>
+		<RootNamespace>Henke37.DebugHelp.Win32</RootNamespace>
+		<AssemblyName>Win32ProcessAccess</AssemblyName>
+		<TargetFrameworks>net452;netstandard20</TargetFrameworks>
+		<FileAlignment>512</FileAlignment>
+		<Deterministic>true</Deterministic>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageId>Henke37.DebugHelp.Win32</PackageId>
+		<Authors>Henke37</Authors>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Description>Support for accessing live Win32 processes.</Description>
+		<Version>1.0.2-alpha</Version>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
+		<PackageLicenseUrl>https://spdx.org/licenses/MIT.html</PackageLicenseUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DebugHelp\DebugHelp.csproj">
+			<Project>{f95563d3-569b-4d59-bd8b-c9e69cd62fb7}</Project>
+			<Name>DebugHelp</Name>
+		</ProjectReference>
+	</ItemGroup>
 </Project>
