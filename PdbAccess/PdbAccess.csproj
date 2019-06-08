@@ -8,6 +8,9 @@
     <Description>Marginally easier to use interface for the COM pdb parser in the dia2 library.</Description>
     <NeutralLanguage>en</NeutralLanguage>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
+	<PackageLicenseUrl>https://spdx.org/licenses/MIT.html</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
