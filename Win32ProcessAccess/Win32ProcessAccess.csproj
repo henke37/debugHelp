@@ -12,7 +12,7 @@
 		<Authors>Henke37</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Description>Support for accessing live Win32 processes.</Description>
-		<Version>1.0.2-alpha</Version>
+		<Version>1.0.3-alpha</Version>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
@@ -20,6 +20,7 @@
 		<PackageLicenseUrl>https://spdx.org/licenses/MIT.html</PackageLicenseUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>ReadProcessMemory</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\DebugHelp\DebugHelp.csproj">

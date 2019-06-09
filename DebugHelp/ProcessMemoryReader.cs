@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -148,6 +149,10 @@ namespace Henke37.DebugHelp {
 			for(uint i = 0; i < count; ++i) {
 				arr[i] = (uint)(buff[0 + i * 4] | (buff[1 + i * 4] << 8) | (buff[2 + i * 4] << 16) | (buff[3 + i * 4] << 24));
 			}
+		}
+
+		public Stream GetReadStream(uint addr, uint count) {
+			return new ProcessReadMemmoryStream(this, addr, count);
 		}
 
 		protected Byte[] scratchBuff = new Byte[16];
