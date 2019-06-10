@@ -8,7 +8,7 @@
 		<FileAlignment>512</FileAlignment>
 		<Deterministic>true</Deterministic>
 		<PackageId>Henke37.DebugHelp.RTTI.MSVC</PackageId>
-		<Version>1.0.3-alpha</Version>
+		<Version>1.0.4-alpha</Version>
 		<Authors>Henke37</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Description>Support for the Microsoft Visual Studio style of Runtime Type Information.</Description>

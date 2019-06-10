@@ -31,6 +31,7 @@ namespace Henke37.DebugHelp {
 			if(offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 			if(count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 			if(offset + count > buffer.Length) throw new ArgumentException();
+			if(_position < 0) throw new InvalidOperationException();
 
 			long bytesLeft = _length - _position;
 			if(count > bytesLeft) {
@@ -52,6 +53,7 @@ namespace Henke37.DebugHelp {
 		}
 
 		public override int ReadByte() {
+			if(_position < 0) throw new InvalidOperationException();
 			if(_position >= _length) return -1;
 			return Reader.ReadByte((uint)_position++ + _startAddr);
 		}
