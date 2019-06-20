@@ -17,7 +17,6 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
-		<PackageLicenseUrl>https://spdx.org/licenses/MIT.html</PackageLicenseUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageTags>ReadProcessMemory</PackageTags>

@@ -16,7 +16,6 @@
 		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
-		<PackageLicenseUrl>https://spdx.org/licenses/AGPL-3.0-or-later.html</PackageLicenseUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
