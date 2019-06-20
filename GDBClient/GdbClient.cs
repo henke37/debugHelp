@@ -52,7 +52,7 @@ namespace Henke37.DebugHelp.Gdb {
 			string reply = SendCommand($"m{addr:x},{size:x}");
 			if(reply == "") throw new UnsupportedCommandException();
 			if(reply.StartsWith("E")) {
-				throw new Exception();
+				GDBException.ThrowFromReply(reply);
 			}
 
 			int readLen = reply.Length / 2;
@@ -76,7 +76,7 @@ namespace Henke37.DebugHelp.Gdb {
 			string reply = SendCommand(sb.ToString());
 			if(reply == "") throw new UnsupportedCommandException();
 			if(reply != "OK") {
-				throw new Exception("Write failed");
+				GDBException.ThrowFromReply(reply);
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace Henke37.DebugHelp.Gdb {
 			string reply = SendCommand("qCRC:{addr:x},{size:x}");
 			if(reply == "") throw new UnsupportedCommandException();
 			if(reply.StartsWith("E")) {
-				throw new Exception();
+				GDBException.ThrowFromReply(reply);
 			}
 			return Convert.ToUInt32(reply.Substring(2, 4));
 		}
@@ -98,8 +98,8 @@ namespace Henke37.DebugHelp.Gdb {
 			}
 			string reply = SendCommand(sb.ToString());
 			if(reply == "") throw new UnsupportedCommandException();
-			if(reply.StartsWith("E ")) {
-				throw new Exception("Search errored");
+			if(reply.StartsWith("E")) {
+				GDBException.ThrowFromReply(reply);
 			}
 
 			if(reply == "0") return 0;
@@ -111,7 +111,7 @@ namespace Henke37.DebugHelp.Gdb {
 			string reply = SendCommand(enable ? "QNonStop:1" : "QNonStop:0");
 			if(reply == "") throw new UnsupportedCommandException();
 			if(reply != "OK") {
-				throw new Exception();
+				GDBException.ThrowFromReply(reply);
 			}
 		}
 
@@ -158,7 +158,7 @@ namespace Henke37.DebugHelp.Gdb {
 
 			if(reply == "") throw new UnsupportedCommandException();
 			if(reply.StartsWith("E")) {
-				throw new Exception();
+				GDBException.ThrowFromReply(reply);
 			}
 
 			if(reply == "OK") {
@@ -541,16 +541,6 @@ namespace Henke37.DebugHelp.Gdb {
 
 			return sb.ToString();
 		}
-
-		[Serializable]
-		public class UnsupportedCommandException : Exception {
-			public UnsupportedCommandException() {
-			}
-
-			protected UnsupportedCommandException(SerializationInfo info, StreamingContext context) : base(info, context) {
-			}
-		}
-
 		#endregion
 	}
 }
