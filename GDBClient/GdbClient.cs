@@ -49,7 +49,7 @@ namespace Henke37.DebugHelp.Gdb {
 		#region public commands
 		
 		public override void ReadBytes(uint addr, uint size, byte[] readBuff) {
-			string reply = SendCommand("m{addr:x},{size:x}");
+			string reply = SendCommand($"m{addr:x},{size:x}");
 			if(reply == "") throw new UnsupportedCommandException();
 			if(reply.StartsWith("E")) {
 				throw new Exception();
@@ -68,7 +68,7 @@ namespace Henke37.DebugHelp.Gdb {
 
 		public override void WriteBytes(byte[] srcBuff, uint dstAddr, uint size) {
 			var sb = new StringBuilder();
-			sb.AppendFormat("M {0:x},{1:x}:", dstAddr, size);
+			sb.AppendFormat($"M {0:x},{1:x}:", dstAddr, size);
 
 			for(int i = 0; i < size; ++i) {
 				sb.AppendFormat("{0:x2}", srcBuff[i]);
