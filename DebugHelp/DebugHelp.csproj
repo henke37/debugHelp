@@ -13,7 +13,7 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>Henke37.DebugHelp.Core</PackageId>
-		<Version>1.1.1-alpha</Version>
+		<Version>1.1.2-alpha</Version>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>

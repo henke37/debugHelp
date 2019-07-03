@@ -60,7 +60,7 @@ namespace Henke37.DebugHelp {
 				buff.Add(b);
 			}
 
-			return new string(Encoding.UTF8.GetChars(buff.ToArray()));
+			return Encoding.UTF8.GetString(buff.ToArray());
 		}
 
 		public int ReadInt32(uint addr) {
