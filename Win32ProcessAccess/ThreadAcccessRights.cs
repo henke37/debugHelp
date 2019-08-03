@@ -10,6 +10,7 @@ namespace Henke37.DebugHelp.Win32 {
 		SetContext = 0x0010,
 		SetInformation = 0x0020,
 		QueryInformation = 0x0040,
+		SetThreadToken = 0x0080,
 		Impersonate = 0x0100,
 		DirectImpersonation = 0x0200,
 		SetLimitedInformation = 0x0400,
@@ -19,7 +20,7 @@ namespace Henke37.DebugHelp.Win32 {
 		WriteOwner = 0x00080000,
 		All = Terminate | SuspendResume | GetContext | SetContext |
 			SetInformation | QueryInformation |
-			Impersonate | DirectImpersonation |
+			SetThreadToken | Impersonate | DirectImpersonation |
 			Synchronize | WriteDACL | WriteOwner
 	}
 }
