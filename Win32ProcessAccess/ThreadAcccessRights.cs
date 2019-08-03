@@ -16,11 +16,13 @@ namespace Henke37.DebugHelp.Win32 {
 		SetLimitedInformation = 0x0400,
 		QueryLimitedInformation = 0x0800,
 		Synchronize = 0x00100000,
+		ReadControl = 0x00020000,
 		WriteDACL = 0x00040000,
 		WriteOwner = 0x00080000,
+
 		All = Terminate | SuspendResume | GetContext | SetContext |
 			SetInformation | QueryInformation |
 			SetThreadToken | Impersonate | DirectImpersonation |
-			Synchronize | WriteDACL | WriteOwner
+			Synchronize | ReadControl | WriteDACL | WriteOwner
 	}
 }
