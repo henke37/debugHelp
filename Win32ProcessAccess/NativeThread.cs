@@ -18,7 +18,22 @@ namespace Henke37.DebugHelp.Win32 {
 		public void Dispose() => handle.Dispose();
 		public void Close() => handle.Close();
 
-		public UInt32 ThreadId => GetThreadId(handle);
+		public UInt32 ThreadId {
+			get {
+				UInt32 threadId = GetThreadId(handle);
+				if(threadId == 0) throw new Win32Exception();
+				return threadId;
+			}
+		}
+
+		public UInt32 ProcessId {
+			get {
+				UInt32 processId = GetProcessIdOfThread(handle);
+				if(processId == 0) throw new Win32Exception();
+				return processId;
+			}
+		}
+
 		public unsafe UInt32 ExitCode {
 			 get {
 				UInt32 exitCode;
@@ -54,6 +69,8 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
 		internal static extern UInt32 GetThreadId(SafeThreadHandle handle);
+		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		internal static extern UInt32 GetProcessIdOfThread(SafeThreadHandle handle);
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
 		internal static extern unsafe bool GetExitCodeThread(SafeThreadHandle handle, UInt32 *exitCode);
 
