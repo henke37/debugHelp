@@ -43,6 +43,9 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		[SuppressUnmanagedCodeSecurity]
 		public override unsafe void WriteBytes(byte[] srcBuff, uint dstAddr, uint size) {
 			try {
 				fixed (byte* buffP = srcBuff) {
@@ -55,6 +58,8 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		[SecurityCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		[SuppressUnmanagedCodeSecurity]
 		public override unsafe void WriteBytes(void* srcBuff, uint dstAddr, uint size) {
 			try {
 				bool success = WriteProcessMemory(process.Handle, (IntPtr)dstAddr, (byte*)srcBuff, size, out var written);
