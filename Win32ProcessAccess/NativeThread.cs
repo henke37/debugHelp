@@ -7,11 +7,11 @@ namespace Henke37.DebugHelp.Win32 {
 	public sealed class NativeThread : IDisposable {
 		readonly SafeThreadHandle handle;
 
-		public NativeThread(UInt32 threadId) : this(0,threadId) {
+		public NativeThread(UInt32 threadId) : this(ThreadAcccessRights.All, threadId) {
 		}
 
-		public NativeThread(UInt32 access, UInt32 threadId) {
-			handle = OpenThread(access, true, threadId);
+		public NativeThread(ThreadAcccessRights access, UInt32 threadId) {
+			handle = OpenThread((UInt32)access, true, threadId);
 			if(handle.IsInvalid) throw new Win32Exception();
 		}
 
