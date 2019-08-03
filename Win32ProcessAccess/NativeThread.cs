@@ -15,11 +15,19 @@ namespace Henke37.DebugHelp.Win32 {
 			if(handle.IsInvalid) throw new Win32Exception();
 		}
 
-		public void Dispose() {
-			handle.Dispose();
-		}
+		public void Dispose() => handle.Dispose();
+		public void Close() => handle.Close();
 
 		public UInt32 ThreadId => GetThreadId(handle);
+		public unsafe UInt32 ExitCode {
+			 get {
+				UInt32 exitCode;
+				bool success=GetExitCodeThread(handle,&exitCode);
+				if(!success) throw new Win32Exception();
+
+				return exitCode;
+			}
+		}
 
 		public ThreadContext GetContext() {
 			var ctx = new ThreadContext32();
@@ -46,6 +54,8 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
 		internal static extern UInt32 GetThreadId(SafeThreadHandle handle);
+		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		internal static extern unsafe bool GetExitCodeThread(SafeThreadHandle handle, UInt32 *exitCode);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
 		internal static extern Int32 SuspendThread(SafeThreadHandle handle);
