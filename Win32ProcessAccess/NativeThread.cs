@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
 
 namespace Henke37.DebugHelp.Win32 {
 	public sealed class NativeThread : IDisposable {
@@ -10,6 +12,8 @@ namespace Henke37.DebugHelp.Win32 {
 		public NativeThread(UInt32 threadId) : this(ThreadAcccessRights.All, threadId) {
 		}
 
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public NativeThread(ThreadAcccessRights access, UInt32 threadId) {
 			handle = OpenThread((UInt32)access, true, threadId);
 			if(handle.IsInvalid) throw new Win32Exception();
@@ -19,6 +23,9 @@ namespace Henke37.DebugHelp.Win32 {
 		public void Close() => handle.Close();
 
 		public UInt32 ThreadId {
+
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				UInt32 threadId = GetThreadId(handle);
 				if(threadId == 0) throw new Win32Exception();
@@ -27,6 +34,9 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public UInt32 ProcessId {
+
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				UInt32 processId = GetProcessIdOfThread(handle);
 				if(processId == 0) throw new Win32Exception();
@@ -35,7 +45,10 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public unsafe UInt32 ExitCode {
-			 get {
+
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get {
 				UInt32 exitCode;
 				bool success=GetExitCodeThread(handle,&exitCode);
 				if(!success) throw new Win32Exception();
@@ -54,12 +67,21 @@ namespace Henke37.DebugHelp.Win32 {
 			context.WriteToHandle(handle);
 		}
 
+
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Suspend() {
 			SuspendThread(handle);
 		}
+
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Resume() {
 			ResumeThread(handle);
 		}
+
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			TerminateThread(handle, exitCode);
 		}
