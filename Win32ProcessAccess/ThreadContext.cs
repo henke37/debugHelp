@@ -8,25 +8,23 @@ namespace Henke37.DebugHelp.Win32 {
 
 	public class ThreadContext32 : ThreadContext {
 
+		public UInt32 SegDs;
+		public UInt32 SegCs;
+		public UInt32 SegSs;
 		public UInt32 SegGs;
 		public UInt32 SegFs;
 		public UInt32 SegEs;
-		public UInt32 SegDs;
 
 		public UInt32 Edi;
 		public UInt32 Esi;
+		public UInt32 Eax;
 		public UInt32 Ebx;
 		public UInt32 Edx;
 		public UInt32 Ecx;
-		public UInt32 Eax;
+		public UInt32 Esp;
 		public UInt32 Ebp;
 		public UInt32 Eip;
-		public UInt32 SegCs;
 		public EFlags EFlags;
-		public UInt32 Esp;
-		public UInt32 SegSs;
-
-		public ValidThreadContextFields valid;
 
 		internal unsafe void ReadFromHandle(SafeThreadHandle handle) {
 			Native native;
@@ -76,13 +74,6 @@ namespace Henke37.DebugHelp.Win32 {
 
 			bool success = SetThreadContext(handle, &native);
 			if(!success) throw new Win32Exception();
-		}
-
-		[Flags]
-		public enum ValidThreadContextFields {
-			None = 0,
-			Basic = 1,
-			FPU = 2
 		}
 
 		internal unsafe struct Native {
