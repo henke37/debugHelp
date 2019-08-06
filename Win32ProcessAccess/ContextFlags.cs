@@ -1,0 +1,14 @@
+﻿using System;
+
+namespace Henke37.DebugHelp.Win32 {
+	[Flags]
+	internal enum ContextFlags : UInt32 {
+		i386 = 0x00010000,
+		Control = 0x00000001,
+		Integer = 0x00000002,
+		Segments = 0x00000004,
+		FloatingPoint = 0x00000008,
+		Debug = 0x00000010,
+		Extended = 0x00000020
+	}
+}

@@ -8,60 +8,109 @@ namespace Henke37.DebugHelp.Win32 {
 
 	public class ThreadContext32 : ThreadContext {
 
+		public UInt32 SegGs;
+		public UInt32 SegFs;
+		public UInt32 SegEs;
+		public UInt32 SegDs;
+
+		public UInt32 Edi;
+		public UInt32 Esi;
+		public UInt32 Ebx;
+		public UInt32 Edx;
+		public UInt32 Ecx;
+		public UInt32 Eax;
+		public UInt32 Ebp;
+		public UInt32 Eip;
+		public UInt32 SegCs;
+		public EFlags EFlags;
+		public UInt32 Esp;
+		public UInt32 SegSs;
+
 		public ValidThreadContextFields valid;
 
 		internal unsafe void ReadFromHandle(SafeThreadHandle handle) {
 			Native native;
 
-			bool success=GetThreadContext(handle, &native);
+			native.ContextFlags = (UInt32)(ContextFlags.i386 | ContextFlags.Integer | ContextFlags.Control | ContextFlags.Segments);
+
+			bool success = GetThreadContext(handle, &native);
 			if(!success) throw new Win32Exception();
 
-			throw new NotImplementedException();
+			Eax = native.Eax;
+			Ebx = native.Ebx;
+			Ecx = native.Ecx;
+			Edx = native.Edx;
+			Edi = native.Edi;
+			Esi = native.Esi;
+			Ebp = native.Ebp;
+			Eip = native.Eip;
+			EFlags = (EFlags)native.EFlags;
+			SegDs = native.SegDs;
+			SegCs = native.SegCs;
+			SegSs = native.SegSs;
+			SegGs = native.SegGs;
+			SegFs = native.SegFs;
+			SegEs = native.SegEs;
 		}
 
 		internal unsafe void WriteToHandle(SafeThreadHandle handle) {
 			Native native;
 
-			throw new NotImplementedException();
+			native.ContextFlags = (UInt32)(ContextFlags.i386 | ContextFlags.Integer | ContextFlags.Control | ContextFlags.Segments);
+
+			native.Eax = Eax;
+			native.Ebx = Ebx;
+			native.Ecx = Ecx;
+			native.Edx = Edx;
+			native.Edi = Edi;
+			native.Esi = Esi;
+			native.Ebp = Ebp;
+			native.Eip = Eip;
+			native.EFlags = (UInt32)EFlags;
+			native.SegDs = SegDs;
+			native.SegCs = SegCs;
+			native.SegSs = SegSs;
+			native.SegGs = SegGs;
+			native.SegFs = SegFs;
+			native.SegEs = SegEs;
 
 			bool success = SetThreadContext(handle, &native);
 			if(!success) throw new Win32Exception();
-
 		}
 
 		[Flags]
 		public enum ValidThreadContextFields {
-			None=0,
-			Basic=1,
-			FPU=2
+			None = 0,
+			Basic = 1,
+			FPU = 2
 		}
 
 		internal unsafe struct Native {
-			UInt32 ContextFlags;
-			UInt32 Dr0;
-			UInt32 Dr1;
-			UInt32 Dr2;
-			UInt32 Dr3;
-			UInt32 Dr6;
-			UInt32 Dr7;
-			FLOATING_SAVE_AREA FloatSave;
-			UInt32 SegGs;
-			UInt32 SegFs;
-			UInt32 SegEs;
-			UInt32 SegDs;
-			UInt32 Edi;
-			UInt32 Esi;
-			UInt32 Ebx;
-			UInt32 Edx;
-			UInt32 Ecx;
-			UInt32 Eax;
-			UInt32 Ebp;
-			UInt32 Eip;
-			UInt32 SegCs;
-			UInt32 EFlags;
-			UInt32 Esp;
-			UInt32 SegSs;
-			fixed byte ExtendedRegisters[512];
+			internal UInt32 ContextFlags;
+			internal UInt32 Dr0;
+			internal UInt32 Dr1;
+			internal UInt32 Dr2;
+			internal UInt32 Dr3;
+			internal UInt32 Dr6;
+			internal UInt32 Dr7;
+			internal FLOATING_SAVE_AREA FloatSave;
+			internal UInt32 SegGs;
+			internal UInt32 SegFs;
+			internal UInt32 SegEs;
+			internal UInt32 SegDs;
+			internal UInt32 Edi;
+			internal UInt32 Esi;
+			internal UInt32 Ebx;
+			internal UInt32 Edx;
+			internal UInt32 Ecx;
+			internal UInt32 Eax;
+			internal UInt32 Ebp;
+			internal UInt32 Eip;
+			internal UInt32 SegCs;
+			internal UInt32 EFlags;
+			internal UInt32 Esp;
+			internal UInt32 SegSs;
+			internal fixed byte ExtendedRegisters[512];
 		}
 
 		internal unsafe struct FLOATING_SAVE_AREA {
@@ -84,5 +133,5 @@ namespace Henke37.DebugHelp.Win32 {
 		internal static unsafe extern bool SetThreadContext(SafeThreadHandle handle, Native* ctx);
 	}
 
-	
+
 }
