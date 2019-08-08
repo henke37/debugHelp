@@ -67,9 +67,31 @@ namespace Henke37.DebugHelp {
 		public IntPtr ReadIntPtr(IntPtr addr) {
 			return (IntPtr)ReadInt32(addr);
 		}
+		public UIntPtr ReadUIntPtr(IntPtr addr) {
+			return (UIntPtr)ReadUInt32(addr);
+		}
+#elif x64
+		public IntPtr ReadIntPtr(IntPtr addr) {
+			return (IntPtr)ReadInt64(addr);
+		}
+		public UIntPtr ReadUIntPtr(IntPtr addr) {
+			return (UIntPtr)ReadUInt64(addr);
+		}
 #else
 #error "No ReadIntPtr implementation"
 #endif
+
+		public Int64 ReadInt64(IntPtr addr) {
+			ReadBytes(addr, 8, scratchBuff);
+			return scratchBuff[0] | (scratchBuff[1] << 8) | (scratchBuff[2] << 16) | (scratchBuff[3] << 24)|
+				(scratchBuff[4] << 32) | (scratchBuff[5] << 40) | (scratchBuff[6] << 48) | (scratchBuff[7] << 56);
+		}
+
+		public UInt64 ReadUInt64(IntPtr addr) {
+			ReadBytes(addr, 8, scratchBuff);
+			return (UInt64)(scratchBuff[0] | (scratchBuff[1] << 8) | (scratchBuff[2] << 16) | (scratchBuff[3] << 24) |
+				(scratchBuff[4] << 32) | (scratchBuff[5] << 40) | (scratchBuff[6] << 48) | (scratchBuff[7] << 56));
+		}
 
 		public int ReadInt32(IntPtr addr) {
 			ReadBytes(addr, 4, scratchBuff);
@@ -174,6 +196,39 @@ namespace Henke37.DebugHelp {
 
 			for(uint i = 0; i < count; ++i) {
 				arr[i] = (IntPtr)(buff[0 + i * 4] | (buff[1 + i * 4] << 8) | (buff[2 + i * 4] << 16) | (buff[3 + i * 4] << 24));
+			}
+		}
+		public void ReadUIntPtrArray(IntPtr addr, uint count, UIntPtr[] arr) {
+			uint byteC = count * 4;
+			Byte[] buff = GetScratchBuff(byteC);
+
+			ReadBytes(addr, byteC, buff);
+
+			for(uint i = 0; i < count; ++i) {
+				arr[i] = (UIntPtr)(buff[0 + i * 4] | (buff[1 + i * 4] << 8) | (buff[2 + i * 4] << 16) | (buff[3 + i * 4] << 24));
+			}
+		}
+#elif x64
+		public void ReadIntPtrArray(IntPtr addr, uint count, IntPtr[] arr) {
+			uint byteC = count * 8;
+			Byte[] buff = GetScratchBuff(byteC);
+
+			ReadBytes(addr, byteC, buff);
+
+			for(uint i = 0; i < count; ++i) {
+				arr[i] = (IntPtr)(buff[0 + i * 4] | (buff[1 + i * 4] << 8) | (buff[2 + i * 4] << 16) | (buff[3 + i * 4] << 24) |
+					(buff[4 + i * 4] << 32) | (buff[5 + i * 4] << 40) | (buff[6 + i * 4] << 48) | (buff[7 + i * 4] << 56));
+			}
+		}
+		public void ReadUIntPtrArray(IntPtr addr, uint count, UIntPtr[] arr) {
+			uint byteC = count * 8;
+			Byte[] buff = GetScratchBuff(byteC);
+
+			ReadBytes(addr, byteC, buff);
+
+			for(uint i = 0; i < count; ++i) {
+				arr[i] = (UIntPtr)(buff[0 + i * 4] | (buff[1 + i * 4] << 8) | (buff[2 + i * 4] << 16) | (buff[3 + i * 4] << 24) |
+					(buff[4 + i * 4] << 32) | (buff[5 + i * 4] << 40) | (buff[6 + i * 4] << 48) | (buff[7 + i * 4] << 56));
 			}
 		}
 #else
