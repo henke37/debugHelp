@@ -124,5 +124,16 @@ namespace Henke37.DebugHelp.Win32 {
 		internal static unsafe extern bool SetThreadContext(SafeThreadHandle handle, Native* ctx);
 	}
 
+#if x64
+	public class ThreadContext64 : ThreadContext {
 
+		internal unsafe struct Native {
+			[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+			internal static unsafe extern bool GetThreadContext(SafeThreadHandle handle, Native* ctx);
+
+			[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+			internal static unsafe extern bool SetThreadContext(SafeThreadHandle handle, Native* ctx);
+		}
+	}
+#endif
 }
