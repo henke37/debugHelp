@@ -76,15 +76,38 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
-		public ThreadContext GetContext() {
+#if x86
+		public ThreadContext32 GetContext() {
 			var ctx = new ThreadContext32();
 			ctx.ReadFromHandle(handle);
 			return ctx;
 		}
-
 		public void SetContext(ThreadContext32 context) {
 			context.WriteToHandle(handle);
 		}
+#elif x64
+		public ThreadContext64 GetContext() {
+			var ctx = new ThreadContext64();
+			ctx.ReadFromHandle(handle);
+			return ctx;
+		}
+		public void SetContext(ThreadContext64 context) {
+			context.WriteToHandle(handle);
+		}
+
+		public ThreadContext32 GetWow64Context() {
+			var ctx = new ThreadContext32();
+			ctx.ReadFromHandle(handle);
+			return ctx;
+		}
+		public void SetWow64Context(ThreadContext32 context) {
+			context.WriteToHandle(handle);
+		}
+#else
+#error "No GetContext implementation"
+#endif
+
+
 
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]

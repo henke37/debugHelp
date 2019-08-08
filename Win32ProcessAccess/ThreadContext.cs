@@ -31,7 +31,11 @@ namespace Henke37.DebugHelp.Win32 {
 
 			native.ContextFlags = (UInt32)(ContextFlags.i386 | ContextFlags.Integer | ContextFlags.Control | ContextFlags.Segments);
 
+#if x86
 			bool success = GetThreadContext(handle, &native);
+#elif x64
+			bool success = Wow64GetThreadContext(handle, &native);
+#endif
 			if(!success) throw new Win32Exception();
 
 			Eax = native.Eax;
@@ -72,7 +76,11 @@ namespace Henke37.DebugHelp.Win32 {
 			native.SegFs = SegFs;
 			native.SegEs = SegEs;
 
+#if x86
 			bool success = SetThreadContext(handle, &native);
+#elif x64
+			bool success = Wow64SetThreadContext(handle, &native);
+#endif
 			if(!success) throw new Win32Exception();
 		}
 
@@ -116,16 +124,30 @@ namespace Henke37.DebugHelp.Win32 {
 			UInt32 Cr0NpxState;
 		}
 
-
+#if x86
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
 		internal static unsafe extern bool GetThreadContext(SafeThreadHandle handle, Native* ctx);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
 		internal static unsafe extern bool SetThreadContext(SafeThreadHandle handle, Native* ctx);
+#elif x64
+		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		internal static unsafe extern bool Wow64GetThreadContext(SafeThreadHandle handle, Native* ctx);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		internal static unsafe extern bool Wow64SetThreadContext(SafeThreadHandle handle, Native* ctx);
+#endif
 	}
 
 #if x64
 	public class ThreadContext64 : ThreadContext {
+		internal void ReadFromHandle(SafeThreadHandle handle) {
+			throw new NotImplementedException();
+		}
+
+		internal void WriteToHandle(SafeThreadHandle handle) {
+			throw new NotImplementedException();
+		}
 
 		internal unsafe struct Native {
 			[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
