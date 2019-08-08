@@ -48,7 +48,7 @@ namespace Henke37.DebugHelp.Gdb {
 
 		#region public commands
 		
-		public override void ReadBytes(uint addr, uint size, byte[] readBuff) {
+		public override void ReadBytes(IntPtr addr, uint size, byte[] readBuff) {
 			string reply = SendCommand($"m{addr:x},{size:x}");
 			if(reply == "") throw new UnsupportedCommandException();
 			if(reply.Length==3 && reply.StartsWith("E")) {
@@ -66,7 +66,7 @@ namespace Henke37.DebugHelp.Gdb {
 			}
 		}
 
-		public override void WriteBytes(byte[] srcBuff, uint dstAddr, uint size) {
+		public override void WriteBytes(byte[] srcBuff, IntPtr dstAddr, uint size) {
 			var sb = new StringBuilder();
 			sb.AppendFormat($"M{0:x},{1:x}:", dstAddr, size);
 
@@ -80,7 +80,7 @@ namespace Henke37.DebugHelp.Gdb {
 			}
 		}
 
-		public uint CRCMemory(uint addr, uint size) {
+		public uint CRCMemory(IntPtr addr, uint size) {
 			string reply = SendCommand("qCRC:{addr:x},{size:x}");
 			if(reply == "") throw new UnsupportedCommandException();
 			if(reply.StartsWith("E")) {
@@ -89,7 +89,7 @@ namespace Henke37.DebugHelp.Gdb {
 			return Convert.ToUInt32(reply.Substring(2, 4));
 		}
 
-		public uint SearchMemory(uint startAddr, byte[] pattern) {
+		public uint SearchMemory(IntPtr startAddr, byte[] pattern) {
 			var sb = new StringBuilder();
 			sb.AppendFormat("qSearch:memory:{0:x};{1:x};", startAddr, pattern.Length);
 

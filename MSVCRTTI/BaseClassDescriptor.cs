@@ -9,7 +9,7 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		internal struct MemoryStruct {
-			public uint pTypeDescriptor;
+			public IntPtr pTypeDescriptor;
 			public uint NumContainedBases;
 			public PMD DisplacementData;
 			public uint Flags;
@@ -26,11 +26,11 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			int vdisp;
 #pragma warning restore CS0649
 
-			public uint LocateBaseObject(uint completeObjectAddr, ProcessMemoryReader reader) {
-				completeObjectAddr += (uint)mdisp;
+			public IntPtr LocateBaseObject(IntPtr completeObjectAddr, ProcessMemoryReader reader) {
+				completeObjectAddr += mdisp;
 				if(pdisp != -1) {
-					uint vtbl = (uint)(completeObjectAddr + pdisp);
-					completeObjectAddr += reader.ReadUInt32((uint)(vtbl + vdisp));
+					IntPtr vtbl = completeObjectAddr + pdisp;
+					completeObjectAddr += reader.ReadInt32(vtbl + vdisp);
 				}
 				return completeObjectAddr;
 			}

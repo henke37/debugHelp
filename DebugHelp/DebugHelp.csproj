@@ -21,4 +21,16 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<Platforms>x64;x86</Platforms>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|x64'">
+	  <DefineConstants>TRACE;x64</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|x64'">
+	  <DefineConstants>TRACE;x64</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|x86'">
+	  <DefineConstants>TRACE;x86</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|x86'">
+	  <DefineConstants>TRACE;x86</DefineConstants>
+	</PropertyGroup>
 </Project>

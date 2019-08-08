@@ -7,11 +7,11 @@ namespace Henke37.DebugHelp {
 	public class ProcessReadMemmoryStream : Stream {
 		private ProcessMemoryReader Reader;
 
-		private uint _startAddr;
-		private long _length;
-		private long _position;
+		private IntPtr _startAddr;
+		private int _length;
+		private int _position;
 
-		public ProcessReadMemmoryStream(ProcessMemoryReader reader, uint startAddr, long length) {
+		public ProcessReadMemmoryStream(ProcessMemoryReader reader, IntPtr startAddr, int length) {
 			Reader = reader;
 			_startAddr = startAddr;
 			_length = length;
@@ -22,7 +22,7 @@ namespace Henke37.DebugHelp {
 		public override bool CanWrite => false;
 		public override long Length => _length;
 
-		public override long Position { get => _position; set => _position=value; }
+		public override long Position { get => _position; set => _position=(int)value; }
 
 		public override void Flush() {}
 
@@ -41,7 +41,7 @@ namespace Henke37.DebugHelp {
 				return 0;
 			}
 			try {
-				Reader.ReadBytes((uint)(_startAddr + _position), (uint)count, buffer);
+				Reader.ReadBytes((IntPtr)(_startAddr + _position), (uint)count, buffer);
 			} catch (Win32Exception err) {
 				throw new IOException(err.Message,err);
 			} catch (IncompleteReadException err) {
@@ -55,17 +55,17 @@ namespace Henke37.DebugHelp {
 		public override int ReadByte() {
 			if(_position < 0) throw new InvalidOperationException();
 			if(_position >= _length) return -1;
-			return Reader.ReadByte((uint)_position++ + _startAddr);
+			return Reader.ReadByte(_startAddr + _position++);
 		}
 
 		public override long Seek(long offset, SeekOrigin origin) {
 			switch(origin) {
 				case SeekOrigin.Begin:
-					return _position = offset;
+					return _position = (int)offset;
 				case SeekOrigin.Current:
-					return _position += offset;
+					return _position += (int)offset;
 				case SeekOrigin.End:
-					return _position = _length - offset;
+					return _position = _length - (int)offset;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(origin));
 			}

@@ -16,7 +16,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		[SuppressUnmanagedCodeSecurity]
-		public unsafe override void ReadBytes(uint addr, uint size, byte[] buff) {
+		public unsafe override void ReadBytes(IntPtr addr, uint size, byte[] buff) {
 			int readC;
 			try { 
 				fixed (Byte* buffP = buff) {
@@ -33,7 +33,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[SecurityCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		[SuppressUnmanagedCodeSecurity]
-		public unsafe override void ReadBytes(uint addr, uint size, void* buff) {
+		public unsafe override void ReadBytes(IntPtr addr, uint size, void* buff) {
 			try { 
 				bool success = ReadProcessMemory(process.Handle, addr, buff, size, out int readC);
 				if(!success) throw new Win32Exception();
@@ -46,7 +46,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		[SuppressUnmanagedCodeSecurity]
-		public override unsafe void WriteBytes(byte[] srcBuff, uint dstAddr, uint size) {
+		public override unsafe void WriteBytes(byte[] srcBuff, IntPtr dstAddr, uint size) {
 			try {
 				fixed (byte* buffP = srcBuff) {
 					bool success = WriteProcessMemory(process.Handle, (IntPtr)dstAddr, buffP, size, out var written);
@@ -60,7 +60,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[SecurityCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		[SuppressUnmanagedCodeSecurity]
-		public override unsafe void WriteBytes(void* srcBuff, uint dstAddr, uint size) {
+		public override unsafe void WriteBytes(void* srcBuff, IntPtr dstAddr, uint size) {
 			try {
 				bool success = WriteProcessMemory(process.Handle, (IntPtr)dstAddr, (byte*)srcBuff, size, out var written);
 				if(!success) throw new Win32Exception();
@@ -81,7 +81,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", SetLastError = true)]
 		unsafe static extern private bool ReadProcessMemory(
 			IntPtr hProcess,
-			UInt32 lpBaseAddress,
+			IntPtr lpBaseAddress,
 			[Out] void* lpBuffer,
 			uint dwSize,
 			out int lpNumberOfBytesRead

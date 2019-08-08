@@ -23,7 +23,7 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			internal uint Signature;
 			internal ClassHierarchyFlags Flags;
 			internal uint numBaseClasses;
-			internal uint pBaseClassArray;
+			internal IntPtr pBaseClassArray;
 		}
 
 		[Flags]
