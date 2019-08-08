@@ -14,6 +14,18 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<Platforms>x86</Platforms>
 	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>TRACE;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>TRACE;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
 	<ItemGroup>
 	  <COMReference Include="Dia2Lib.dll">
 	    <Guid>106173a0-0173-4e5c-84e7-e915422be997</Guid>

@@ -20,12 +20,18 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<Platforms>x86</Platforms>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|x86'">
-	  <DefineConstants>TRACE;x86</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|x86'">
-	  <DefineConstants>TRACE;x86</DefineConstants>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>TRACE;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>TRACE;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\DebugHelp\DebugHelp.csproj">
 			<Project>{f95563d3-569b-4d59-bd8b-c9e69cd62fb7}</Project>
