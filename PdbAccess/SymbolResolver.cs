@@ -38,14 +38,14 @@ namespace Henke37.DebugHelp.PdbAccess {
 			return result.Item(0);
 		}
 
-		public uint FieldOffset(IDiaSymbol classSymb, string fieldName) {
+		public int FieldOffset(IDiaSymbol classSymb, string fieldName) {
 			IDiaSymbol field = FindField(classSymb, fieldName);
-			return (uint)field.offset;
+			return field.offset;
 		}
 
-		public uint FieldSize(IDiaSymbol classSymb, string fieldName) {
+		public int FieldSize(IDiaSymbol classSymb, string fieldName) {
 			IDiaSymbol field = FindField(classSymb, fieldName);
-			return (uint)field.type.length;
+			return (int)field.type.length;
 		}
 
 		public IDiaSymbol GetBaseClass(IDiaSymbol thisClass) {
