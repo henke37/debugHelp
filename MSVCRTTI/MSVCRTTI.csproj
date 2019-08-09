@@ -18,7 +18,7 @@
 		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<Platforms>x86</Platforms>
+		<Platforms>x86;x64</Platforms>
 	</PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>TRACE;x64</DefineConstants>
