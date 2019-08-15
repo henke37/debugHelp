@@ -127,26 +127,28 @@ namespace Henke37.DebugHelp.Win32 {
 			TerminateThread(handle, exitCode);
 		}
 
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern SafeThreadHandle OpenThread(UInt32 access, bool inheritable, UInt32 threadId);
 
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern UInt32 GetThreadId(SafeThreadHandle handle);
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern UInt32 GetProcessIdOfThread(SafeThreadHandle handle);
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool GetExitCodeThread(SafeThreadHandle handle, UInt32 *exitCode);
 
 
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Unicode, SetLastError = false)]
+		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = false)]
 		internal static extern unsafe UInt32 GetThreadDescription(SafeThreadHandle handle, Char **exitCode);
 
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern Int32 SuspendThread(SafeThreadHandle handle);
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern Int32 ResumeThread(SafeThreadHandle handle);
 
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool TerminateThread(SafeThreadHandle handle, UInt32 exitCode);
 	}
 }

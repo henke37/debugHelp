@@ -45,14 +45,19 @@ namespace Henke37.DebugHelp.Win32 {
 
 		public static implicit operator NativeProcess(Process stdProcess) => FromProcess(stdProcess);
 
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern UInt32 DuplicateHandle(SafeProcessHandle sourceProcess, IntPtr sourceHandle, SafeProcessHandle destinationProcess, IntPtr destinationHandlePtr, uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwOptions);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern UInt32 GetProcessId(SafeProcessHandle handle);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetExitCodeProcess(SafeProcessHandle handle, out UInt32 exitCode);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool TerminateProcess(SafeProcessHandle handle, UInt32 exitCode);
 
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
