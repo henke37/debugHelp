@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 
 namespace Henke37.DebugHelp.Win32 {
 	internal sealed class SafeProcessHandle : SafeHandleZeroOrMinusOneIsInvalid {
+
+		public static SafeProcessHandle CurrentProcess => new SafeProcessHandle((IntPtr)(-1), false);
+
 		internal SafeProcessHandle() : base(true) {
 		}
 

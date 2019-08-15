@@ -40,14 +40,32 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public static NativeProcess FromProcess(Process stdProcess) {
-			return new NativeProcess(new SafeProcessHandle(stdProcess.Handle, false));
+			return new NativeProcess(new SafeProcessHandle(DuplicateHandleLocal(stdProcess.Handle,0,false, DuplicateOptions.SameAccess), true));
+		}
+		public static NativeProcess FromProcess(Process stdProcess, ProcessAccessRights accessRights) {
+			return new NativeProcess(new SafeProcessHandle(DuplicateHandleLocal(stdProcess.Handle, (uint)accessRights, false, DuplicateOptions.None), true));
 		}
 
 		public static implicit operator NativeProcess(Process stdProcess) => FromProcess(stdProcess);
 
+		internal static unsafe IntPtr DuplicateHandleLocal(IntPtr sourceHandle, uint desiredAccess, bool inheritHandle, DuplicateOptions options) {
+			IntPtr newHandle=IntPtr.Zero;
+			bool success = DuplicateHandle(SafeProcessHandle.CurrentProcess, sourceHandle, SafeProcessHandle.CurrentProcess, (IntPtr)(int)&newHandle, desiredAccess, inheritHandle, options);
+
+			if(!success) throw new Win32Exception();
+			return newHandle;
+		}
+
+		[Flags]
+		public enum DuplicateOptions : uint {
+			None=0,
+			CloseSource = 0x00000001,// Closes the source handle. This occurs regardless of any error status returned.
+			SameAccess = 0x00000002, //Ignores the dwDesiredAccess parameter. The duplicate handle has the same access as the source handle.
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		internal static extern UInt32 DuplicateHandle(SafeProcessHandle sourceProcess, IntPtr sourceHandle, SafeProcessHandle destinationProcess, IntPtr destinationHandlePtr, uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwOptions);
+		internal static extern bool DuplicateHandle(SafeProcessHandle sourceProcess, IntPtr sourceHandle, SafeProcessHandle destinationProcess, IntPtr destinationHandlePtr, uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, DuplicateOptions dwOptions);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern UInt32 GetProcessId(SafeProcessHandle handle);
