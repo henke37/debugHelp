@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace Henke37.DebugHelp.Win32 {
 	public class NativeProcess : IDisposable {
@@ -26,10 +25,37 @@ namespace Henke37.DebugHelp.Win32 {
 		public void Dispose() => handle.Dispose();
 		public void Close() => handle.Close();
 
+		public UInt32 ProcessId => GetProcessId(handle);
+		public UInt32 ExitCode {
+			get {
+				var success=GetExitCodeProcess(handle, out uint exitCode);
+				if(!success) throw new Win32Exception();
+				return exitCode;
+			}
+		}
+
+		public void Terminate(UInt32 exitCode) {
+			bool success=TerminateProcess(handle, exitCode);
+			if(!success) throw new Win32Exception();
+		}
+
 		public static NativeProcess FromProcess(Process stdProcess) {
 			return new NativeProcess(new SafeProcessHandle(stdProcess.Handle, false));
 		}
 
 		public static implicit operator NativeProcess(Process stdProcess) => FromProcess(stdProcess);
+
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		internal static extern UInt32 GetProcessId(SafeProcessHandle handle);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		internal static extern bool GetExitCodeProcess(SafeProcessHandle handle, out UInt32 exitCode);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		internal static extern bool TerminateProcess(SafeProcessHandle handle, UInt32 exitCode);
+
+		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
+		internal static extern unsafe bool NtQueryInformationProcess(SafeProcessHandle handle, ProcessInformationClass informationClass, void* buffer, uint bufferLength, out uint returnLength);
 	}
 }
