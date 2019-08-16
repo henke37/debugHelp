@@ -13,7 +13,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct Native {
-			UInt32 dwSize;
+			internal UInt32 dwSize;
 			UInt32 th32ModuleID;
 			UInt32 th32ProcessID;
 			UInt32 GlblcntUsage;
@@ -23,6 +23,7 @@ namespace Henke37.DebugHelp.Win32 {
 			IntPtr hModule;
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_MODULE_NAME32 + 1)]
 			string szModule;
+
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
 			string szExePath;
 

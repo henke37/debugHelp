@@ -13,7 +13,6 @@ namespace Henke37.DebugHelp.Win32 {
 		public Toolhelp32Snapshot(Toolhelp32SnapshotFlags flags, UInt32 processId) {
 		}
 
-
 		public IEnumerator<ModuleEntry> GetModules() {
 			ModuleEntry.Native native=new ModuleEntry.Native();
 			try {
@@ -56,6 +55,27 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public IEnumerator<ThreadEntry> GetThreads() {
+			ThreadEntry.Native native = new ThreadEntry.Native();
+			try {
+				Thread32First(handle, ref native);
+			} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
+				yield break;
+			}
+
+			yield return native.AsManaged();
+
+			for(; ; ) {
+				try {
+					Thread32Next(handle, ref native);
+				} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
+					yield break;
+				}
+
+				yield return native.AsManaged();
+			}
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool Module32FirstW(SafeToolhelp32SnapshotHandle handle, ref ModuleEntry.Native moduleEntry);
@@ -71,6 +91,14 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool Process32NextW(SafeToolhelp32SnapshotHandle handle, ref ProcessEntry.Native moduleEntry);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool Thread32First(SafeToolhelp32SnapshotHandle handle, ref ThreadEntry.Native moduleEntry);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool Thread32Next(SafeToolhelp32SnapshotHandle handle, ref ThreadEntry.Native moduleEntry);
 
 	}
 }

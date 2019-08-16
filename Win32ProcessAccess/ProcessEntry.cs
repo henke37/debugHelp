@@ -10,7 +10,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct Native {
-			UInt32 dwSize;
+			internal UInt32 dwSize;
 			UInt32 cntUsage;
 			UInt32 th32ProcessID;
 			IntPtr th32DefaultHeapID;

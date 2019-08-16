@@ -21,4 +21,3 @@ namespace Henke37.DebugHelp.Win32 {
 		public static extern bool CloseHandle(IntPtr handle);
 	}
 }
-}
