@@ -11,7 +11,7 @@ namespace Henke37.DebugHelp.Win32 {
 		public string Name;
 		public string Path;
 
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
 		internal struct Native {
 			internal UInt32 dwSize;
 			UInt32 th32ModuleID;

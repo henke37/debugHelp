@@ -6,7 +6,7 @@ namespace Henke37.DebugHelp.Win32 {
 		public UInt32 ThreadId;
 		public UInt32 ProcessId;
 
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal struct Native {
 			internal UInt32 dwSize;
 			UInt32 cntUsage;
