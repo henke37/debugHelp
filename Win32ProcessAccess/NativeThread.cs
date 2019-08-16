@@ -9,14 +9,14 @@ namespace Henke37.DebugHelp.Win32 {
 	public sealed class NativeThread : IDisposable {
 		readonly SafeThreadHandle handle;
 
-		public NativeThread(UInt32 threadId) : this(threadId, ThreadAcccessRights.All) {
-		}
+		public static NativeThread Open(UInt32 threadId) => Open(threadId, ThreadAcccessRights.All);
 
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public NativeThread(UInt32 threadId, ThreadAcccessRights access) {
-			handle = OpenThread((UInt32)access, true, threadId);
+		public static NativeThread Open(UInt32 threadId, ThreadAcccessRights access) {
+			SafeThreadHandle handle = OpenThread((UInt32)access, true, threadId);
 			if(handle.IsInvalid) throw new Win32Exception();
+			return new NativeThread(handle);
 		}
 
 		internal NativeThread(SafeThreadHandle handle) {
@@ -128,7 +128,7 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
-		internal static extern SafeThreadHandle OpenThread(UInt32 access, bool inheritable, UInt32 threadId);
+		internal static extern SafeThreadHandle OpenThread(UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool inheritable, UInt32 threadId);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern UInt32 GetThreadId(SafeThreadHandle handle);

@@ -7,9 +7,9 @@ using System.Security.Permissions;
 
 namespace Henke37.DebugHelp.Win32 {
 	public sealed class LiveProcessMemoryAccessor : ProcessMemoryAccessor {
-		private Process process;
+		private NativeProcess process;
 
-		public LiveProcessMemoryAccessor(Process process) {
+		public LiveProcessMemoryAccessor(NativeProcess process) {
 			this.process = process;
 		}
 
@@ -20,7 +20,7 @@ namespace Henke37.DebugHelp.Win32 {
 			int readC;
 			try { 
 				fixed (Byte* buffP = buff) {
-					bool success=ReadProcessMemory(process.Handle, addr, buffP, size, out readC);
+					bool success=ReadProcessMemory(process.handle, addr, buffP, size, out readC);
 					if(!success) throw new Win32Exception();
 				}
 			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteReadException.ErrorNumber) {
@@ -35,7 +35,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[SuppressUnmanagedCodeSecurity]
 		public unsafe override void ReadBytes(IntPtr addr, uint size, void* buff) {
 			try { 
-				bool success = ReadProcessMemory(process.Handle, addr, buff, size, out int readC);
+				bool success = ReadProcessMemory(process.handle, addr, buff, size, out int readC);
 				if(!success) throw new Win32Exception();
 				if(readC != size) throw new IncompleteReadException();
 			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteReadException.ErrorNumber) {
@@ -49,7 +49,7 @@ namespace Henke37.DebugHelp.Win32 {
 		public override unsafe void WriteBytes(byte[] srcBuff, IntPtr dstAddr, uint size) {
 			try {
 				fixed (byte* buffP = srcBuff) {
-					bool success = WriteProcessMemory(process.Handle, (IntPtr)dstAddr, buffP, size, out var written);
+					bool success = WriteProcessMemory(process.handle, (IntPtr)dstAddr, buffP, size, out var written);
 					if(!success) throw new Win32Exception();
 				}
 			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteWriteException.ErrorNumber) {
@@ -62,7 +62,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[SuppressUnmanagedCodeSecurity]
 		public override unsafe void WriteBytes(void* srcBuff, IntPtr dstAddr, uint size) {
 			try {
-				bool success = WriteProcessMemory(process.Handle, (IntPtr)dstAddr, (byte*)srcBuff, size, out var written);
+				bool success = WriteProcessMemory(process.handle, (IntPtr)dstAddr, (byte*)srcBuff, size, out var written);
 				if(!success) throw new Win32Exception();
 			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteWriteException.ErrorNumber) {
 				throw new IncompleteWriteException(err);
@@ -70,8 +70,8 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		[DllImport("kernel32.dll", SetLastError = true)]
-		public static unsafe extern bool WriteProcessMemory(
-		  IntPtr hProcess,
+		internal static unsafe extern bool WriteProcessMemory(
+		  SafeProcessHandle hProcess,
 		  IntPtr lpBaseAddress,
 		  byte* lpBuffer,
 		  UInt32 nSize,
@@ -79,8 +79,8 @@ namespace Henke37.DebugHelp.Win32 {
 		);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
-		unsafe static extern private bool ReadProcessMemory(
-			IntPtr hProcess,
+		internal unsafe static extern bool ReadProcessMemory(
+			SafeProcessHandle hProcess,
 			IntPtr lpBaseAddress,
 			[Out] void* lpBuffer,
 			uint dwSize,

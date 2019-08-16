@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
 
 namespace Henke37.DebugHelp.Win32 {
 	public class NativeProcess : IDisposable {
@@ -13,20 +15,28 @@ namespace Henke37.DebugHelp.Win32 {
 			this.handle = handle;
 		}
 
-		public static NativeProcess Open(int processId, ProcessAccessRights rights = ProcessAccessRights.All) {
-			var proc = Open(processId, out var firstThread, rights);
-			firstThread.Close();
-			return proc;
-		}
-		public static NativeProcess Open(int processId, out NativeThread firstThread, ProcessAccessRights rights = ProcessAccessRights.All) {
-			throw new NotImplementedException();
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		public static NativeProcess Open(uint processId, ProcessAccessRights rights = ProcessAccessRights.All, bool inheritable=false) {
+			SafeProcessHandle handle = OpenProcess((uint)rights, inheritable, processId);
+			if(handle.IsInvalid) throw new Win32Exception();
+			return new NativeProcess(handle);
 		}
 
 		public void Dispose() => handle.Dispose();
 		public void Close() => handle.Close();
 
-		public UInt32 ProcessId => GetProcessId(handle);
+		public UInt32 ProcessId {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get {
+				return GetProcessId(handle);
+			}
+		}
+
 		public UInt32 ExitCode {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var success=GetExitCodeProcess(handle, out uint exitCode);
 				if(!success) throw new Win32Exception();
@@ -34,10 +44,15 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			bool success=TerminateProcess(handle, exitCode);
 			if(!success) throw new Win32Exception();
 		}
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		internal static extern SafeProcessHandle OpenProcess(UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool inheritable, UInt32 processId);
 
 		public static NativeProcess FromProcess(Process stdProcess) {
 			return new NativeProcess(new SafeProcessHandle(DuplicateHandleLocal(stdProcess.Handle,0,false, DuplicateOptions.SameAccess), true));
@@ -48,6 +63,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		public static implicit operator NativeProcess(Process stdProcess) => FromProcess(stdProcess);
 
+		[SecurityCritical]
 		internal static unsafe IntPtr DuplicateHandleLocal(IntPtr sourceHandle, uint desiredAccess, bool inheritHandle, DuplicateOptions options) {
 			IntPtr newHandle=IntPtr.Zero;
 			bool success = DuplicateHandle(SafeProcessHandle.CurrentProcess, sourceHandle, SafeProcessHandle.CurrentProcess, (IntPtr)(int)&newHandle, desiredAccess, inheritHandle, options);

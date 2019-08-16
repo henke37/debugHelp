@@ -34,6 +34,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <DefineConstants>TRACE;x86</DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Henke37.DebugHelp.Core" Version="2.0.0-alpha" />
+  </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\DebugHelp\DebugHelp.csproj">
 			<Project>{f95563d3-569b-4d59-bd8b-c9e69cd62fb7}</Project>

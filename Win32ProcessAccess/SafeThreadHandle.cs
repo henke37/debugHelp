@@ -17,7 +17,7 @@ namespace Henke37.DebugHelp.Win32 {
 			return CloseHandle(handle);
 		}
 
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto, SetLastError = true)]
 		public static extern bool CloseHandle(IntPtr handle);
 	}
 }
