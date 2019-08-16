@@ -15,6 +15,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		public IEnumerator<ModuleEntry> GetModules() {
 			ModuleEntry.Native native=new ModuleEntry.Native();
+			native.dwSize = (uint)Marshal.SizeOf<ModuleEntry.Native>();
 			try {
 				Module32FirstW(handle, ref native);
 			} catch(Win32Exception err ) when(err.NativeErrorCode == ErrNoMoreFiles) {
@@ -36,6 +37,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		public IEnumerator<ProcessEntry> GetProcesses() {
 			ProcessEntry.Native native = new ProcessEntry.Native();
+			native.dwSize = (uint)Marshal.SizeOf<ProcessEntry.Native>();
 			try {
 				Process32FirstW(handle, ref native);
 			} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
@@ -57,6 +59,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		public IEnumerator<ThreadEntry> GetThreads() {
 			ThreadEntry.Native native = new ThreadEntry.Native();
+			native.dwSize = (uint)Marshal.SizeOf<ThreadEntry.Native>();
 			try {
 				Thread32First(handle, ref native);
 			} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
