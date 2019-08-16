@@ -22,5 +22,9 @@ namespace Henke37.DebugHelp.Win32 {
 				};
 			}
 		}
+
+		public override string ToString() {
+			return $"{ThreadId}";
+		}
 	}
 }

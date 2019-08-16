@@ -41,5 +41,9 @@ namespace Henke37.DebugHelp.Win32 {
 			private const int MAX_PATH = 260;
 			private const int MAX_MODULE_NAME32=255;
 		}
+
+		public override string ToString() {
+			return $"{Name} 0x{BaseAddress:x}";
+		}
 	}
 }
