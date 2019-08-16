@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Henke37.DebugHelp.Win32 {
 	internal class SafeToolhelp32SnapshotHandle : SafeHandleZeroOrMinusOneIsInvalid {
@@ -13,6 +14,7 @@ namespace Henke37.DebugHelp.Win32 {
 			base.SetHandle(h);
 		}
 
+		[SuppressUnmanagedCodeSecurity]
 		override protected bool ReleaseHandle() {
 			return CloseHandle(handle);
 		}
