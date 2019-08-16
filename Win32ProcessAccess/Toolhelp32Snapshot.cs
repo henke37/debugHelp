@@ -35,6 +35,27 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public IEnumerator<ProcessEntry> GetProcesses() {
+			ProcessEntry.Native native = new ProcessEntry.Native();
+			try {
+				Process32FirstW(handle, ref native);
+			} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
+				yield break;
+			}
+
+			yield return native.AsManaged();
+
+			for(; ; ) {
+				try {
+					Process32NextW(handle, ref native);
+				} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
+					yield break;
+				}
+
+				yield return native.AsManaged();
+			}
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool Module32FirstW(SafeToolhelp32SnapshotHandle handle, ref ModuleEntry.Native moduleEntry);
@@ -42,6 +63,14 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool Module32NextW(SafeToolhelp32SnapshotHandle handle, ref ModuleEntry.Native moduleEntry);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool Process32FirstW(SafeToolhelp32SnapshotHandle handle, ref ProcessEntry.Native moduleEntry);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool Process32NextW(SafeToolhelp32SnapshotHandle handle, ref ProcessEntry.Native moduleEntry);
 
 	}
 }
