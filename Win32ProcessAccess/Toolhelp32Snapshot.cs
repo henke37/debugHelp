@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Henke37.DebugHelp.Win32 {
-	public class Toolhelp32Snapshot {
+	public class Toolhelp32Snapshot : IDisposable {
 		internal SafeToolhelp32SnapshotHandle handle;
 		private const int ErrNoMoreFiles=18;
 
@@ -115,5 +115,8 @@ namespace Henke37.DebugHelp.Win32 {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool Thread32Next(SafeToolhelp32SnapshotHandle handle, ref ThreadEntry.Native moduleEntry);
 
+		public void Dispose() {
+			((IDisposable)handle).Dispose();
+		}
 	}
 }
