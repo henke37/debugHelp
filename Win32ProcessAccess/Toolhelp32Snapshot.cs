@@ -13,6 +13,7 @@ namespace Henke37.DebugHelp.Win32 {
 			if(handle.IsInvalid) throw new Win32Exception();
 		}
 		public Toolhelp32Snapshot(Toolhelp32SnapshotFlags flags, UInt32 processId) {
+			if(processId == 0) throw new ArgumentOutOfRangeException(nameof(processId), "The process id can't be zero!");
 			handle = CreateToolhelp32Snapshot((uint)flags, processId);
 			if(handle.IsInvalid) throw new Win32Exception();
 		}
