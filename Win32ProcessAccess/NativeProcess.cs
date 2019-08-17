@@ -145,7 +145,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern UInt32 WaitForSingleObject(SafeProcessHandle handle, UInt32 timeout);
 
-		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("User32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern UInt32 GetGuiResources(SafeProcessHandle handle, UInt32 flags);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
