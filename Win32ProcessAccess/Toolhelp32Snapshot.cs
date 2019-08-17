@@ -17,7 +17,7 @@ namespace Henke37.DebugHelp.Win32 {
 			if(handle.IsInvalid) throw new Win32Exception();
 		}
 
-		public IEnumerator<ModuleEntry> GetModules() {
+		public IEnumerable<ModuleEntry> GetModules() {
 			ModuleEntry.Native native=new ModuleEntry.Native();
 			native.dwSize = (uint)Marshal.SizeOf<ModuleEntry.Native>();
 			try {
@@ -40,7 +40,7 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
-		public IEnumerator<ProcessEntry> GetProcesses() {
+		public IEnumerable<ProcessEntry> GetProcesses() {
 			ProcessEntry.Native native = new ProcessEntry.Native();
 			native.dwSize = (uint)Marshal.SizeOf<ProcessEntry.Native>();
 			try {
@@ -64,7 +64,7 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
-		public IEnumerator<ThreadEntry> GetThreads() {
+		public IEnumerable<ThreadEntry> GetThreads() {
 			ThreadEntry.Native native = new ThreadEntry.Native();
 			native.dwSize = (uint)Marshal.SizeOf<ThreadEntry.Native>();
 			try {
