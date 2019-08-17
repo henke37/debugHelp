@@ -52,6 +52,35 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public UInt32 GdiObjectsCurrent => GetGuiResources(handle, 0);
+		public UInt32 GdiObjectsPeak => GetGuiResources(handle, 2);
+		public UInt32 UserObjectsCurrent => GetGuiResources(handle, 1);
+		public UInt32 UserObjectsPeak => GetGuiResources(handle, 4);
+
+		public UInt32 HandleCount {
+			get {
+				var success = GetProcessHandleCount(handle, out UInt32 count);
+				if(!success) throw new Win32Exception();
+				return count;
+			}
+		}
+
+		public bool DynamicPriorityBoosts {
+			get {
+				var success = GetProcessPriorityBoost(handle, out var disableBoosts);
+				if(!success) throw new Win32Exception();
+				return !disableBoosts;
+			}
+		}
+
+		public bool IsWow64Process {
+			get {
+				var success = IsWow64Process(handle, out var status);
+				if(!success) throw new Win32Exception();
+				return status;
+			}
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -107,5 +136,20 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern UInt32 WaitForSingleObject(SafeProcessHandle handle, UInt32 timeout);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		internal static extern UInt32 GetGuiResources(SafeProcessHandle handle, UInt32 flags);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool GetProcessHandleCount(SafeProcessHandle handle, out UInt32 exitCode);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool GetProcessPriorityBoost(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool IsWow64Process(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
 	}
 }
