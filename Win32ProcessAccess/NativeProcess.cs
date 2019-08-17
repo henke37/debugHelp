@@ -75,7 +75,15 @@ namespace Henke37.DebugHelp.Win32 {
 
 		public bool IsWow64Process {
 			get {
-				var success = IsWow64Process(handle, out var status);
+				var success = IsWow64ProcessNative(handle, out var status);
+				if(!success) throw new Win32Exception();
+				return status;
+			}
+		}
+
+		public bool IsBeingDebugged {
+			get {
+				var success = CheckRemoteDebuggerPresent(handle, out var status);
 				if(!success) throw new Win32Exception();
 				return status;
 			}
@@ -148,8 +156,13 @@ namespace Henke37.DebugHelp.Win32 {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetProcessPriorityBoost(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
 
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "IsWow64Process")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool IsWow64ProcessNative(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		internal static extern bool IsWow64Process(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+		internal static extern bool CheckRemoteDebuggerPresent(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+
 	}
 }
