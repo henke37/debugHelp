@@ -33,6 +33,10 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public NativeProcess Open(ProcessAccessRights rights = ProcessAccessRights.All, bool inheritable = false) {
+			return NativeProcess.Open(ProcessId, rights, false);
+		}
+
 		public override string ToString() {
 			return $"{ProcessId}: \"{Executable}\"";
 		}
