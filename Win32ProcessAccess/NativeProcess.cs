@@ -44,6 +44,14 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public bool HasExited { get {
+				var res = WaitForSingleObject(handle, 0);
+				if(res == 0) return true;
+				if(res == 0x00000102) return false;
+				throw new Win32Exception();
+			}
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -96,5 +104,8 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern unsafe bool NtQueryInformationProcess(SafeProcessHandle handle, ProcessInformationClass informationClass, void* buffer, uint bufferLength, out uint returnLength);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		internal static extern UInt32 WaitForSingleObject(SafeProcessHandle handle, UInt32 timeout);
 	}
 }
