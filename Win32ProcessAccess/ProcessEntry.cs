@@ -27,7 +27,8 @@ namespace Henke37.DebugHelp.Win32 {
 			internal ProcessEntry AsManaged() {
 				return new ProcessEntry() {
 					Executable = szExePath,
-					ProcessId = th32ProcessID, ParentProcessId = th32ParentProcessID,
+					ProcessId = th32ProcessID,
+					ParentProcessId = th32ParentProcessID,
 					ThreadCount = cntThreads
 				};
 			}

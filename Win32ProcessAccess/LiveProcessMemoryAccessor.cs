@@ -18,9 +18,9 @@ namespace Henke37.DebugHelp.Win32 {
 		[SuppressUnmanagedCodeSecurity]
 		public unsafe override void ReadBytes(IntPtr addr, uint size, byte[] buff) {
 			int readC;
-			try { 
+			try {
 				fixed (Byte* buffP = buff) {
-					bool success=ReadProcessMemory(process.handle, addr, buffP, size, out readC);
+					bool success = ReadProcessMemory(process.handle, addr, buffP, size, out readC);
 					if(!success) throw new Win32Exception();
 				}
 			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteReadException.ErrorNumber) {
@@ -34,7 +34,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		[SuppressUnmanagedCodeSecurity]
 		public unsafe override void ReadBytes(IntPtr addr, uint size, void* buff) {
-			try { 
+			try {
 				bool success = ReadProcessMemory(process.handle, addr, buff, size, out int readC);
 				if(!success) throw new Win32Exception();
 				if(readC != size) throw new IncompleteReadException();

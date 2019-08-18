@@ -18,7 +18,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public static NativeProcess Open(uint processId, ProcessAccessRights rights = ProcessAccessRights.All, bool inheritable=false) {
+		public static NativeProcess Open(uint processId, ProcessAccessRights rights = ProcessAccessRights.All, bool inheritable = false) {
 			SafeProcessHandle handle = OpenProcess((uint)rights, inheritable, processId);
 			if(handle.IsInvalid) throw new Win32Exception();
 			return new NativeProcess(handle);
@@ -39,13 +39,14 @@ namespace Henke37.DebugHelp.Win32 {
 			[SecuritySafeCritical]
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
-				var success=GetExitCodeProcess(handle, out uint exitCode);
+				var success = GetExitCodeProcess(handle, out uint exitCode);
 				if(!success) throw new Win32Exception();
 				return exitCode;
 			}
 		}
 
-		public bool HasExited { get {
+		public bool HasExited {
+			get {
 				var res = WaitForSingleObject(handle, 0);
 				if(res == 0) return true;
 				if(res == 0x00000102) return false;
@@ -95,16 +96,16 @@ namespace Henke37.DebugHelp.Win32 {
 			if(!success) throw new Win32Exception();
 			return new ProcessTimes() {
 				CreationTime = FiletimeToDateTime(creationTime),
-				ExitTime =FiletimeToDateTime(exitTime),
-				KernelTime =FiletimeToTimeSpan(kernelTime),
-				UserTime =FiletimeToTimeSpan(userTime)
+				ExitTime = FiletimeToDateTime(exitTime),
+				KernelTime = FiletimeToTimeSpan(kernelTime),
+				UserTime = FiletimeToTimeSpan(userTime)
 			};
 		}
 
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
-			bool success=TerminateProcess(handle, exitCode);
+			bool success = TerminateProcess(handle, exitCode);
 			if(!success) throw new Win32Exception();
 		}
 
@@ -112,7 +113,7 @@ namespace Henke37.DebugHelp.Win32 {
 		internal static extern SafeProcessHandle OpenProcess(UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool inheritable, UInt32 processId);
 
 		public static NativeProcess FromProcess(Process stdProcess) {
-			return new NativeProcess(new SafeProcessHandle(DuplicateHandleLocal(stdProcess.Handle,0,false, DuplicateOptions.SameAccess), true));
+			return new NativeProcess(new SafeProcessHandle(DuplicateHandleLocal(stdProcess.Handle, 0, false, DuplicateOptions.SameAccess), true));
 		}
 		public static NativeProcess FromProcess(Process stdProcess, ProcessAccessRights accessRights) {
 			return new NativeProcess(new SafeProcessHandle(DuplicateHandleLocal(stdProcess.Handle, (uint)accessRights, false, DuplicateOptions.None), true));
@@ -122,7 +123,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[SecurityCritical]
 		internal static unsafe IntPtr DuplicateHandleLocal(IntPtr sourceHandle, uint desiredAccess, bool inheritHandle, DuplicateOptions options) {
-			IntPtr newHandle=IntPtr.Zero;
+			IntPtr newHandle = IntPtr.Zero;
 			bool success = DuplicateHandle(SafeProcessHandle.CurrentProcess, sourceHandle, SafeProcessHandle.CurrentProcess, (IntPtr)(int)&newHandle, desiredAccess, inheritHandle, options);
 
 			if(!success) throw new Win32Exception();
@@ -131,7 +132,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[Flags]
 		public enum DuplicateOptions : uint {
-			None=0,
+			None = 0,
 			CloseSource = 0x00000001,// Closes the source handle. This occurs regardless of any error status returned.
 			SameAccess = 0x00000002, //Ignores the dwDesiredAccess parameter. The duplicate handle has the same access as the source handle.
 		}
@@ -176,7 +177,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool CheckRemoteDebuggerPresent(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
 
-		[DllImport("kernel32.dll", SetLastError = true, EntryPoint= "GetProcessTimes")]
+		[DllImport("kernel32.dll", SetLastError = true, EntryPoint = "GetProcessTimes")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool GetProcessTimesNative(SafeProcessHandle hProcess, out FILETIME
 		   lpCreationTime, out FILETIME lpExitTime, out FILETIME lpKernelTime,

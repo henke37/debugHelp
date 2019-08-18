@@ -18,7 +18,8 @@ namespace Henke37.DebugHelp.Win32 {
 
 			internal ThreadEntry AsManaged() {
 				return new ThreadEntry() {
-					ThreadId = th32ThreadID, ProcessId=th32OwnerProcessID
+					ThreadId = th32ThreadID,
+					ProcessId = th32OwnerProcessID
 				};
 			}
 		}

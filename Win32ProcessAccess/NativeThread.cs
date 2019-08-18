@@ -54,7 +54,7 @@ namespace Henke37.DebugHelp.Win32 {
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				UInt32 exitCode;
-				bool success=GetExitCodeThread(handle,&exitCode);
+				bool success = GetExitCodeThread(handle, &exitCode);
 				if(!success) throw new Win32Exception();
 
 				return exitCode;
@@ -66,8 +66,8 @@ namespace Henke37.DebugHelp.Win32 {
 			[SecuritySafeCritical]
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
-				char* descPtr;				
-				UInt32 status=GetThreadDescription(handle, &descPtr);
+				char* descPtr;
+				UInt32 status = GetThreadDescription(handle, &descPtr);
 				if((status & 0x80000000) == 0x80000000) throw new Exception();
 				string desc = new string(descPtr);
 				Marshal.FreeHGlobal((IntPtr)descPtr);
@@ -136,11 +136,11 @@ namespace Henke37.DebugHelp.Win32 {
 		internal static extern UInt32 GetProcessIdOfThread(SafeThreadHandle handle);
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		internal static extern unsafe bool GetExitCodeThread(SafeThreadHandle handle, UInt32 *exitCode);
+		internal static extern unsafe bool GetExitCodeThread(SafeThreadHandle handle, UInt32* exitCode);
 
 
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = false)]
-		internal static extern unsafe UInt32 GetThreadDescription(SafeThreadHandle handle, Char **exitCode);
+		internal static extern unsafe UInt32 GetThreadDescription(SafeThreadHandle handle, Char** exitCode);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern Int32 SuspendThread(SafeThreadHandle handle);

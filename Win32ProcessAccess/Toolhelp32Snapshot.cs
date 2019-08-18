@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace Henke37.DebugHelp.Win32 {
 	public class Toolhelp32Snapshot : IDisposable {
 		internal SafeToolhelp32SnapshotHandle handle;
-		private const int ErrNoMoreFiles=18;
+		private const int ErrNoMoreFiles = 18;
 
 		public Toolhelp32Snapshot(Toolhelp32SnapshotFlags flags) {
 			handle = CreateToolhelp32Snapshot((uint)flags, 0);
@@ -19,18 +19,18 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public IEnumerable<ModuleEntry> GetModules() {
-			ModuleEntry.Native native=new ModuleEntry.Native();
+			ModuleEntry.Native native = new ModuleEntry.Native();
 			native.dwSize = (uint)Marshal.SizeOf<ModuleEntry.Native>();
 			try {
-				bool success=Module32FirstW(handle, ref native);
+				bool success = Module32FirstW(handle, ref native);
 				if(!success) throw new Win32Exception();
-			} catch(Win32Exception err ) when(err.NativeErrorCode == ErrNoMoreFiles) {
+			} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
 				yield break;
 			}
 
 			yield return native.AsManaged();
 
-			for(; ;) {
+			for(; ; ) {
 				try {
 					bool success = Module32NextW(handle, ref native);
 				} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
