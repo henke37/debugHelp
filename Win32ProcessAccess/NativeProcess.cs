@@ -102,6 +102,14 @@ namespace Henke37.DebugHelp.Win32 {
 			};
 		}
 
+		public UInt64 ProcessorAffinityMask {
+			get {
+				var success = GetProcessAffinityMask(handle, out var procMask, out var _);
+				if(!success) throw new Win32Exception();
+				return procMask;
+			}
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -179,22 +187,30 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("kernel32.dll", SetLastError = true, EntryPoint = "GetProcessTimes")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool GetProcessTimesNative(SafeProcessHandle hProcess, out FILETIME
-		   lpCreationTime, out FILETIME lpExitTime, out FILETIME lpKernelTime,
-		   out FILETIME lpUserTime
+		static extern bool GetProcessTimesNative(SafeProcessHandle hProcess,
+			out System.Runtime.InteropServices.ComTypes.FILETIME lpCreationTime,
+			out System.Runtime.InteropServices.ComTypes.FILETIME lpExitTime,
+			out System.Runtime.InteropServices.ComTypes.FILETIME lpKernelTime,
+			out System.Runtime.InteropServices.ComTypes.FILETIME lpUserTime
 		);
 
-		public static DateTime FiletimeToDateTime(FILETIME fileTime) {
+		public static DateTime FiletimeToDateTime(System.Runtime.InteropServices.ComTypes.FILETIME fileTime) {
 			//NB! uint conversion must be done on both fields before ulong conversion
 			ulong hFT2 = unchecked((((ulong)(uint)fileTime.dwHighDateTime) << 32) | (uint)fileTime.dwLowDateTime);
 			return DateTime.FromFileTimeUtc((long)hFT2);
 		}
 
-		public static TimeSpan FiletimeToTimeSpan(FILETIME fileTime) {
+		public static TimeSpan FiletimeToTimeSpan(System.Runtime.InteropServices.ComTypes.FILETIME fileTime) {
 			//NB! uint conversion must be done on both fields before ulong conversion
 			ulong hFT2 = unchecked((((ulong)(uint)fileTime.dwHighDateTime) << 32) | (uint)fileTime.dwLowDateTime);
 			return TimeSpan.FromTicks((long)hFT2);
 		}
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		static extern bool GetProcessAffinityMask(SafeProcessHandle hProcess,
+			out UInt64 lpProcessAffinityMask,
+			out UInt64 lpSystemAffinityMask
+		);
 
 	}
 }
