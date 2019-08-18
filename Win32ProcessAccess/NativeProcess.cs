@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using System.Security.Permissions;
 
@@ -89,6 +90,17 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public ProcessTimes GetProcessTimes() {
+			var success = GetProcessTimesNative(handle, out var creationTime, out var exitTime, out var kernelTime, out var userTime);
+			if(!success) throw new Win32Exception();
+			return new ProcessTimes() {
+				CreationTime = FiletimeToDateTime(creationTime),
+				ExitTime =FiletimeToDateTime(exitTime),
+				KernelTime =FiletimeToTimeSpan(kernelTime),
+				UserTime =FiletimeToTimeSpan(userTime)
+			};
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -163,6 +175,25 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool CheckRemoteDebuggerPresent(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+
+		[DllImport("kernel32.dll", SetLastError = true, EntryPoint= "GetProcessTimes")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetProcessTimesNative(SafeProcessHandle hProcess, out FILETIME
+		   lpCreationTime, out FILETIME lpExitTime, out FILETIME lpKernelTime,
+		   out FILETIME lpUserTime
+		);
+
+		public static DateTime FiletimeToDateTime(FILETIME fileTime) {
+			//NB! uint conversion must be done on both fields before ulong conversion
+			ulong hFT2 = unchecked((((ulong)(uint)fileTime.dwHighDateTime) << 32) | (uint)fileTime.dwLowDateTime);
+			return DateTime.FromFileTimeUtc((long)hFT2);
+		}
+
+		public static TimeSpan FiletimeToTimeSpan(FILETIME fileTime) {
+			//NB! uint conversion must be done on both fields before ulong conversion
+			ulong hFT2 = unchecked((((ulong)(uint)fileTime.dwHighDateTime) << 32) | (uint)fileTime.dwLowDateTime);
+			return TimeSpan.FromTicks((long)hFT2);
+		}
 
 	}
 }
