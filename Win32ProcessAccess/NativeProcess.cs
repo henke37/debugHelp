@@ -110,6 +110,12 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public IOCounters GetIoCounters() {
+			var success = GetProcessIoCounters(handle, out var counters);
+			if(!success) throw new Win32Exception();
+			return counters;
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -212,5 +218,8 @@ namespace Henke37.DebugHelp.Win32 {
 			out UInt64 lpSystemAffinityMask
 		);
 
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "GetProcessIoCounters")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool GetProcessIoCounters(SafeProcessHandle handle, out IOCounters counters);
 	}
 }
