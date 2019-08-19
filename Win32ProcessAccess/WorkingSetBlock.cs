@@ -2,18 +2,20 @@
 
 namespace Henke37.DebugHelp.Win32 {
 	public class WorkingSetBlock {
-		public WorkingSetBlockFlags Flags;
 		public WorkingSetBlockPageProtectionFlags Protection;
 		public int ShareCount;
 		public IntPtr VirtualPage;
 
-		[Flags]
-		public enum WorkingSetBlockPageProtectionFlags {
-			None = 0
+#if x86
+		public WorkingSetBlock(int v) {
+			Protection = (WorkingSetBlockPageProtectionFlags)(v & 31);
+			ShareCount = (v >> 5) & 7;
+			VirtualPage = (IntPtr)(v >> 12);
 		}
+#endif
 
 		[Flags]
-		public enum WorkingSetBlockFlags {
+		public enum WorkingSetBlockPageProtectionFlags {
 			None = 0,
 			ReadOnly = 1,
 			Executable = 2,

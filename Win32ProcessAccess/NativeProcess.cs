@@ -10,6 +10,7 @@ using System.Security.Permissions;
 namespace Henke37.DebugHelp.Win32 {
 	public class NativeProcess : IDisposable {
 		internal SafeProcessHandle handle;
+		private const int ERROR_BAD_LENGTH=24;
 
 		internal NativeProcess(SafeProcessHandle handle) {
 			if(handle.IsInvalid) throw new ArgumentException("Handle must be valid!", nameof(handle));
@@ -116,9 +117,34 @@ namespace Henke37.DebugHelp.Win32 {
 			return counters;
 		}
 
-		private WorkingSetBlock[] QueryWorkingSet() {
-			throw new NotImplementedException();
+#if x86
+		public WorkingSetBlock[] QueryWorkingSet() {
+			int numEntries = 1;
+			int headerSize = Marshal.SizeOf<UInt32>();
+			int blockSize = Marshal.SizeOf<UInt32>();
+			int buffSize = headerSize + blockSize * numEntries;
+			IntPtr buffer=Marshal.AllocHGlobal(buffSize);
+			for(; ;) {
+				Marshal.WriteInt32(buffer, numEntries);
+				var success = QueryWorkingSetNative(handle, buffer, buffSize);
+				if(success) break;
+				var err = Marshal.GetLastWin32Error();
+				if(err != ERROR_BAD_LENGTH) throw new Win32Exception(err);
+				numEntries = Marshal.ReadInt32(buffer);
+				buffSize = headerSize + blockSize * numEntries;
+				buffer = Marshal.ReAllocHGlobal(buffer, (IntPtr)buffSize);
+			}
+			numEntries = Marshal.ReadInt32(buffer);
+			WorkingSetBlock[] blocks = new WorkingSetBlock[numEntries];
+			for(int blockIndex=0;blockIndex<numEntries;++blockIndex) {
+				blocks[blockIndex] = new WorkingSetBlock(
+					Marshal.ReadInt32(buffer + headerSize + blockSize * blockIndex)
+				);
+			}
+			Marshal.FreeHGlobal(buffer);
+			return blocks;
 		}
+#endif
 
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -226,8 +252,8 @@ namespace Henke37.DebugHelp.Win32 {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetProcessIoCounters(SafeProcessHandle handle, out IOCounters counters);
 
-		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "QueryWorkingSet")]
+		[DllImport("Psapi.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "QueryWorkingSet")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		internal static unsafe extern bool QueryWorkingSet(SafeProcessHandle handle, void *pv, UInt32 cb);
+		internal static unsafe extern bool QueryWorkingSetNative(SafeProcessHandle handle, IntPtr pv, int cb);
 	}
 }
