@@ -116,6 +116,10 @@ namespace Henke37.DebugHelp.Win32 {
 			return counters;
 		}
 
+		private WorkingSetBlock[] QueryWorkingSet() {
+			throw new NotImplementedException();
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -221,5 +225,9 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "GetProcessIoCounters")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetProcessIoCounters(SafeProcessHandle handle, out IOCounters counters);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "QueryWorkingSet")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static unsafe extern bool QueryWorkingSet(SafeProcessHandle handle, void *pv, UInt32 cb);
 	}
 }
