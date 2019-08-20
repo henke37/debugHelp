@@ -158,6 +158,11 @@ namespace Henke37.DebugHelp.Win32 {
 			return newAddr;
 		}
 
+		public void DeallocateMemory(IntPtr oldAddr, int size, MemoryDeallocationType deallocationType) {
+			bool success = VirtualFreeEx(handle, oldAddr, size, (uint)deallocationType);
+			if(!success) throw new Win32Exception();
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -274,5 +279,10 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		static extern IntPtr VirtualAllocEx(SafeProcessHandle hProcess, IntPtr lpAddress, Int32 dwSize, UInt32 flAllocationType, UInt32 flProtect);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool VirtualFreeEx(SafeProcessHandle hProcess, IntPtr lpAddress, Int32 dwSize, UInt32 dwFreeType);
+
 	}
 }

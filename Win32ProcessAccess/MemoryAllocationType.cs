@@ -11,4 +11,12 @@ namespace Henke37.DebugHelp.Win32 {
 		Physical = 0x00400000,
 		TopDown = 0x00100000
 	}
+
+	[Flags]
+	public enum MemoryDeallocationType : uint {
+		CoalescePlaceholders = 0x00000001,
+		PreservePlaceholders= 0x00000002,
+		Decommit= 0x4000,
+		Release= 0x8000
+	}
 }
