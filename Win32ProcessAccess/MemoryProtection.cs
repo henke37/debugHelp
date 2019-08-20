@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Henke37.DebugHelp.Win32 {
-	public enum MemoryProtection {
+	public enum MemoryProtection : uint {
 		Execute=0x10,
 		ExecuteRead=0x20,
 		ExecuteReadWrite=0x40,

@@ -152,6 +152,12 @@ namespace Henke37.DebugHelp.Win32 {
 			oldProtection = (MemoryProtection)old;
 		}
 
+		public IntPtr AllocateMemory(IntPtr newAddr, int size,MemoryAllocationType allocationType, MemoryProtection newProtection) {
+			newAddr= VirtualAllocEx(handle,newAddr,size,(uint)allocationType, (uint)newProtection);
+			if(newAddr == IntPtr.Zero) throw new Win32Exception();
+			return newAddr;
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -263,6 +269,10 @@ namespace Henke37.DebugHelp.Win32 {
 		internal static unsafe extern bool QueryWorkingSetNative(SafeProcessHandle handle, IntPtr pv, int cb);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool VirtualProtectEx(SafeProcessHandle hProcess, IntPtr lpAddress, Int32 dwSize, UInt32 flNewProtect, out UInt32 lpflOldProtect);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		static extern IntPtr VirtualAllocEx(SafeProcessHandle hProcess, IntPtr lpAddress, Int32 dwSize, UInt32 flAllocationType, UInt32 flProtect);
 	}
 }
