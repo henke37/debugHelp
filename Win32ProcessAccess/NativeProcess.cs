@@ -146,6 +146,12 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 #endif
 
+		public void ReprotectMemory(IntPtr baseAddr, int size, MemoryProtection newProtection, out MemoryProtection oldProtection) {
+			bool success=VirtualProtectEx(handle, baseAddr, size, (uint)newProtection, out var old);
+			if(!success) throw new Win32Exception();
+			oldProtection = (MemoryProtection)old;
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -255,5 +261,8 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("Psapi.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "QueryWorkingSet")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static unsafe extern bool QueryWorkingSetNative(SafeProcessHandle handle, IntPtr pv, int cb);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		static extern bool VirtualProtectEx(SafeProcessHandle hProcess, IntPtr lpAddress, Int32 dwSize, UInt32 flNewProtect, out UInt32 lpflOldProtect);
 	}
 }
