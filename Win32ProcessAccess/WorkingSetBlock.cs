@@ -29,18 +29,18 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public override string ToString() {
-			StringBuilder sb=new StringBuilder();
-			if((Protection & WorkingSetBlockPageProtectionFlags.CopyOnWrite)== WorkingSetBlockPageProtectionFlags.CopyOnWrite) {
+			StringBuilder sb = new StringBuilder();
+			if((Protection & WorkingSetBlockPageProtectionFlags.CopyOnWrite) == WorkingSetBlockPageProtectionFlags.CopyOnWrite) {
 				sb.Append("CW");
-			} else if((Protection & WorkingSetBlockPageProtectionFlags.ReadOnly)!=0) {
+			} else if((Protection & WorkingSetBlockPageProtectionFlags.ReadOnly) != 0) {
 				sb.Append("RO");
-			} else if((Protection & WorkingSetBlockPageProtectionFlags.ReadWrite)!=0) {
+			} else if((Protection & WorkingSetBlockPageProtectionFlags.ReadWrite) != 0) {
 				sb.Append("RW");
 			}
-			if((Protection & WorkingSetBlockPageProtectionFlags.NonCacheable)!=0) {
+			if((Protection & WorkingSetBlockPageProtectionFlags.NonCacheable) != 0) {
 				sb.Append("NC");
 			}
-			if((Protection & WorkingSetBlockPageProtectionFlags.GuardPage)!=0) {
+			if((Protection & WorkingSetBlockPageProtectionFlags.GuardPage) != 0) {
 				sb.Append("GP");
 			}
 			if(Shared) {

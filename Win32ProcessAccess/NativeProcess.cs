@@ -10,7 +10,7 @@ using System.Security.Permissions;
 namespace Henke37.DebugHelp.Win32 {
 	public class NativeProcess : IDisposable {
 		internal SafeProcessHandle handle;
-		private const int ERROR_BAD_LENGTH=24;
+		private const int ERROR_BAD_LENGTH = 24;
 
 		internal NativeProcess(SafeProcessHandle handle) {
 			if(handle.IsInvalid) throw new ArgumentException("Handle must be valid!", nameof(handle));
@@ -123,8 +123,8 @@ namespace Henke37.DebugHelp.Win32 {
 			int headerSize = Marshal.SizeOf<UInt32>();
 			int blockSize = Marshal.SizeOf<UInt32>();
 			int buffSize = headerSize + blockSize * numEntries;
-			IntPtr buffer=Marshal.AllocHGlobal(buffSize);
-			for(; ;) {
+			IntPtr buffer = Marshal.AllocHGlobal(buffSize);
+			for(; ; ) {
 				Marshal.WriteInt32(buffer, numEntries);
 				var success = QueryWorkingSetNative(handle, buffer, buffSize);
 				if(success) break;
@@ -136,7 +136,7 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 			numEntries = Marshal.ReadInt32(buffer);
 			WorkingSetBlock[] blocks = new WorkingSetBlock[numEntries];
-			for(int blockIndex=0;blockIndex<numEntries;++blockIndex) {
+			for(int blockIndex = 0; blockIndex < numEntries; ++blockIndex) {
 				blocks[blockIndex] = new WorkingSetBlock(
 					Marshal.ReadInt32(buffer + headerSize + blockSize * blockIndex)
 				);
@@ -147,13 +147,13 @@ namespace Henke37.DebugHelp.Win32 {
 #endif
 
 		public void ReprotectMemory(IntPtr baseAddr, int size, MemoryProtection newProtection, out MemoryProtection oldProtection) {
-			bool success=VirtualProtectEx(handle, baseAddr, size, (uint)newProtection, out var old);
+			bool success = VirtualProtectEx(handle, baseAddr, size, (uint)newProtection, out var old);
 			if(!success) throw new Win32Exception();
 			oldProtection = (MemoryProtection)old;
 		}
 
-		public IntPtr AllocateMemory(IntPtr newAddr, int size,MemoryAllocationType allocationType, MemoryProtection newProtection) {
-			newAddr= VirtualAllocEx(handle,newAddr,size,(uint)allocationType, (uint)newProtection);
+		public IntPtr AllocateMemory(IntPtr newAddr, int size, MemoryAllocationType allocationType, MemoryProtection newProtection) {
+			newAddr = VirtualAllocEx(handle, newAddr, size, (uint)allocationType, (uint)newProtection);
 			if(newAddr == IntPtr.Zero) throw new Win32Exception();
 			return newAddr;
 		}
