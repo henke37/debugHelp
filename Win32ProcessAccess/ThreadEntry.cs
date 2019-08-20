@@ -24,8 +24,8 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
-		public NativeThread Open(ThreadAcccessRights rights = ThreadAcccessRights.All) {
-			return NativeThread.Open(ThreadId, rights);
+		public NativeThread Open(ThreadAcccessRights rights = ThreadAcccessRights.All, bool inheritable = false) {
+			return NativeThread.Open(ThreadId, rights, inheritable);
 		}
 
 		public override string ToString() {
