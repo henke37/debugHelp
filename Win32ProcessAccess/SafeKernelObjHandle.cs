@@ -8,6 +8,7 @@ using System.Security;
 namespace Henke37.DebugHelp.Win32 {
 	internal abstract class SafeKernelObjHandle : SafeHandleZeroOrMinusOneIsInvalid {
 		private const uint FlagInherit = 0x00000001;
+		private const uint FlagProtectFromClose = 0x00000001;
 
 		internal SafeKernelObjHandle(bool ownsHandle) : base(ownsHandle) {
 		}
@@ -30,6 +31,18 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 			set {
 				var success = SetHandleInformation(handle, FlagInherit, value ? FlagInherit : 0);
+				if(!success) throw new Win32Exception();
+			}
+		}
+
+		public bool ProtectedFromClose {
+			get {
+				var success = GetHandleInformation(handle, out UInt32 flags);
+				if(!success) throw new Win32Exception();
+				return (flags & FlagProtectFromClose) != 0;
+			}
+			set {
+				var success = SetHandleInformation(handle, FlagProtectFromClose, value ? FlagProtectFromClose : 0);
 				if(!success) throw new Win32Exception();
 			}
 		}
