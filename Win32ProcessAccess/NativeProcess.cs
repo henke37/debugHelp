@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using System.Security.Permissions;
+using System.Text;
 
 namespace Henke37.DebugHelp.Win32 {
 	public class NativeProcess : IDisposable {
@@ -172,6 +173,24 @@ namespace Henke37.DebugHelp.Win32 {
 			return native.AsManaged();
 		}
 
+		public string FullImageName {
+			get {
+				UInt32 size = 200;
+				var sb = new StringBuilder((int)size);
+				var success = QueryFullProcessImageName(handle, 0, sb, ref size);
+				if(!success) throw new Win32Exception();
+				return sb.ToString();
+			}
+		}
+		
+		public bool IsCritical {
+			get {
+				var success = IsProcessCritical(handle, out bool critical);
+				if(!success) throw new Win32Exception();
+				return critical;
+			}
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -296,6 +315,14 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("Psapi.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static unsafe extern bool GetProcessMemoryInfo(SafeProcessHandle handle, ref MemoryInfo.Native native, uint cb);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool QueryFullProcessImageName(SafeProcessHandle hProcess, Int32 flags, StringBuilder exename, ref UInt32 size);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool IsProcessCritical(SafeProcessHandle hProcess, [MarshalAs(UnmanagedType.Bool)] out bool Critical);
 
 	}
 }
