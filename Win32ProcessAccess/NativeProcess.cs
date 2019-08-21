@@ -163,6 +163,15 @@ namespace Henke37.DebugHelp.Win32 {
 			if(!success) throw new Win32Exception();
 		}
 
+		public MemoryInfo GetMemoryInfo() {
+			MemoryInfo.Native native = new MemoryInfo.Native();
+			native.cb = (uint)Marshal.SizeOf<MemoryInfo.Native>();
+
+			bool success = GetProcessMemoryInfo(handle, ref native, native.cb);
+			if(!success) throw new Win32Exception();
+			return native.AsManaged();
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -283,6 +292,10 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool VirtualFreeEx(SafeProcessHandle hProcess, IntPtr lpAddress, Int32 dwSize, UInt32 dwFreeType);
+
+		[DllImport("Psapi.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static unsafe extern bool GetProcessMemoryInfo(SafeProcessHandle handle, ref MemoryInfo.Native native, uint cb);
 
 	}
 }
