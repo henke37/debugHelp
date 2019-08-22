@@ -209,6 +209,11 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public void FlushInstructionCache(IntPtr baseAddr, uint size) {
+			var success = FlushInstructionCacheNative(handle,baseAddr,size);
+			if(!success) throw new Win32Exception();
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -341,6 +346,10 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool IsProcessCritical(SafeProcessHandle hProcess, [MarshalAs(UnmanagedType.Bool)] out bool Critical);
+
+		[DllImport("kernel32.dll", SetLastError = true, EntryPoint = "FlushInstructionCache")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool FlushInstructionCacheNative(SafeProcessHandle hProcess, IntPtr baseAddr, UInt32 size);
 
 	}
 }
