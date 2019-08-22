@@ -191,6 +191,24 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public IEnumerable<ThreadEntry> GetThreads() {
+			using(var snap=new Toolhelp32Snapshot(Toolhelp32SnapshotFlags.Thread,ProcessId)) {
+				//using yield explicitly to avoid `snap` being disposed early
+				foreach(var thread in snap.GetThreads()) {
+					yield return thread;
+				}
+			}
+		}
+
+		public IEnumerable<ModuleEntry> GetModules() {
+			using(var snap = new Toolhelp32Snapshot(Toolhelp32SnapshotFlags.Module, ProcessId)) {
+				//using yield explicitly to avoid `snap` being disposed early
+				foreach(var module in snap.GetModules()) {
+					yield return module;
+				}
+			}
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
