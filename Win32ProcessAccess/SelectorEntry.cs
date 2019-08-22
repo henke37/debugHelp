@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 
 namespace Henke37.DebugHelp.Win32 {
+#if x86
 	public class SelectorEntry {
 		public IntPtr Base;
 		internal uint Limit;
@@ -52,4 +53,5 @@ namespace Henke37.DebugHelp.Win32 {
 			Ring3=3
 		}
 	}
+#endif
 }

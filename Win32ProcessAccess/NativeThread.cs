@@ -105,11 +105,13 @@ namespace Henke37.DebugHelp.Win32 {
 #error "No GetContext implementation"
 #endif
 
+#if x86
 		public SelectorEntry GetSelector(UInt32 selector) {
 			bool success = GetThreadSelectorEntry(handle, selector, out var native);
 			if(!success) throw new Win32Exception();
 			return native.AsManaged();
 		}
+#endif
 
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
