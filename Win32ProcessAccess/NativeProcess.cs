@@ -230,6 +230,18 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public IntPtr EncodePointer(IntPtr plain) {
+			var success = EncodeRemotePointer(handle, plain, out var crypto);
+			if(success.Failed) throw new Win32Exception(success);
+			return crypto;
+		}
+
+		public IntPtr DecodePointer(IntPtr crypto) {
+			var success = DecodeRemotePointer(handle, crypto, out var plain);
+			if(success.Failed) throw new Win32Exception(success);
+			return plain;
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -366,5 +378,11 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", SetLastError = true, EntryPoint = "FlushInstructionCache")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool FlushInstructionCacheNative(SafeProcessHandle hProcess, IntPtr baseAddr, UInt32 size);
+
+		[DllImport("kernel32.dll", SetLastError = false)]
+		static extern PInvoke.HResult EncodeRemotePointer(SafeProcessHandle hProcess, IntPtr plain, out IntPtr crypto);
+
+		[DllImport("kernel32.dll", SetLastError = false)]
+		static extern PInvoke.HResult DecodeRemotePointer(SafeProcessHandle hProcess, IntPtr crypto, out IntPtr plain);
 	}
 }
