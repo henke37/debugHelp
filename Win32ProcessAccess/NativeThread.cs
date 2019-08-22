@@ -105,7 +105,11 @@ namespace Henke37.DebugHelp.Win32 {
 #error "No GetContext implementation"
 #endif
 
-
+		public SelectorEntry GetSelector(UInt32 selector) {
+			bool success = GetThreadSelectorEntry(handle, selector, out var native);
+			if(!success) throw new Win32Exception();
+			return native.AsManaged();
+		}
 
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -148,5 +152,9 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool TerminateThread(SafeThreadHandle handle, UInt32 exitCode);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool GetThreadSelectorEntry(SafeThreadHandle handle, UInt32 selector, out SelectorEntry.Native entry);
 	}
 }
