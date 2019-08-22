@@ -1,25 +1,12 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Security;
-
+﻿using System;
 namespace Henke37.DebugHelp.Win32 {
-	internal class SafeToolhelp32SnapshotHandle : SafeHandleZeroOrMinusOneIsInvalid {
+	internal class SafeToolhelp32SnapshotHandle : SafeKernelObjHandle, IEquatable<SafeToolhelp32SnapshotHandle> {
 		internal SafeToolhelp32SnapshotHandle() : base(true) {
 		}
 
-		internal void InitialSetHandle(IntPtr h) {
-			Debug.Assert(base.IsInvalid, "Safe handle should only be set once");
-			base.SetHandle(h);
+		public bool Equals(SafeToolhelp32SnapshotHandle other) {
+			if(other.handle == handle) return true;
+			return CompareObjectHandles(other.handle, handle);
 		}
-
-		[SuppressUnmanagedCodeSecurity]
-		override protected bool ReleaseHandle() {
-			return CloseHandle(handle);
-		}
-
-		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
-		public static extern bool CloseHandle(IntPtr handle);
 	}
 }
