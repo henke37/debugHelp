@@ -214,6 +214,22 @@ namespace Henke37.DebugHelp.Win32 {
 			if(!success) throw new Win32Exception();
 		}
 
+		public IntPtr PebBaseAddress {
+			get {
+				ProcessBasicInformation info=new ProcessBasicInformation();
+				QueryInformationProcess<ProcessBasicInformation>(ProcessInformationClass.BasicInformation, ref info);
+				return info.PebBaseAddress;
+			}
+		}
+
+		internal unsafe T QueryInformationProcess<T>(ProcessInformationClass infoClass, ref T buff) where T : unmanaged {
+			fixed (void* buffP = &buff) {
+				PInvoke.NTSTATUS status = NtQueryInformationProcess(handle, infoClass, buffP, (uint)sizeof(T), out _);
+				if(status.Severity != PInvoke.NTSTATUS.SeverityCode.STATUS_SEVERITY_SUCCESS) throw new PInvoke.NTStatusException(status);
+				return buff;
+			}
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
@@ -265,7 +281,7 @@ namespace Henke37.DebugHelp.Win32 {
 		internal static extern bool TerminateProcess(SafeProcessHandle handle, UInt32 exitCode);
 
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
-		internal static extern unsafe bool NtQueryInformationProcess(SafeProcessHandle handle, ProcessInformationClass informationClass, void* buffer, uint bufferLength, out uint returnLength);
+		internal static extern unsafe PInvoke.NTSTATUS NtQueryInformationProcess(SafeProcessHandle handle, ProcessInformationClass informationClass, void* buffer, uint bufferLength, out uint returnLength);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern UInt32 WaitForSingleObject(SafeProcessHandle handle, UInt32 timeout);
@@ -350,6 +366,5 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", SetLastError = true, EntryPoint = "FlushInstructionCache")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool FlushInstructionCacheNative(SafeProcessHandle hProcess, IntPtr baseAddr, UInt32 size);
-
 	}
 }
