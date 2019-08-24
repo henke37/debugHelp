@@ -12,6 +12,7 @@ namespace Henke37.DebugHelp.Win32 {
 	public class NativeProcess : IDisposable {
 		internal SafeProcessHandle handle;
 		private const int ERROR_BAD_LENGTH = 24;
+		private const int WaitForSingleObjectTimeOut = 0x00000102;
 
 		internal NativeProcess(SafeProcessHandle handle) {
 			if(handle.IsInvalid) throw new ArgumentException("Handle must be valid!", nameof(handle));
@@ -51,7 +52,7 @@ namespace Henke37.DebugHelp.Win32 {
 			get {
 				var res = WaitForSingleObject(handle, 0);
 				if(res == 0) return true;
-				if(res == 0x00000102) return false;
+				if(res == WaitForSingleObjectTimeOut) return false;
 				throw new Win32Exception();
 			}
 		}
