@@ -9,7 +9,6 @@ namespace Henke37.DebugHelp.Win32 {
 	public sealed class NativeThread : IDisposable {
 		readonly SafeThreadHandle handle;
 
-		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public static NativeThread Open(UInt32 threadId, ThreadAcccessRights access= ThreadAcccessRights.All, bool inheritable = false) {
 			SafeThreadHandle handle = OpenThread((UInt32)access, inheritable, threadId);
@@ -106,6 +105,7 @@ namespace Henke37.DebugHelp.Win32 {
 #endif
 
 #if x86
+		[SecuritySafeCritical]
 		public SelectorEntry GetSelector(UInt32 selector) {
 			bool success = GetThreadSelectorEntry(handle, selector, out var native);
 			if(!success) throw new Win32Exception();
@@ -113,19 +113,16 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 #endif
 
-		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Suspend() {
 			SuspendThread(handle);
 		}
 
-		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Resume() {
 			ResumeThread(handle);
 		}
 
-		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			TerminateThread(handle, exitCode);

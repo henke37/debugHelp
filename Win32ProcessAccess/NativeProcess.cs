@@ -19,7 +19,6 @@ namespace Henke37.DebugHelp.Win32 {
 			this.handle = handle;
 		}
 
-		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public static NativeProcess Open(uint processId, ProcessAccessRights rights = ProcessAccessRights.All, bool inheritable = false) {
 			SafeProcessHandle handle = OpenProcess((uint)rights, inheritable, processId);
@@ -49,6 +48,8 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public bool HasExited {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var res = WaitForSingleObject(handle, 0);
 				if(res == 0) return true;
@@ -63,6 +64,8 @@ namespace Henke37.DebugHelp.Win32 {
 		public UInt32 UserObjectsPeak => GetGuiResources(handle, 4);
 
 		public UInt32 HandleCount {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var success = GetProcessHandleCount(handle, out UInt32 count);
 				if(!success) throw new Win32Exception();
@@ -71,6 +74,8 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public bool DynamicPriorityBoosts {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var success = GetProcessPriorityBoost(handle, out var disableBoosts);
 				if(!success) throw new Win32Exception();
@@ -79,6 +84,8 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public bool IsWow64Process {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var success = IsWow64ProcessNative(handle, out var status);
 				if(!success) throw new Win32Exception();
@@ -87,6 +94,8 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public bool IsBeingDebugged {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var success = CheckRemoteDebuggerPresent(handle, out var status);
 				if(!success) throw new Win32Exception();
@@ -94,6 +103,8 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public ProcessTimes GetProcessTimes() {
 			var success = GetProcessTimesNative(handle, out var creationTime, out var exitTime, out var kernelTime, out var userTime);
 			if(!success) throw new Win32Exception();
@@ -106,6 +117,8 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public UInt64 ProcessorAffinityMask {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var success = GetProcessAffinityMask(handle, out var procMask, out var _);
 				if(!success) throw new Win32Exception();
@@ -113,6 +126,8 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public IOCounters GetIoCounters() {
 			var success = GetProcessIoCounters(handle, out var counters);
 			if(!success) throw new Win32Exception();
@@ -165,6 +180,8 @@ namespace Henke37.DebugHelp.Win32 {
 			if(!success) throw new Win32Exception();
 		}
 
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public MemoryInfo GetMemoryInfo() {
 			MemoryInfo.Native native = new MemoryInfo.Native();
 			native.cb = (uint)Marshal.SizeOf<MemoryInfo.Native>();
@@ -185,6 +202,8 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 		
 		public bool IsCritical {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var success = IsProcessCritical(handle, out bool critical);
 				if(!success) throw new Win32Exception();
@@ -243,7 +262,6 @@ namespace Henke37.DebugHelp.Win32 {
 			return plain;
 		}
 
-		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			bool success = TerminateProcess(handle, exitCode);
