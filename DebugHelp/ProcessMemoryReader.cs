@@ -46,15 +46,15 @@ namespace Henke37.DebugHelp {
 
 		private unsafe void ReadStructArr<T>(IntPtr addr, T[] arr) where T : unmanaged {
 			int arrLen = arr.Length;
-			for(int i=0;i<arrLen;++i) {
+			for(int i = 0; i < arrLen; ++i) {
 				ReadStruct(addr, ref arr[i]);
 				addr += sizeof(T);
 			}
 		}
 
 		public string ReadNullTermString(IntPtr addr) {
-			List<Byte> buff=new List<byte>();
-			for(; ; addr+=1) {
+			List<Byte> buff = new List<byte>();
+			for(; ; addr += 1) {
 				Byte b = ReadByte(addr);
 				if(b == 0) break;
 				buff.Add(b);
@@ -83,7 +83,7 @@ namespace Henke37.DebugHelp {
 
 		public Int64 ReadInt64(IntPtr addr) {
 			ReadBytes(addr, 8, scratchBuff);
-			return scratchBuff[0] | (scratchBuff[1] << 8) | (scratchBuff[2] << 16) | (scratchBuff[3] << 24)|
+			return scratchBuff[0] | (scratchBuff[1] << 8) | (scratchBuff[2] << 16) | (scratchBuff[3] << 24) |
 				(scratchBuff[4] << 32) | (scratchBuff[5] << 40) | (scratchBuff[6] << 48) | (scratchBuff[7] << 56);
 		}
 

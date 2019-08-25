@@ -10,7 +10,7 @@ namespace Henke37.DebugHelp.Win32 {
 		readonly SafeThreadHandle handle;
 
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public static NativeThread Open(UInt32 threadId, ThreadAcccessRights access= ThreadAcccessRights.All, bool inheritable = false) {
+		public static NativeThread Open(UInt32 threadId, ThreadAcccessRights access = ThreadAcccessRights.All, bool inheritable = false) {
 			SafeThreadHandle handle = OpenThread((UInt32)access, inheritable, threadId);
 			if(handle.IsInvalid) throw new Win32Exception();
 			return new NativeThread(handle);

@@ -200,7 +200,7 @@ namespace Henke37.DebugHelp.Win32 {
 				return sb.ToString();
 			}
 		}
-		
+
 		public bool IsCritical {
 			[SecuritySafeCritical]
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -212,7 +212,7 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public IEnumerable<ThreadEntry> GetThreads() {
-			using(var snap=new Toolhelp32Snapshot(Toolhelp32SnapshotFlags.Thread,ProcessId)) {
+			using(var snap = new Toolhelp32Snapshot(Toolhelp32SnapshotFlags.Thread, ProcessId)) {
 				//using yield explicitly to avoid `snap` being disposed early
 				foreach(var thread in snap.GetThreads()) {
 					yield return thread;
@@ -230,13 +230,13 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		public void FlushInstructionCache(IntPtr baseAddr, uint size) {
-			var success = FlushInstructionCacheNative(handle,baseAddr,size);
+			var success = FlushInstructionCacheNative(handle, baseAddr, size);
 			if(!success) throw new Win32Exception();
 		}
 
 		public IntPtr PebBaseAddress {
 			get {
-				ProcessBasicInformation info=new ProcessBasicInformation();
+				ProcessBasicInformation info = new ProcessBasicInformation();
 				QueryInformationProcess<ProcessBasicInformation>(ProcessInformationClass.BasicInformation, ref info);
 				return info.PebBaseAddress;
 			}
