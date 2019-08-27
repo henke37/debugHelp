@@ -19,7 +19,7 @@
 		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PackageTags>ReadProcessMemory</PackageTags>
+		<PackageTags>ReadProcessMemory; OpenProcess; WriteProcessMemory</PackageTags>
 		<Platforms>x64;x86</Platforms>
 	</PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
