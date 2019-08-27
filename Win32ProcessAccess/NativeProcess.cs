@@ -9,6 +9,9 @@ using System.Security.Permissions;
 using System.Text;
 
 namespace Henke37.DebugHelp.Win32 {
+#if NETFRAMEWORK
+	[HostProtection(Resources = HostProtectionResource.ExternalProcessMgmt, ExternalProcessMgmt = true)]
+#endif
 	public class NativeProcess : IDisposable {
 		internal SafeProcessHandle handle;
 		private const int ERROR_BAD_LENGTH = 24;
@@ -135,6 +138,9 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 #if x86
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		public WorkingSetBlock[] QueryWorkingSet() {
 			int numEntries = 1;
 			int headerSize = Marshal.SizeOf<UInt32>();

@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Security.Permissions;
 
 namespace Henke37.DebugHelp.Win32 {
 	internal sealed class SafeProcessHandle : SafeKernelObjHandle, IEquatable<SafeProcessHandle> {
 
-		public static SafeProcessHandle CurrentProcess => new SafeProcessHandle((IntPtr)(-1), false);
+		public static SafeProcessHandle CurrentProcess {
+#if NETFRAMEWORK
+			[HostProtection(SelfAffectingProcessMgmt = true)]
+#endif
+			get {
+				return new SafeProcessHandle((IntPtr)(-1), false);
+			}
+		}
 
 		internal SafeProcessHandle() : base(true) {
 		}

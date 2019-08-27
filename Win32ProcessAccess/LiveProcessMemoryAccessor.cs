@@ -5,6 +5,9 @@ using System.Security;
 using System.Security.Permissions;
 
 namespace Henke37.DebugHelp.Win32 {
+#if NETFRAMEWORK
+	[HostProtection(Unrestricted = true, ExternalProcessMgmt = true)]
+#endif
 	public sealed class LiveProcessMemoryAccessor : ProcessMemoryAccessor {
 		private NativeProcess process;
 
