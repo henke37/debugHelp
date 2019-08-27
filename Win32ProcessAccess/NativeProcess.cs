@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Henke37.DebugHelp.Win32 {
 #if NETFRAMEWORK
-	[HostProtection(Resources = HostProtectionResource.ExternalProcessMgmt, ExternalProcessMgmt = true)]
+	[HostProtection(ExternalProcessMgmt = true)]
 #endif
 	public class NativeProcess : IDisposable {
 		internal SafeProcessHandle handle;

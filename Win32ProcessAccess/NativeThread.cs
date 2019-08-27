@@ -8,7 +8,7 @@ using System.Security.Permissions;
 namespace Henke37.DebugHelp.Win32 {
 
 #if NETFRAMEWORK
-	[HostProtection(Resources = HostProtectionResource.ExternalThreading, ExternalThreading = true)]
+	[HostProtection(ExternalThreading = true)]
 #endif
 	public sealed class NativeThread : IDisposable {
 		readonly SafeThreadHandle handle;
@@ -79,7 +79,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 #if x86
 #if NETFRAMEWORK
-		[HostProtection(Resources = HostProtectionResource.ExternalThreading, Unrestricted = true)]
+		[HostProtection(ExternalThreading=true, Unrestricted = true)]
 #endif
 		public ThreadContext32 GetContext() {
 			var ctx = new ThreadContext32();
@@ -87,14 +87,14 @@ namespace Henke37.DebugHelp.Win32 {
 			return ctx;
 		}
 #if NETFRAMEWORK
-		[HostProtection(Resources = HostProtectionResource.ExternalThreading, Unrestricted = true)]
+		[HostProtection(ExternalThreading = true, Unrestricted = true)]
 #endif
 		public void SetContext(ThreadContext32 context) {
 			context.WriteToHandle(handle);
 		}
 #elif x64
 #if NETFRAMEWORK
-		[HostProtection(Resources = HostProtectionResource.ExternalThreading, Unrestricted = true)]
+		[HostProtection(ExternalThreading=true, Unrestricted = true)]
 #endif
 		public ThreadContext64 GetContext() {
 			var ctx = new ThreadContext64();
@@ -102,13 +102,13 @@ namespace Henke37.DebugHelp.Win32 {
 			return ctx;
 		}
 #if NETFRAMEWORK
-		[HostProtection(Resources = HostProtectionResource.ExternalThreading, Unrestricted = true)]
+		[HostProtection(ExternalThreading=true, Unrestricted = true)]
 #endif
 		public void SetContext(ThreadContext64 context) {
 			context.WriteToHandle(handle);
 		}
 #if NETFRAMEWORK
-		[HostProtection(Resources = HostProtectionResource.ExternalThreading, Unrestricted = true)]
+		[HostProtection(ExternalThreading=true, Unrestricted = true)]
 #endif
 		public ThreadContext32 GetWow64Context() {
 			var ctx = new ThreadContext32();
@@ -116,7 +116,7 @@ namespace Henke37.DebugHelp.Win32 {
 			return ctx;
 		}
 #if NETFRAMEWORK
-		[HostProtection(Resources = HostProtectionResource.ExternalThreading, Unrestricted = true)]
+		[HostProtection(ExternalThreading=true, Unrestricted = true)]
 #endif
 		public void SetWow64Context(ThreadContext32 context) {
 			context.WriteToHandle(handle);
