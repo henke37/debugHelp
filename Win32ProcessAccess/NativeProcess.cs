@@ -268,6 +268,14 @@ namespace Henke37.DebugHelp.Win32 {
 			return plain;
 		}
 
+		public ProcessWorkingSetSize WorkingSetSize {
+			get {
+				bool success=GetProcessWorkingSetSizeEx(handle, out uint min, out uint max, out uint flags);
+				if(!success) throw new Win32Exception();
+				return new ProcessWorkingSetSize(min, max, flags);
+			}
+		}
+
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			bool success = TerminateProcess(handle, exitCode);
@@ -409,5 +417,11 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("kernel32.dll", SetLastError = false)]
 		static extern PInvoke.HResult DecodeRemotePointer(SafeProcessHandle hProcess, IntPtr crypto, out IntPtr plain);
+
+		[DllImport("kernel32.dll", SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetProcessWorkingSetSizeEx(SafeProcessHandle hProcess, out UInt32 min, out UInt32 max, out UInt32 flags);
+
+
 	}
 }
