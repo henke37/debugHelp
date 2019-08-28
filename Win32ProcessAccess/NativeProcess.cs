@@ -288,6 +288,11 @@ namespace Henke37.DebugHelp.Win32 {
 			return result;
 		}
 
+		public void UnmapFileView(IntPtr baseAddress) {
+			bool success = UnmapViewOfFile2(handle, baseAddress, 0);
+			if(!success) throw new Win32Exception();
+		}
+
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			bool success = TerminateProcess(handle, exitCode);
@@ -436,5 +441,9 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("kernel32.dll", SetLastError = false)]
 		static extern IntPtr MapViewOfFile2(SafeFileMappingHandle fileMapping, SafeProcessHandle processHandle, UInt64 Offset, IntPtr baseAddress, uint size, UInt32 allocationType, UInt32 pageProtection);
+
+		[DllImport("kernel32.dll", SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool UnmapViewOfFile2(SafeProcessHandle handle, IntPtr baseAddress, UInt32 flags);
 	}
 }
