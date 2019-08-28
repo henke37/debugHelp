@@ -1,4 +1,5 @@
-﻿using Henke37.DebugHelp.Win32.SafeHandles;
+﻿using Henke37.DebugHelp.Win32.AccessRights;
+using Henke37.DebugHelp.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

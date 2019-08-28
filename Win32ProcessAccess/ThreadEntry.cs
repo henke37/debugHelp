@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Henke37.DebugHelp.Win32.AccessRights;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Henke37.DebugHelp.Win32 {

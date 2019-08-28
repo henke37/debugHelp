@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Henke37.DebugHelp.Win32 {
+namespace Henke37.DebugHelp.Win32.AccessRights {
 	[Flags]
 	public enum ProcessAccessRights {
 		None = 0,
