@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Henke37.DebugHelp.Win32 {
-	public class MemoryNotification : IDisposable {
-		SafeMemoryNotificationHandle handle;
+	public class MemoryResourceNotification : IDisposable {
+		SafeMemoryResourceNotificationHandle handle;
 
-		public MemoryNotification(MemoryNotificationType type) {
+		public MemoryResourceNotification(MemoryNotificationType type) {
 			handle= CreateMemoryResourceNotification((uint)type);
 			if(handle.IsInvalid) throw new Win32Exception();
 		}
@@ -21,11 +21,11 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
-		internal static unsafe extern SafeMemoryNotificationHandle CreateMemoryResourceNotification(uint type);
+		internal static unsafe extern SafeMemoryResourceNotificationHandle CreateMemoryResourceNotification(uint type);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		internal static unsafe extern bool QueryMemoryResourceNotification(SafeMemoryNotificationHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool status);
+		internal static unsafe extern bool QueryMemoryResourceNotification(SafeMemoryResourceNotificationHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool status);
 
 		public void Dispose() {
 			((IDisposable)handle).Dispose();
