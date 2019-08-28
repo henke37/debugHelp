@@ -170,6 +170,19 @@ namespace Henke37.DebugHelp.Win32 {
 			return blocks;
 		}
 #endif
+		public IList<MemoryBasicInformation> QueryMemoryRangeInformation(IntPtr baseAddress, int size) {
+			var ret = new List<MemoryBasicInformation>();
+			IntPtr endAdd = baseAddress + size;
+			for(; ;) {
+				MemoryBasicInformation.Native native;
+				var result = VirtualQueryEx(handle, baseAddress, out native, (uint)Marshal.SizeOf<MemoryBasicInformation.Native>());
+				if(result == 0) throw new Win32Exception();
+				ret.Add(native.AsManaged());
+				baseAddress += (int)native.RegionSize;
+				if((int)baseAddress >= (int)endAdd) break;
+			}
+			return ret;
+		}
 
 		public void ReprotectMemory(IntPtr baseAddr, int size, MemoryProtection newProtection, out MemoryProtection oldProtection) {
 			bool success = VirtualProtectEx(handle, baseAddr, size, (uint)newProtection, out var old);

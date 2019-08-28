@@ -21,9 +21,9 @@ namespace Henke37.DebugHelp.Win32 {
 			IntPtr AllocationBase;
 			UInt32 AllocationProtect;
 #if x86
-			UInt32 RegionSize;
+			internal UInt32 RegionSize;
 #elif x64
-			UInt64 RegionSize;
+			internal UInt64 RegionSize;
 #endif
 			UInt32 State;
 			UInt32 Protect;

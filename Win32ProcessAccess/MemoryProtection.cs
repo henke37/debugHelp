@@ -16,6 +16,12 @@ namespace Henke37.DebugHelp.Win32 {
 		WriteCombine = 0x400
 	}
 
+	public enum MemoryPageState {
+		Commited = 0x00001000,
+		Reserved = 0x00002000,
+		Free = 0x10000
+	}
+
 	public enum MemoryBackingType {
 		Image = 0x1000000,
 		Mapped = 0x40000,
