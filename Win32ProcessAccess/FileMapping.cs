@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Henke37.DebugHelp.Win32 {
 	public class FileMapping : IDisposable {
-		private SafeFileMappingHandle handle;
+		internal SafeFileMappingHandle handle;
 
 		internal FileMapping(SafeFileMappingHandle handle) {
 			this.handle = handle;

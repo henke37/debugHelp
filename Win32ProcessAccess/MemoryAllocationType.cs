@@ -3,6 +3,7 @@
 namespace Henke37.DebugHelp.Win32 {
 	[Flags]
 	public enum MemoryAllocationType : uint {
+		None = 0,
 		Commit = 0x00001000,
 		Reserve = 0x00002000,
 		Reset = 0x00080000,

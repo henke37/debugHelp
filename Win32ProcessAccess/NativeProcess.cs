@@ -278,6 +278,16 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public IntPtr MapFileView(FileMapping fileMapping, UInt64 offset, MemoryProtection memoryProtection, uint size = 0, MemoryAllocationType allocationType = MemoryAllocationType.None) {
+			return MapFileView(fileMapping, offset, IntPtr.Zero, memoryProtection, size, allocationType);
+		}
+
+		public IntPtr MapFileView(FileMapping fileMapping, UInt64 offset, IntPtr baseAddress, MemoryProtection memoryProtection, uint size=0, MemoryAllocationType allocationType=MemoryAllocationType.None) {
+			IntPtr result = MapViewOfFile2(fileMapping.handle, handle, offset, baseAddress, size, (uint)allocationType, (uint)memoryProtection);
+			if(result == IntPtr.Zero) throw new Win32Exception();
+			return result;
+		}
+
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			bool success = TerminateProcess(handle, exitCode);
@@ -424,6 +434,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool GetProcessWorkingSetSizeEx(SafeProcessHandle hProcess, out UInt32 min, out UInt32 max, out UInt32 flags);
 
-
+		[DllImport("kernel32.dll", SetLastError = false)]
+		static extern IntPtr MapViewOfFile2(SafeFileMappingHandle fileMapping, SafeProcessHandle processHandle, UInt64 Offset, IntPtr baseAddress, uint size, UInt32 allocationType, UInt32 pageProtection);
 	}
 }
