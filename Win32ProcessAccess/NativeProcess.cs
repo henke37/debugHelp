@@ -439,14 +439,14 @@ namespace Henke37.DebugHelp.Win32 {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool GetProcessWorkingSetSizeEx(SafeProcessHandle hProcess, out UInt32 min, out UInt32 max, out UInt32 flags);
 
-		[DllImport("kernel32.dll", SetLastError = false)]
+		[DllImport("kernel32.dll", SetLastError = true)]
 		static extern IntPtr MapViewOfFile2(SafeFileMappingHandle fileMapping, SafeProcessHandle processHandle, UInt64 Offset, IntPtr baseAddress, uint size, UInt32 allocationType, UInt32 pageProtection);
 
-		[DllImport("kernel32.dll", SetLastError = false)]
+		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool UnmapViewOfFile2(SafeProcessHandle handle, IntPtr baseAddress, UInt32 flags);
 
-		[DllImport("kernel32.dll", SetLastError = false)]
+		[DllImport("kernel32.dll", SetLastError = true)]
 		static extern uint VirtualQueryEx(SafeProcessHandle handle, IntPtr baseAddress, out MemoryBasicInformation.Native information, UInt32 dwLength);
 	}
 }
