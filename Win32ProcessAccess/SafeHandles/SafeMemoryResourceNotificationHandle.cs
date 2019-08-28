@@ -2,7 +2,9 @@
 
 namespace Henke37.DebugHelp.Win32.SafeHandles {
 	internal class SafeMemoryResourceNotificationHandle : SafeKernelObjHandle, IEquatable<SafeMemoryResourceNotificationHandle> {
-		public SafeMemoryResourceNotificationHandle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) {
+		internal SafeMemoryResourceNotificationHandle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) {
+		}
+		internal SafeMemoryResourceNotificationHandle() : base(true) {
 		}
 
 		public bool Equals(SafeMemoryResourceNotificationHandle other) {

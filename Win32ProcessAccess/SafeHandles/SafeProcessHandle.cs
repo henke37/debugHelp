@@ -12,8 +12,10 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 				return new SafeProcessHandle((IntPtr)(-1), false);
 			}
 		}
+		internal SafeProcessHandle() : base(true) {
+		}
 
-		public SafeProcessHandle(IntPtr handle, bool ownsHandle = true) : base(handle,ownsHandle) {
+		internal SafeProcessHandle(IntPtr handle, bool ownsHandle = true) : base(handle,ownsHandle) {
 		}
 
 		public bool Equals(SafeProcessHandle other) {

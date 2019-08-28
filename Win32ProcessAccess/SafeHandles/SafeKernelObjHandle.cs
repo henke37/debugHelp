@@ -15,6 +15,8 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 		internal SafeKernelObjHandle(IntPtr handle, bool ownsHandle) : base(ownsHandle) {
 			InitialSetHandle(handle);
 		}
+		internal SafeKernelObjHandle(bool ownsHandle) : base(ownsHandle) {
+		}
 
 		internal void InitialSetHandle(IntPtr h) {
 			Debug.Assert(base.IsInvalid, "Safe handle should only be set once");

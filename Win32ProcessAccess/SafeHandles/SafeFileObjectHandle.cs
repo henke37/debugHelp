@@ -6,6 +6,8 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 
 		internal SafeFileObjectHandle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) {
 		}
+		internal SafeFileObjectHandle() : base(true) {
+		}
 
 		public bool Equals(SafeFileObjectHandle other) {
 			if(other.handle == handle) return true;
