@@ -179,7 +179,7 @@ namespace Henke37.DebugHelp.Win32 {
 				if(result == 0) throw new Win32Exception();
 				ret.Add(native.AsManaged());
 				baseAddress += (int)native.RegionSize;
-				if((int)baseAddress >= (int)endAdd) break;
+				if((long)baseAddress >= (long)endAdd) break;
 			}
 			return ret;
 		}
