@@ -1,9 +1,10 @@
 ﻿using Henke37.DebugHelp.Win32.SafeHandles;
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Henke37.DebugHelp.Win32 {
-	public class MemoryNotification {
+	public class MemoryNotification : IDisposable {
 		SafeMemoryNotificationHandle handle;
 
 		public MemoryNotification(MemoryNotificationType type) {
@@ -25,6 +26,10 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static unsafe extern bool QueryMemoryResourceNotification(SafeMemoryNotificationHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool status);
+
+		public void Dispose() {
+			((IDisposable)handle).Dispose();
+		}
 	}
 
 	public enum MemoryNotificationType : uint {
