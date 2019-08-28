@@ -2,6 +2,9 @@
 using System.Security;
 using System.Security.Permissions;
 
+
+#if NETFRAMEWORK
+
 //https://docs.microsoft.com/en-us/dotnet/api/system.security.codeaccesspermission?view=netframework-4.8
 
 namespace Henke37.DebugHelp.Win32.Permissions {
@@ -65,3 +68,4 @@ namespace Henke37.DebugHelp.Win32.Permissions {
 		}
 	}
 }
+#endif
