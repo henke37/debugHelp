@@ -35,6 +35,12 @@ namespace Henke37.DebugHelp.Win32 {
 			throw new Exception();
 		}
 
+		public string DosNameToNativeName(string dosName) {
+			string dosDrive = dosName.Substring(0, 2);
+			string nativeRoot = deviceMap[dosDrive];
+			return $"{nativeRoot}{dosName.Substring(2)}";
+		}
+
 		public static string DosDeviceToNative(string deviceName) {
 			var sb = new StringBuilder(300);
 			var result = QueryDosDeviceW(deviceName, sb, (uint)sb.Capacity);
