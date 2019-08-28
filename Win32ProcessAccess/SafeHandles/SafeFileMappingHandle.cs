@@ -3,10 +3,7 @@
 namespace Henke37.DebugHelp.Win32.SafeHandles {
 	internal class SafeFileMappingHandle : SafeKernelObjHandle, IEquatable<SafeFileMappingHandle> {
 
-		internal SafeFileMappingHandle() : base(true) {
-		}
-		public SafeFileMappingHandle(IntPtr handle, bool ownsHandle = true) : base(ownsHandle) {
-			this.handle = handle;
+		public SafeFileMappingHandle(IntPtr handle, bool ownsHandle = true) : base(handle,ownsHandle) {
 		}
 
 		public bool Equals(SafeFileMappingHandle other) {

@@ -2,7 +2,7 @@
 
 namespace Henke37.DebugHelp.Win32.SafeHandles {
 	internal sealed class SafeThreadHandle : SafeKernelObjHandle, IEquatable<SafeThreadHandle> {
-		internal SafeThreadHandle() : base(true) {
+		internal SafeThreadHandle(IntPtr handle) : base(handle, true) {
 		}
 
 		public bool Equals(SafeThreadHandle other) {

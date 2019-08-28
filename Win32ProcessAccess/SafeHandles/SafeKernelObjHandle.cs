@@ -10,7 +10,10 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 		private const uint FlagInherit = 0x00000001;
 		private const uint FlagProtectFromClose = 0x00000001;
 
-		internal SafeKernelObjHandle(bool ownsHandle) : base(ownsHandle) {
+		protected static readonly IntPtr InvalidHandleValue = new IntPtr(-1);
+
+		internal SafeKernelObjHandle(IntPtr handle, bool ownsHandle) : base(ownsHandle) {
+			InitialSetHandle(handle);
 		}
 
 		internal void InitialSetHandle(IntPtr h) {
