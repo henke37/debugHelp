@@ -306,6 +306,13 @@ namespace Henke37.DebugHelp.Win32 {
 			if(!success) throw new Win32Exception();
 		}
 
+		public string GetMappedFileName(IntPtr baseAddress) {
+			var sb = new StringBuilder(300);
+			var result = GetMappedFileNameW(handle, baseAddress, sb, (uint)sb.Capacity);
+			if(result == 0) throw new Win32Exception();
+			return sb.ToString();
+		}
+
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			bool success = TerminateProcess(handle, exitCode);
@@ -461,5 +468,9 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		static extern uint VirtualQueryEx(SafeProcessHandle handle, IntPtr baseAddress, out MemoryBasicInformation.Native information, UInt32 dwLength);
+
+		[DllImport("Psapi.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
+		internal static unsafe extern int GetMappedFileNameW(SafeProcessHandle handle, IntPtr pv, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder filename, uint filenameBufferSize);
+
 	}
 }
