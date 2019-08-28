@@ -16,6 +16,41 @@ namespace Henke37.DebugHelp.Win32 {
 		WriteCombine = 0x400
 	}
 
+	public static class MemProtectionExtensions {
+		public static bool IsExecutable(this MemoryProtection m) {
+			switch((MemoryProtection)((uint)m & 0x00FF)) {
+				case MemoryProtection.Execute:
+				case MemoryProtection.ExecuteRead:
+				case MemoryProtection.ExecuteReadWrite:
+				case MemoryProtection.ExecuteWriteCopy:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public static bool IsReadable(this MemoryProtection m) {
+			switch((MemoryProtection)((uint)m & 0x00FF)) {
+				case MemoryProtection.ExecuteRead:
+				case MemoryProtection.ExecuteReadWrite:
+				case MemoryProtection.ReadOnly:
+				case MemoryProtection.ReadWrite:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public static bool IsWriteable(this MemoryProtection m) {
+			switch((MemoryProtection)((uint)m & 0x00FF)) {
+				case MemoryProtection.ExecuteReadWrite:
+				case MemoryProtection.ExecuteWriteCopy:
+				case MemoryProtection.ReadWrite:
+				case MemoryProtection.WriteCopy:
+					return true;
+				default:return false;
+			}
+		}
+	}
+
 	public enum MemoryPageState {
 		Commited = 0x00001000,
 		Reserved = 0x00002000,
