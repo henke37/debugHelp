@@ -5,11 +5,15 @@ using Henke37.DebugHelp.Win32.AccessRights;
 
 namespace ModuleVsFileMapping {
 	class Program {
-		private const string executableName = "devenv.exe";
+		private string executableName;
 		NativeProcess process;
 
+		public Program(string[] args) {
+			executableName = args[0];
+		}
+
 		static void Main(string[] args) {
-			new Program().Run();
+			new Program(args).Run();
 		}
 
 		private void Run() {
