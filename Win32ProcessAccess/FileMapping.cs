@@ -11,8 +11,8 @@ namespace Henke37.DebugHelp.Win32 {
 			this.handle = handle;
 		}
 
-		public static unsafe FileMapping CreateVirtualMapping(MemoryProtection memProtection, uint high, uint low, string name) {
-			SafeFileMappingHandle handle = CreateFileMappingA(SafeFileObjectHandle.InvalidHandle, null, (uint)memProtection, high, low, name);
+		public static unsafe FileMapping CreateVirtualMapping(MemoryProtection memProtection, FileMappingFlags flags, uint high, uint low, string name) {
+			SafeFileMappingHandle handle = CreateFileMappingA(SafeFileObjectHandle.InvalidHandle, null, (uint)memProtection | (uint)flags, high, low, name);
 			if(handle.IsInvalid) throw new Win32Exception();
 			return new FileMapping(handle);
 		}
