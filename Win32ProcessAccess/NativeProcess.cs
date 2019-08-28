@@ -445,5 +445,8 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool UnmapViewOfFile2(SafeProcessHandle handle, IntPtr baseAddress, UInt32 flags);
+
+		[DllImport("kernel32.dll", SetLastError = false)]
+		static extern uint VirtualQueryEx(SafeProcessHandle handle, IntPtr baseAddress, out MemoryBasicInformation.Native information, UInt32 dwLength);
 	}
 }
