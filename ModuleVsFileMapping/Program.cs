@@ -6,10 +6,12 @@ using Henke37.DebugHelp.Win32.AccessRights;
 namespace ModuleVsFileMapping {
 	class Program {
 		private string executableName;
+		private readonly NativeFileNameConverter nameConverter;
 		NativeProcess process;
 
 		public Program(string[] args) {
 			executableName = args[0];
+			nameConverter = new NativeFileNameConverter();
 		}
 
 		static void Main(string[] args) {
@@ -31,6 +33,7 @@ namespace ModuleVsFileMapping {
 				if(!range.Protect.IsExecutable()) continue;
 				if(range.Type != MemoryBackingType.Private) {
 					string backingFile = process.GetMappedFileName(range.BaseAddress);
+					backingFile=nameConverter.NativeNameToDosName(backingFile);
 					Console.WriteLine("{0:x} {1} {2}", range.BaseAddress, range.Protect.ToString(), backingFile);
 				} else {
 					Console.WriteLine("{0:x} {1}", range.BaseAddress, range.Protect.ToString());
