@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Henke37.DebugHelp.Win32.SafeHandles;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;

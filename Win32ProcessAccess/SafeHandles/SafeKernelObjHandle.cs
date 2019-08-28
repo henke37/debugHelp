@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace Henke37.DebugHelp.Win32 {
+namespace Henke37.DebugHelp.Win32.SafeHandles {
 	internal abstract class SafeKernelObjHandle : SafeHandleZeroOrMinusOneIsInvalid {
 		private const uint FlagInherit = 0x00000001;
 		private const uint FlagProtectFromClose = 0x00000001;

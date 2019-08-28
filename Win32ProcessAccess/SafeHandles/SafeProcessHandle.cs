@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Permissions;
 
-namespace Henke37.DebugHelp.Win32 {
+namespace Henke37.DebugHelp.Win32.SafeHandles {
 	internal sealed class SafeProcessHandle : SafeKernelObjHandle, IEquatable<SafeProcessHandle> {
 
 		public static SafeProcessHandle CurrentProcess {

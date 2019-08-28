@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Henke37.DebugHelp.Win32 {
+namespace Henke37.DebugHelp.Win32.SafeHandles {
 	internal sealed class SafeThreadHandle : SafeKernelObjHandle, IEquatable<SafeThreadHandle> {
 		internal SafeThreadHandle() : base(true) {
 		}
