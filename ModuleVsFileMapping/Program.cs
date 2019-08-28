@@ -1,14 +1,11 @@
 ﻿using Henke37.DebugHelp.Win32;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Henke37.DebugHelp.Win32.AccessRights;
 
 namespace ModuleVsFileMapping {
 	class Program {
-		private const string executableName = "aegisub32.exe";
+		private const string executableName = "devenv.exe";
 		NativeProcess process;
 
 		static void Main(string[] args) {
@@ -27,9 +24,13 @@ namespace ModuleVsFileMapping {
 		private void GatherMappedImages() {
 			var ranges=process.QueryMemoryRangeInformation(IntPtr.Zero, 0x0FFFFFFF);
 			foreach(var range in ranges) {
-				if(range.Type != MemoryBackingType.Image) continue;
-				string backingFile = process.GetMappedFileName(range.BaseAddress);
-				Console.WriteLine(backingFile);
+				if(!range.Protect.IsExecutable()) continue;
+				if(range.Type != MemoryBackingType.Private) {
+					string backingFile = process.GetMappedFileName(range.BaseAddress);
+					Console.WriteLine("{0:x} {1} {2}", range.BaseAddress, range.Protect.ToString(), backingFile);
+				} else {
+					Console.WriteLine("{0:x} {1}", range.BaseAddress, range.Protect.ToString());
+				}
 			}
 		}
 	}
