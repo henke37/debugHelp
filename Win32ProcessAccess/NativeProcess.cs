@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
@@ -142,6 +143,7 @@ namespace Henke37.DebugHelp.Win32 {
 #if x86
 #if NETFRAMEWORK
 		[HostProtection(MayLeakOnAbort = true)]
+		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
 #endif
 		public WorkingSetBlock[] QueryWorkingSet() {
 			int numEntries = 1;
@@ -332,6 +334,7 @@ namespace Henke37.DebugHelp.Win32 {
 		public static implicit operator NativeProcess(Process stdProcess) => FromProcess(stdProcess);
 
 		[SecurityCritical]
+		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
 		internal static unsafe IntPtr DuplicateHandleLocal(IntPtr sourceHandle, uint desiredAccess, bool inheritHandle, DuplicateOptions options) {
 			IntPtr newHandle = IntPtr.Zero;
 			bool success = DuplicateHandle(SafeProcessHandle.CurrentProcess, sourceHandle, SafeProcessHandle.CurrentProcess, (IntPtr)(int)&newHandle, desiredAccess, inheritHandle, options);
