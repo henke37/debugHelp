@@ -9,6 +9,9 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 		}
 		private SafeFileObjectHandle() : base(true) {
 		}
+		internal SafeFileObjectHandle(SafeFileHandle oldHandle) : base(true) {
+			handle = NativeProcess.DuplicateHandleLocal(oldHandle.DangerousGetHandle(), 0, false, NativeProcess.DuplicateOptions.SameAccess);
+		}
 
 		public bool Equals(SafeFileObjectHandle other) {
 			if(other.handle == handle) return true;
