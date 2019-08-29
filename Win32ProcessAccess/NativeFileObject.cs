@@ -11,6 +11,10 @@ namespace Henke37.DebugHelp.Win32 {
 			this.handle = handle;
 		}
 
+		public NativeFileObject(FileStream stream) {
+			this.handle = new SafeFileObjectHandle(stream.SafeFileHandle);
+		}
+
 		public void Dispose() => handle.Dispose();
 		public void Close() => handle.Close();
 
