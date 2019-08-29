@@ -2,12 +2,15 @@
 using System;
 using System.Linq;
 using Henke37.DebugHelp.Win32.AccessRights;
+using System.Collections.Generic;
 
 namespace ModuleVsFileMapping {
 	class Program {
 		private string executableName;
 		private readonly NativeFileNameConverter nameConverter;
 		NativeProcess process;
+
+		Dictionary<string, ModuleEntry> modules;
 
 		public Program(string[] args) {
 			executableName = args[0];
@@ -24,21 +27,38 @@ namespace ModuleVsFileMapping {
 				process = entry.Open(ProcessAccessRights.QueryInformation | ProcessAccessRights.VMOperation | ProcessAccessRights.VMRead);
 			}
 
-			GatherMappedImages();
+			GatherModules();
+
+			CheckMappedImages();
 		}
 
-		private void GatherMappedImages() {
-			var ranges=process.QueryMemoryRangeInformation(IntPtr.Zero, 0x0FFFFFFF);
+		private void GatherModules() {
+			modules = new Dictionary<string, ModuleEntry>();
+			foreach(var module in process.GetModules()) {
+				modules[module.Path.ToLowerInvariant()]=module;
+			}
+		}
+
+		private void CheckMappedImages() {
+			var ranges=process.QueryMemoryRangeInformation(UIntPtr.Zero, 0x7FFFFFFF);
 			foreach(var range in ranges) {
 				if(!range.Protect.IsExecutable()) continue;
 				if(range.Type != MemoryBackingType.Private) {
 					string backingFile = process.GetMappedFileName(range.BaseAddress);
-					backingFile=nameConverter.NativeNameToDosName(backingFile);
-					Console.WriteLine("{0:x} {1} {2}", range.BaseAddress, range.Protect.ToString(), backingFile);
+					backingFile=nameConverter.NativeNameToDosName(backingFile).ToLowerInvariant();
+					Console.WriteLine("{0,8:X} {1} {2}", (int)range.BaseAddress, range.Protect.ToString(), backingFile);
+					if(!modules.ContainsKey(backingFile) && !modules.ContainsKey(Wow64Map(backingFile))) {
+
+						Console.WriteLine("Unlisted!");
+					}
 				} else {
-					Console.WriteLine("{0:x} {1}", range.BaseAddress, range.Protect.ToString());
+					Console.WriteLine("{0,8:X} {1}", (int)range.BaseAddress, range.Protect.ToString());
 				}
 			}
+		}
+
+		private string Wow64Map(string backingFile) {
+			return backingFile.Replace(@"c:\windows\syswow64\", @"c:\windows\system32\");
 		}
 	}
 }
