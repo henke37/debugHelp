@@ -14,6 +14,12 @@ namespace Henke37.DebugHelp.Win32 {
 		public void Dispose() => handle.Dispose();
 		public void Close() => handle.Close();
 
+		public FileObjectType FileType {
+			get {
+				throw new NotImplementedException();
+			}
+		}
+
 		public FileStream AsFileStream() {
 			var newHandle=handle.AsSafeFileHandle();
 			throw new NotImplementedException();
