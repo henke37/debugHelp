@@ -5,7 +5,7 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 
 		internal SafeFileMappingHandle(IntPtr handle, bool ownsHandle = true) : base(handle,ownsHandle) {
 		}
-		internal SafeFileMappingHandle() : base(true) {
+		private SafeFileMappingHandle() : base(true) {
 		}
 
 		public bool Equals(SafeFileMappingHandle other) {

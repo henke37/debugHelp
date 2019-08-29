@@ -3,7 +3,7 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 	internal class SafeToolhelp32SnapshotHandle : SafeKernelObjHandle, IEquatable<SafeToolhelp32SnapshotHandle> {
 		internal SafeToolhelp32SnapshotHandle(IntPtr handle) : base(handle, true) {
 		}
-		internal SafeToolhelp32SnapshotHandle() : base(true) {
+		private SafeToolhelp32SnapshotHandle() : base(true) {
 		}
 
 		public bool Equals(SafeToolhelp32SnapshotHandle other) {

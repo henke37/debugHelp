@@ -15,7 +15,7 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 		internal SafeKernelObjHandle(IntPtr handle, bool ownsHandle) : base(ownsHandle) {
 			InitialSetHandle(handle);
 		}
-		internal SafeKernelObjHandle(bool ownsHandle) : base(ownsHandle) {
+		protected SafeKernelObjHandle(bool ownsHandle) : base(ownsHandle) {
 		}
 
 		internal void InitialSetHandle(IntPtr h) {
