@@ -34,6 +34,7 @@ namespace Henke37.DebugHelp.Win32 {
 			for(; ; ) {
 				try {
 					bool success = Module32NextW(handle, ref native);
+					if(!success) throw new Win32Exception();
 				} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
 					yield break;
 				}
