@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 namespace Henke37.DebugHelp.Win32 {
 	public class NativeFileObject : IDisposable {
 		internal SafeFileObjectHandle handle;
+		private const int NoError=0;
 
 		internal NativeFileObject(SafeFileObjectHandle handle) {
 			this.handle = handle;
@@ -23,7 +24,12 @@ namespace Henke37.DebugHelp.Win32 {
 
 		public FileObjectType FileType {
 			get {
-				throw new NotImplementedException();
+				var t = GetFileType(handle);
+				if(t==FileObjectType.Unknown) {
+					var err = Marshal.GetLastWin32Error();
+					if(err != NoError) throw new Win32Exception(err);
+				}
+				return t;
 			}
 		}
 
@@ -76,5 +82,8 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 		internal static extern unsafe SafeFileObjectHandle CreateFileW([MarshalAs(UnmanagedType.LPWStr)] string fileName, UInt32 desiredAccess, UInt32 shareMode, SecurityAttributes *securityAttributes, UInt32 creationDisposition, UInt32 flagsAndAttributes, SafeFileObjectHandle template);
+
+		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		internal static extern FileObjectType GetFileType(SafeFileObjectHandle handle);
 	}
 }
