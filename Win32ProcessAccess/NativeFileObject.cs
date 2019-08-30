@@ -45,6 +45,15 @@ namespace Henke37.DebugHelp.Win32 {
 			return new NativeFileObject(handle);
 		}
 
+		public void LockFile(UInt64 offset, UInt64 size) {
+			bool success = LockFileNative(handle, (uint)(offset & 0x0FFFFFFFF), (uint)(offset >> 32), (uint)(size & 0x0FFFFFFFF), (uint)(size >> 32));
+			if(!success) throw new Win32Exception();
+		}
+		public void UnlockFile(UInt64 offset, UInt64 size) {
+			bool success = UnlockFileNative(handle, (uint)(offset & 0x0FFFFFFFF), (uint)(offset >> 32), (uint)(size & 0x0FFFFFFFF), (uint)(size >> 32));
+			if(!success) throw new Win32Exception();
+		}
+
 		internal unsafe void DeviceControlInput<TIn>(DeviceIoControlCode controlCode, ref TIn inBuff) where TIn : unmanaged {
 			fixed (void* inBuffP = &inBuff) {
 				bool success = DeviceIoControl(handle, controlCode,inBuffP,(uint)Marshal.SizeOf<TIn>(),null,0,out _ ,null);
@@ -85,5 +94,13 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern FileObjectType GetFileType(SafeFileObjectHandle handle);
+
+		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "LockFile")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool LockFileNative(SafeFileObjectHandle handle, UInt32 offsetLow, UInt32 offsetHigh, UInt32 sizeLow, UInt32 sizeHigh);
+
+		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "UnlockFile")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool UnlockFileNative(SafeFileObjectHandle handle, UInt32 offsetLow, UInt32 offsetHigh, UInt32 sizeLow, UInt32 sizeHigh);
 	}
 }
