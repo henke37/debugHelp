@@ -1,4 +1,5 @@
-﻿using Henke37.DebugHelp.Win32.SafeHandles;
+﻿using Henke37.DebugHelp.Win32.AccessRights;
+using Henke37.DebugHelp.Win32.SafeHandles;
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.ComponentModel;
@@ -30,6 +31,12 @@ namespace Henke37.DebugHelp.Win32 {
 			var newHandle=handle.AsSafeFileHandle();
 			throw new NotImplementedException();
 			//return new FileStream(newHandle);
+		}
+
+		public static unsafe NativeFileObject Open(string fileName, FileObjectAccessRights accessRights, FileShareMode shareMode, FileDisposition disposition,FileAttributes attributes) {
+			SafeFileObjectHandle handle=CreateFileW(fileName, (uint)accessRights,(uint)shareMode,null,(uint)disposition,(uint)attributes,SafeFileObjectHandle.InvalidHandle);
+			if(handle.IsInvalid) throw new Win32Exception();
+			return new NativeFileObject(handle);
 		}
 
 		internal unsafe void DeviceControlInput<TIn>(DeviceIoControlCode controlCode, ref TIn inBuff) where TIn : unmanaged {
