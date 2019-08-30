@@ -63,7 +63,7 @@ namespace Henke37.DebugHelp.Win32 {
 			return outBuff;
 		}
 
-		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool DeviceIoControl(SafeFileObjectHandle handle, DeviceIoControlCode controlCode, void* inBuffer, uint inBufferLength, void* outBuffer, uint outBufferLength, out uint returnSize, void *lpOverlapped);
 	}
