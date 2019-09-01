@@ -11,7 +11,12 @@ namespace Henke37.DebugHelp.Win32.AccessRights {
 		ReadExtendedAttributes = 8,
 		WriteAttributes = 256,
 		WriteData = 2,
-		WriteExtendedAttributes = 16
+		WriteExtendedAttributes = 16,
+
+		GenericRead = 0x80000000,
+		GenericWrite = 0x40000000,
+		GenericExecute = 0x20000000,
+		GenericAll = 0x10000000
 	}
 
 	public enum DirectoryAccessRights : uint {

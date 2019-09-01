@@ -54,6 +54,11 @@ namespace Henke37.DebugHelp.Win32 {
 			if(!success) throw new Win32Exception();
 		}
 
+		internal unsafe void DeviceControl(DeviceIoControlCode controlCode) {
+			bool success = DeviceIoControl(handle, controlCode, null, 0, null, 0, out _, null);
+			if(!success) throw new Win32Exception();
+		}
+
 		internal unsafe void DeviceControlInput<TIn>(DeviceIoControlCode controlCode, ref TIn inBuff) where TIn : unmanaged {
 			fixed (void* inBuffP = &inBuff) {
 				bool success = DeviceIoControl(handle, controlCode,inBuffP,(uint)Marshal.SizeOf<TIn>(),null,0,out _ ,null);
