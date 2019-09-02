@@ -1,12 +1,13 @@
-﻿using Henke37.DebugHelp.Win32.AccessRights;
-using Henke37.DebugHelp.Win32.SafeHandles;
+﻿
+using Henke37.Win32.Base.AccessRights;
+using Henke37.Win32.Base.SafeHandles;
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Henke37.DebugHelp.Win32 {
+namespace Henke37.Win32.Base {
 	public class NativeFileObject : IDisposable {
 		internal SafeFileObjectHandle handle;
 		private const int NoError=0;

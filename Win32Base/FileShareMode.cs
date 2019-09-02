@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Henke37.DebugHelp.Win32 {
+namespace Henke37.Win32.Base {
 	[Flags]
 	public enum FileShareMode : uint {
 		None=0,

@@ -2,10 +2,11 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace Henke37.DebugHelp.Win32.SafeHandles {
+namespace Henke37.Win32.Base.SafeHandles {
 	internal abstract class SafeKernelObjHandle : SafeHandleZeroOrMinusOneIsInvalid {
 		private const uint FlagInherit = 0x00000001;
 		private const uint FlagProtectFromClose = 0x00000001;
@@ -52,6 +53,16 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 			}
 		}
 
+		[SecurityCritical]
+		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
+		internal static unsafe IntPtr DuplicateHandleLocal(IntPtr sourceHandle, uint desiredAccess, bool inheritHandle, DuplicateOptions options) {
+			IntPtr newHandle = IntPtr.Zero;
+			bool success = DuplicateHandle(SafeProcessHandle.CurrentProcess, sourceHandle, SafeProcessHandle.CurrentProcess, (IntPtr)(int)&newHandle, desiredAccess, inheritHandle, options);
+
+			if(!success) throw new Win32Exception();
+			return newHandle;
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CloseHandle(IntPtr handle);
@@ -67,5 +78,17 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetHandleInformation(IntPtr handle, UInt32 mask, UInt32 flags);
+
+		[Flags]
+		public enum DuplicateOptions : uint {
+			None = 0,
+			CloseSource = 0x00000001,// Closes the source handle. This occurs regardless of any error status returned.
+			SameAccess = 0x00000002, //Ignores the dwDesiredAccess parameter. The duplicate handle has the same access as the source handle.
+		}
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool DuplicateHandle(SafeProcessHandle sourceProcess, IntPtr sourceHandle, SafeProcessHandle destinationProcess, IntPtr destinationHandlePtr, uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, DuplicateOptions dwOptions);
+
 	}
 }

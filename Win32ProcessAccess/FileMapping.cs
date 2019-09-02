@@ -1,5 +1,7 @@
 ﻿using Henke37.DebugHelp.Win32.AccessRights;
 using Henke37.DebugHelp.Win32.SafeHandles;
+using Henke37.Win32.Base;
+using Henke37.Win32.Base.SafeHandles;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;

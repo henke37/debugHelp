@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Henke37.DebugHelp.Win32.AccessRights;
+using Henke37.Win32.Base;
+using Henke37.Win32.Base.AccessRights;
 
-namespace Henke37.DebugHelp.Win32 {
+namespace Henke37.Win32.CdAccess {
 	public class CdDrive {
-		NativeFileObject file;
+		internal NativeFileObject file;
 
 		public CdDrive(string path) {
 			file = NativeFileObject.Open(path, FileObjectAccessRights.GenericRead|FileObjectAccessRights.GenericWrite, FileShareMode.Write|FileShareMode.Read, FileDisposition.OpenExisting, 0);

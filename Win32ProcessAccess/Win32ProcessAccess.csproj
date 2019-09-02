@@ -44,5 +44,6 @@
 			<Project>{f95563d3-569b-4d59-bd8b-c9e69cd62fb7}</Project>
 			<Name>DebugHelp</Name>
 		</ProjectReference>
+		<ProjectReference Include="..\Win32Base\Win32Base.csproj" />
 	</ItemGroup>
 </Project>

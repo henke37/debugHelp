@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Henke37.Win32.Base.SafeHandles;
+using System;
 
 namespace Henke37.DebugHelp.Win32.SafeHandles {
 	internal class SafeMemoryResourceNotificationHandle : SafeKernelObjHandle, IEquatable<SafeMemoryResourceNotificationHandle> {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Henke37.DebugHelp.Win32.AccessRights {
+namespace Henke37.Win32.Base.AccessRights {
 	[Flags]
 	public enum FileObjectAccessRights : uint {
 		None = 0,

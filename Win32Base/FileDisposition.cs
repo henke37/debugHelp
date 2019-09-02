@@ -1,4 +1,4 @@
-﻿namespace Henke37.DebugHelp.Win32 {
+﻿namespace Henke37.Win32.Base {
 	public enum FileDisposition : uint {
 		CreateAlways=2,
 		CreateNew=1,

@@ -1,4 +1,4 @@
-﻿namespace Henke37.DebugHelp.Win32 {
+﻿namespace Henke37.Win32.Base {
 	public enum FileObjectType : uint {
 		Unknown=0,
 		Disk=1,

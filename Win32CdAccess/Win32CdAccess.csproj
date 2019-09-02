@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net452;netstandard20</TargetFrameworks>
+    <AssemblyName>Henke37.Win32.CdAccess</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Authors>Henke37</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
+    <Platforms>x64;x86</Platforms>
+    <RootNamespace>Henke37.Win32.CdAccess</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>TRACE;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>TRACE;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="PInvoke.Kernel32" Version="0.5.184" />
+    <PackageReference Include="PInvoke.Windows.Core" Version="0.5.184" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Win32Base\Win32Base.csproj" />
+  </ItemGroup>
+</Project>

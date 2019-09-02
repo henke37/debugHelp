@@ -1,4 +1,4 @@
-﻿namespace Henke37.DebugHelp.Win32 {
+﻿namespace Henke37.Win32.Base {
 	internal enum DeviceIoControlCode : uint {
 		StorageEjectMedia = 0x6D8001,
 		StorageLoadMedia = 0x6DC001,

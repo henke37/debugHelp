@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System;
 
-namespace Henke37.DebugHelp.Win32.SafeHandles {
+namespace Henke37.Win32.Base.SafeHandles {
 	internal class SafeFileObjectHandle : SafeKernelObjHandle, IEquatable<SafeFileObjectHandle>, IEquatable<SafeFileHandle> {
 		internal static readonly SafeFileObjectHandle InvalidHandle=new SafeFileObjectHandle(InvalidHandleValue,false);
 
@@ -10,7 +10,7 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 		private SafeFileObjectHandle() : base(true) {
 		}
 		internal SafeFileObjectHandle(SafeFileHandle oldHandle) : base(true) {
-			handle = NativeProcess.DuplicateHandleLocal(oldHandle.DangerousGetHandle(), 0, false, NativeProcess.DuplicateOptions.SameAccess);
+			handle = DuplicateHandleLocal(oldHandle.DangerousGetHandle(), 0, false, DuplicateOptions.SameAccess);
 		}
 
 		public bool Equals(SafeFileObjectHandle other) {
@@ -22,7 +22,7 @@ namespace Henke37.DebugHelp.Win32.SafeHandles {
 		}
 
 		public SafeFileHandle AsSafeFileHandle() {
-			return new SafeFileHandle(NativeProcess.DuplicateHandleLocal(handle, 0, false, NativeProcess.DuplicateOptions.SameAccess), true);
+			return new SafeFileHandle(DuplicateHandleLocal(handle, 0, false, DuplicateOptions.SameAccess), true);
 		}
 
 
