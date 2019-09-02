@@ -17,5 +17,11 @@ namespace Henke37.Win32.CdAccess {
 		public void Load() {
 			file.DeviceControl(DeviceIoControlCode.DiskLoadMedia);
 		}
+
+		public TOC GetTOC() {
+			TOC.Native native;
+			throw new NotImplementedException();
+			return native.AsManaged();
+		}
 	}
 }
