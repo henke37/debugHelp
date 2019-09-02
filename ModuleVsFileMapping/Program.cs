@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Henke37.DebugHelp.Win32.AccessRights;
 using System.Collections.Generic;
+using Henke37.Win32.Base;
 
 namespace ModuleVsFileMapping {
 	class Program {

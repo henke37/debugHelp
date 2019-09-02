@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Henke37.DebugHelp.Win32 {
+namespace Henke37.Win32.Base {
 	public class NativeFileNameConverter {
 
 		private Dictionary<string, string> deviceMap;

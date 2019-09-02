@@ -54,6 +54,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Win32Base\Win32Base.csproj">
+      <Project>{DD1A28CE-0DC8-4F02-B157-FA92719B1DA7}</Project>
+      <Name>Win32Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Win32ProcessAccess\Win32ProcessAccess.csproj">
       <Project>{E57BAFA0-7748-4011-913D-1258E90AF6C2}</Project>
       <Name>Win32ProcessAccess</Name>
