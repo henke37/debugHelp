@@ -23,5 +23,11 @@ namespace Henke37.Win32.CdAccess {
 			throw new NotImplementedException();
 			return native.AsManaged();
 		}
+
+		public RegionData GetRegionData() {
+			RegionData.Native native=new RegionData.Native();
+			file.DeviceControlOutput<RegionData.Native>(DeviceIoControlCode.DvdGetRegion, ref native);
+			return native.AsManaged();
+		}
 	}
 }
