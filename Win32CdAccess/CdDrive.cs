@@ -20,7 +20,7 @@ namespace Henke37.Win32.CdAccess {
 
 		public TOC GetTOC() {
 			TOC.Native native;
-			throw new NotImplementedException();
+			file.DeviceControlOutput<TOC.Native>(DeviceIoControlCode.CdRomReadTOC,ref native);
 			return native.AsManaged();
 		}
 

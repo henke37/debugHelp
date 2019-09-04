@@ -4,6 +4,9 @@
 		StorageLoadMedia = 0x6DC001,
 		DiskEjectMedia = 0x74808,
 		DiskLoadMedia = 0x7480c,
-		DvdGetRegion= 0x335014
+		CdRomEjectMedia= 0x24808,
+		CdRomLoadMedia= 0x2480c,
+		CdRomReadTOC= 0x24000,
+		DvdGetRegion = 0x335014
 	}
 }

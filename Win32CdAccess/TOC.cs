@@ -6,12 +6,15 @@ namespace Henke37.Win32.CdAccess {
 		public byte FirstTrack;
 		public byte LastTrack;
 
+		private const int MAXIMUM_NUMBER_TRACKS = 100;
+
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal unsafe struct Native {
 			UInt16 length;
 			byte FirstTrack;
 			byte LastTrack;
-			//fixed TrackEntry.Native tracks;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAXIMUM_NUMBER_TRACKS)]
+			TrackEntry.Native[] tracks;
 
 			internal TOC AsManaged() {
 				return new TOC() {
