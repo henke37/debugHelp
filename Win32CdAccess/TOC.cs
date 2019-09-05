@@ -22,7 +22,7 @@ namespace Henke37.Win32.CdAccess {
 		}
 	}
 
-	class TrackEntry {
+	public class TrackEntry {
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal unsafe struct Native {
