@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 
 namespace Henke37.DebugHelp.Win32 {
 	public class NativeToken : IDisposable, IEquatable<NativeToken> {
@@ -30,11 +31,17 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
-		internal unsafe T GetTokenInformation<T>(TokenInformationClass infoClass, ref T buff) where T : unmanaged {
+		[HostProtection(MayLeakOnAbort = true)]
+		public NativeToken GetLinkedToken() {
+			IntPtr newHandle=new IntPtr();
+			GetTokenInformation<IntPtr>(TokenInformationClass.TokenLinkedToken, ref newHandle);
+			return new NativeToken(new SafeTokenHandle(newHandle));
+		}
+
+		internal unsafe void GetTokenInformation<T>(TokenInformationClass infoClass, ref T buff) where T : unmanaged {
 			fixed (void* buffP = &buff) {
 				bool success = GetTokenInformation(tokenHandle, infoClass, buffP, (uint)sizeof(T), out _);
 				if(!success) throw new Win32Exception();
-				return buff;
 			}
 		}
 
