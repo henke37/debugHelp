@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 
+using System.Security.Principal;
+
 namespace Henke37.DebugHelp.Win32 {
 
 #if NETFRAMEWORK
@@ -136,7 +138,7 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 #endif
 
-		public NativeToken OpenToken(System.Security.Principal.TokenAccessLevels accessLevels, bool ignoreImpersonation = false) {
+		public NativeToken OpenToken(TokenAccessLevels accessLevels, bool ignoreImpersonation = false) {
 			bool success = OpenThreadToken(handle, (uint)accessLevels, ignoreImpersonation, out SafeTokenHandle tokenHandle);
 			if(!success) throw new Win32Exception();
 			return new NativeToken(tokenHandle);

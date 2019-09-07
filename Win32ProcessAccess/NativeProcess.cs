@@ -12,6 +12,8 @@ using System.Security;
 using System.Security.Permissions;
 using System.Text;
 
+using System.Security.Principal;
+
 namespace Henke37.DebugHelp.Win32 {
 #if NETFRAMEWORK
 	[HostProtection(ExternalProcessMgmt = true)]
@@ -316,7 +318,7 @@ namespace Henke37.DebugHelp.Win32 {
 			return sb.ToString();
 		}
 
-		public NativeToken OpenToken(System.Security.Principal.TokenAccessLevels accessLevels) {
+		public NativeToken OpenToken(TokenAccessLevels accessLevels) {
 			bool success = OpenProcessToken(handle, (uint)accessLevels, out SafeTokenHandle tokenHandle);
 			if(!success) throw new Win32Exception();
 			return new NativeToken(tokenHandle);
