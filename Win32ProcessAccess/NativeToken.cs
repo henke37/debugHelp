@@ -21,7 +21,7 @@ namespace Henke37.DebugHelp.Win32 {
 			return equal;
 		}
 
-		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern unsafe PInvoke.NTSTATUS NtCompareTokens(SafeTokenHandle handle1, SafeTokenHandle handle2, [MarshalAs(UnmanagedType.Bool)] out bool equal);
 	}
 }
