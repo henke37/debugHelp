@@ -176,7 +176,7 @@ namespace Henke37.DebugHelp.Win32 {
 		public IList<MemoryBasicInformation> QueryMemoryRangeInformation(UIntPtr baseAddress, int size) {
 			var ret = new List<MemoryBasicInformation>();
 			UIntPtr endAdd = baseAddress + size;
-			for(; ;) {
+			for(; ; ) {
 				MemoryBasicInformation.Native native;
 				var result = VirtualQueryEx(handle, baseAddress, out native, (uint)Marshal.SizeOf<MemoryBasicInformation.Native>());
 				if(result == 0) throw new Win32Exception();
@@ -288,7 +288,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		public ProcessWorkingSetSize WorkingSetSize {
 			get {
-				bool success=GetProcessWorkingSetSizeEx(handle, out uint min, out uint max, out uint flags);
+				bool success = GetProcessWorkingSetSizeEx(handle, out uint min, out uint max, out uint flags);
 				if(!success) throw new Win32Exception();
 				return new ProcessWorkingSetSize(min, max, flags);
 			}
@@ -298,7 +298,7 @@ namespace Henke37.DebugHelp.Win32 {
 			return MapFileView(fileMapping, offset, IntPtr.Zero, memoryProtection, size, allocationType);
 		}
 
-		public IntPtr MapFileView(FileMapping fileMapping, UInt64 offset, IntPtr baseAddress, MemoryProtection memoryProtection, uint size=0, MemoryAllocationType allocationType=MemoryAllocationType.None) {
+		public IntPtr MapFileView(FileMapping fileMapping, UInt64 offset, IntPtr baseAddress, MemoryProtection memoryProtection, uint size = 0, MemoryAllocationType allocationType = MemoryAllocationType.None) {
 			IntPtr result = MapViewOfFile2(fileMapping.handle, handle, offset, baseAddress, size, (uint)allocationType, (uint)memoryProtection);
 			if(result == IntPtr.Zero) throw new Win32Exception();
 			return result;
@@ -314,6 +314,12 @@ namespace Henke37.DebugHelp.Win32 {
 			var result = GetMappedFileNameW(handle, baseAddress, sb, (uint)sb.Capacity);
 			if(result == 0) throw new Win32Exception();
 			return sb.ToString();
+		}
+
+		public NativeToken OpenToken(System.Security.Principal.TokenAccessLevels accessLevels) {
+			bool success = OpenProcessToken(handle, (uint)accessLevels, out SafeTokenHandle tokenHandle);
+			if(!success) throw new Win32Exception();
+			return new NativeToken(tokenHandle);
 		}
 
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -454,6 +460,10 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("Psapi.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 		internal static unsafe extern int GetMappedFileNameW(SafeProcessHandle handle, IntPtr pv, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder filename, uint filenameBufferSize);
+
+		[DllImport("Advapi32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool OpenProcessToken(SafeProcessHandle procHandle, UInt32 access, out SafeTokenHandle tokenHandle);
 
 	}
 }

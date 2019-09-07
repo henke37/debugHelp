@@ -81,7 +81,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 #if x86
 #if NETFRAMEWORK
-		[HostProtection(ExternalThreading=true, Unrestricted = true)]
+		[HostProtection(ExternalThreading = true, Unrestricted = true)]
 #endif
 		public ThreadContext32 GetContext() {
 			var ctx = new ThreadContext32();
@@ -136,6 +136,12 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 #endif
 
+		public NativeToken OpenToken(System.Security.Principal.TokenAccessLevels accessLevels, bool ignoreImpersonation = false) {
+			bool success = OpenThreadToken(handle, (uint)accessLevels, ignoreImpersonation, out SafeTokenHandle tokenHandle);
+			if(!success) throw new Win32Exception();
+			return new NativeToken(tokenHandle);
+		}
+
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Suspend() {
 			SuspendThread(handle);
@@ -178,5 +184,9 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetThreadSelectorEntry(SafeThreadHandle handle, UInt32 selector, out SelectorEntry.Native entry);
+
+		[DllImport("Advapi32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool OpenThreadToken(SafeThreadHandle procHandle, UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool IgnoreImpersonation, out SafeTokenHandle tokenHandle);
 	}
 }
