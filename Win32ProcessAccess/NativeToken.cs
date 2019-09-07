@@ -10,9 +10,8 @@ namespace Henke37.DebugHelp.Win32 {
 			this.tokenHandle = tokenHandle;
 		}
 
-		public void Dispose() {
-			tokenHandle.Dispose();
-		}
+		public void Dispose() => tokenHandle.Dispose();
+		public void Close() => tokenHandle.Close();
 
 		public bool Equals(NativeToken other) {
 			var status = NtCompareTokens(tokenHandle, other.tokenHandle, out bool equal);
