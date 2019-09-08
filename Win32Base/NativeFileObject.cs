@@ -78,6 +78,12 @@ namespace Henke37.Win32.Base {
 				if(!success) throw new Win32Exception();
 			}
 		}
+		internal unsafe void DeviceControlOutput(DeviceIoControlCode controlCode, byte[] outBuff) {
+			fixed (void* outBuffP = outBuff) {
+				bool success = DeviceIoControl(handle, controlCode, null, 0, outBuffP, (uint)outBuff.Length, out _, null);
+				if(!success) throw new Win32Exception();
+			}
+		}
 
 		internal unsafe void DeviceControlInputOutput<TIn, TOut>(DeviceIoControlCode controlCode, ref TIn inBuff, ref TOut outBuff) where TIn : unmanaged where TOut : unmanaged {
 			fixed (void* inBuffP = &inBuff, outBuffP = &outBuff) {

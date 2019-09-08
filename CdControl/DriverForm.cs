@@ -19,5 +19,9 @@ namespace CdControl {
 		private void Load_btn_Click(object sender, EventArgs e) {
 			cdDrive.Load();
 		}
+
+		private void GetTOC_btn_Click(object sender, EventArgs e) {
+			var toc=cdDrive.GetTOC();
+		}
 	}
 }

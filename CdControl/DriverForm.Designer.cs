@@ -25,6 +25,7 @@
 		private void InitializeComponent() {
 			this.load_btn = new System.Windows.Forms.Button();
 			this.eject_btn = new System.Windows.Forms.Button();
+			this.GetTOC_btn = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// load_btn
@@ -47,11 +48,22 @@
 			this.eject_btn.UseVisualStyleBackColor = true;
 			this.eject_btn.Click += new System.EventHandler(this.Eject_btn_Click);
 			// 
+			// GetTOC_btn
+			// 
+			this.GetTOC_btn.Location = new System.Drawing.Point(174, 12);
+			this.GetTOC_btn.Name = "GetTOC_btn";
+			this.GetTOC_btn.Size = new System.Drawing.Size(75, 23);
+			this.GetTOC_btn.TabIndex = 2;
+			this.GetTOC_btn.Text = "GetTOC";
+			this.GetTOC_btn.UseVisualStyleBackColor = true;
+			this.GetTOC_btn.Click += new System.EventHandler(this.GetTOC_btn_Click);
+			// 
 			// DriverForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.Controls.Add(this.GetTOC_btn);
 			this.Controls.Add(this.eject_btn);
 			this.Controls.Add(this.load_btn);
 			this.Name = "DriverForm";
@@ -64,6 +76,7 @@
 
 		private System.Windows.Forms.Button load_btn;
 		private System.Windows.Forms.Button eject_btn;
+		private System.Windows.Forms.Button GetTOC_btn;
 	}
 }
 
