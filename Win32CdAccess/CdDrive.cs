@@ -73,6 +73,29 @@ namespace Henke37.Win32.CdAccess {
 			return sb.ToString();
 		}
 
+		public unsafe string GetTrackISRC(byte track) {
+			SubQDataFormat dataFormat = new SubQDataFormat() {
+				Format = (byte)SubQDataFormatFormat.TrackISRC,
+				Track = track
+			};
+
+			var isrc = file.DeviceControlInputOutput<SubQDataFormat, SubQTrackISRC>(DeviceIoControlCode.CdRomReadQChannel, ref dataFormat);
+
+			if((isrc.ReservedTcVal & 128) == 0) {
+				return null;
+			}
+
+			StringBuilder sb = new StringBuilder();
+			byte* b = isrc.TrackIsrc;
+			for(int i = 0; i < 15; i++) {
+				char c = (char)b[i];
+				if(c == 0) break;
+				sb.Append(c);
+			}
+
+			return sb.ToString();
+		}
+
 		public RegionData GetRegionData() {
 			RegionData.Native native=new RegionData.Native();
 			file.DeviceControlOutput<RegionData.Native>(DeviceIoControlCode.DvdGetRegion, ref native);

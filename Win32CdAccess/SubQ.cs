@@ -32,4 +32,15 @@ namespace Henke37.Win32.CdAccess {
 		internal byte ReservedMcVal;
 		internal fixed byte MediaCatalog[15];
 	}
+
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+	internal unsafe struct SubQTrackISRC {
+		SubQHeader header;
+		byte FormatCode;
+		byte Reserved0;
+		byte Track;
+		byte Reserved1;
+		internal byte ReservedTcVal;
+		internal fixed byte TrackIsrc[15];
+	}
 }
