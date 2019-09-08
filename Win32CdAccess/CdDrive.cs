@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using Henke37.Win32.Base;
 using Henke37.Win32.Base.AccessRights;
 
@@ -47,6 +48,29 @@ namespace Henke37.Win32.CdAccess {
 				LastTrack = header.LastTrack,
 				Tracks = tracks
 			};
+		}
+
+		public unsafe string GetMediaCatalogNumber() {
+			SubQDataFormat dataFormat = new SubQDataFormat() {
+				Format = (byte)SubQDataFormatFormat.MediaCatalog,
+				Track = 0
+			};
+
+			var catNr =file.DeviceControlInputOutput<SubQDataFormat, SubQMediaCatalogNumber>(DeviceIoControlCode.CdRomReadQChannel, ref dataFormat);
+
+			if((catNr.ReservedMcVal & 128) == 0) {
+				return null;
+			}
+
+			StringBuilder sb = new StringBuilder();
+			byte* b = catNr.MediaCatalog;
+			for(int i = 0; i < 15; i++) {
+				char c = (char)b[i];
+				if(c == 0) break;
+				sb.Append(c);
+			}
+			
+			return sb.ToString();
 		}
 
 		public RegionData GetRegionData() {
