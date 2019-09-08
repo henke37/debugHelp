@@ -8,10 +8,10 @@ using Henke37.Win32.Base.AccessRights;
 namespace Henke37.Win32.CdAccess {
 	public class CdDrive {
 		internal NativeFileObject file;
-		private const int TOCTrackCount=100;
+		private const int TOCTrackCount = 100;
 
 		public CdDrive(string path) {
-			file = NativeFileObject.Open(path, FileObjectAccessRights.GenericRead|FileObjectAccessRights.GenericWrite, FileShareMode.Write|FileShareMode.Read, FileDisposition.OpenExisting, 0);
+			file = NativeFileObject.Open(path, FileObjectAccessRights.GenericRead | FileObjectAccessRights.GenericWrite, FileShareMode.Write | FileShareMode.Read, FileDisposition.OpenExisting, 0);
 		}
 
 		public void Eject() {
@@ -23,7 +23,7 @@ namespace Henke37.Win32.CdAccess {
 		}
 
 		public unsafe TOC GetTOC() {
-			int buffSize = Marshal.SizeOf<TOC.TocHeader>() + Marshal.SizeOf <TrackEntry.Native>() *TOCTrackCount;
+			int buffSize = Marshal.SizeOf<TOC.TocHeader>() + Marshal.SizeOf<TrackEntry.Native>() * TOCTrackCount;
 			byte[] buff = new byte[buffSize];
 
 			var tracks = new List<TrackEntry>();
@@ -31,12 +31,12 @@ namespace Henke37.Win32.CdAccess {
 			TOC.TocHeader header;
 
 			file.DeviceControlOutput(DeviceIoControlCode.CdRomReadTOC, buff);
-			fixed(byte* buffPP=buff) {
-				header=Marshal.PtrToStructure<TOC.TocHeader>((IntPtr)buffPP);
+			fixed (byte* buffPP = buff) {
+				header = Marshal.PtrToStructure<TOC.TocHeader>((IntPtr)buffPP);
 
 				byte* buffP = buffPP;
-				for(var trackIndex=0;trackIndex< header.LastTrack; ++trackIndex) {
-					var entry=Marshal.PtrToStructure<TrackEntry.Native>((IntPtr)buffP);
+				for(var trackIndex = 0; trackIndex < header.LastTrack; ++trackIndex) {
+					var entry = Marshal.PtrToStructure<TrackEntry.Native>((IntPtr)buffP);
 					tracks.Add(entry.AsNative());
 
 					buffP += Marshal.SizeOf<TrackEntry.Native>();
@@ -56,21 +56,14 @@ namespace Henke37.Win32.CdAccess {
 				Track = 0
 			};
 
-			var catNr =file.DeviceControlInputOutput<SubQDataFormat, SubQMediaCatalogNumber>(DeviceIoControlCode.CdRomReadQChannel, ref dataFormat);
+			var catNr = file.DeviceControlInputOutput<SubQDataFormat, SubQMediaCatalogNumber>(DeviceIoControlCode.CdRomReadQChannel, ref dataFormat);
 
 			if((catNr.ReservedMcVal & 128) == 0) {
 				return null;
 			}
 
-			StringBuilder sb = new StringBuilder();
 			byte* b = catNr.MediaCatalog;
-			for(int i = 0; i < 15; i++) {
-				char c = (char)b[i];
-				if(c == 0) break;
-				sb.Append(c);
-			}
-			
-			return sb.ToString();
+			return ReadStrZ(catNr.MediaCatalog);
 		}
 
 		public unsafe string GetTrackISRC(byte track) {
@@ -85,8 +78,11 @@ namespace Henke37.Win32.CdAccess {
 				return null;
 			}
 
+			return ReadStrZ(isrc.TrackIsrc);
+		}
+
+		private static unsafe string ReadStrZ(byte* b) {
 			StringBuilder sb = new StringBuilder();
-			byte* b = isrc.TrackIsrc;
 			for(int i = 0; i < 15; i++) {
 				char c = (char)b[i];
 				if(c == 0) break;
@@ -97,7 +93,7 @@ namespace Henke37.Win32.CdAccess {
 		}
 
 		public RegionData GetRegionData() {
-			RegionData.Native native=new RegionData.Native();
+			RegionData.Native native = new RegionData.Native();
 			file.DeviceControlOutput<RegionData.Native>(DeviceIoControlCode.DvdGetRegion, ref native);
 			return native.AsManaged();
 		}
