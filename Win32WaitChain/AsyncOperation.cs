@@ -53,7 +53,13 @@ namespace Henke37.Win32.WaitChain {
 				SetException(new Win32Exception((int)callbackStatus));
 				return;
 			}
-			throw new NotImplementedException();
+			ReadResult(nodeCount, nodeArray);
+		}
+
+		private void ReadResult(uint nodeCount, WaitChanNodeInfo.Native* nodeArray) {
+			var result = new List<WaitChanNodeInfo>();
+
+			completionSource.SetResult(result);
 		}
 
 		internal void SetException(Exception exception) {

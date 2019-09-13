@@ -18,9 +18,8 @@ namespace Henke37.Win32.WaitChain {
 			}
 		}
 
-		public unsafe Task<List<WaitChanNodeInfo>> GetChainAsync(GetWaitChainFlags flags, UInt32 threadId) {
+		public Task<List<WaitChanNodeInfo>> GetChainAsync(GetWaitChainFlags flags, UInt32 threadId) {
 			var operation = new AsyncOperation(this, flags, threadId);
-
 			return operation.GetTask();
 		}
 
