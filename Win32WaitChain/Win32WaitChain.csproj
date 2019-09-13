@@ -5,7 +5,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Henke37.Win32.WaitChain</RootNamespace>
     <AssemblyName>Henke37.Win32.WaitChain</AssemblyName>
-    <TargetFrameworks>net452;netstandard20</TargetFrameworks>
+    <TargetFramework>net452</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Authors>Henke37</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -26,4 +26,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <DefineConstants>TRACE;x86</DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
+  </ItemGroup>
 </Project>

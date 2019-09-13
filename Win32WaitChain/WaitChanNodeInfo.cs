@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Win32WaitChain {
-
+namespace Henke37.Win32.WaitChain {
 	
-	internal class WaitChanNodeInfo {
+	public class WaitChanNodeInfo {
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal struct Native {

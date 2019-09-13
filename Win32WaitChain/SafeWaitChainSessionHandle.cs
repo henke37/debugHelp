@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Win32WaitChain {
+namespace Henke37.Win32.WaitChain {
 	internal class SafeWaitChainSessionHandle : SafeHandle {
 		private static readonly IntPtr InvalidHandleValue=new IntPtr(0);
 
