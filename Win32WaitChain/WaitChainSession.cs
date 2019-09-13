@@ -9,7 +9,6 @@ namespace Win32WaitChain {
 
 		}
 
-
 		internal unsafe delegate void Pwaitchaincallback(
 		  SafeWaitChainSessionHandle WctHandle,
 		  IntPtr Context,
@@ -22,11 +21,16 @@ namespace Win32WaitChain {
 		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern SafeWaitChainSessionHandle OpenThreadWaitChainSession(UInt32 flags, Pwaitchaincallback callback);
 
-
 		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		internal static extern unsafe bool GetThreadWaitChain(SafeWaitChainSessionHandle handle, void* context, UInt32 flags, UInt32 threadId, ref UInt32 nodeCount,
-		  WaitChanNodeInfo.Native* NodeInfoArray,
-		  [MarshalAs(UnmanagedType.Bool)] out bool IsCycle);
+		internal static extern unsafe bool GetThreadWaitChain(
+			SafeWaitChainSessionHandle handle,
+			void* context,
+			UInt32 flags,
+			UInt32 threadId,
+			ref UInt32 nodeCount,
+			WaitChanNodeInfo.Native* NodeInfoArray,
+			[MarshalAs(UnmanagedType.Bool)] out bool IsCycle
+		);
 	}
 }
