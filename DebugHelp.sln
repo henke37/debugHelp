@@ -19,9 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleVsFileMapping", "Modu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CdControl", "CdControl\CdControl.csproj", "{7AA00EC0-66E9-4F4D-AC37-F9DF498E4FDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32Base", "Win32Base\Win32Base.csproj", "{DD1A28CE-0DC8-4F02-B157-FA92719B1DA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32Base", "Win32Base\Win32Base.csproj", "{DD1A28CE-0DC8-4F02-B157-FA92719B1DA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32CdAccess", "Win32CdAccess\Win32CdAccess.csproj", "{C243DC2A-A152-416D-B8AE-AFA8C7E00810}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32CdAccess", "Win32CdAccess\Win32CdAccess.csproj", "{C243DC2A-A152-416D-B8AE-AFA8C7E00810}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32WaitChain", "Win32WaitChain\Win32WaitChain.csproj", "{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,6 +127,18 @@ Global
 		{C243DC2A-A152-416D-B8AE-AFA8C7E00810}.Release|x64.Build.0 = Release|x64
 		{C243DC2A-A152-416D-B8AE-AFA8C7E00810}.Release|x86.ActiveCfg = Release|x86
 		{C243DC2A-A152-416D-B8AE-AFA8C7E00810}.Release|x86.Build.0 = Release|x86
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Debug|x64.Build.0 = Debug|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Debug|x86.Build.0 = Debug|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Release|x64.ActiveCfg = Release|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Release|x64.Build.0 = Release|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Release|x86.ActiveCfg = Release|Any CPU
+		{F4C4A85C-1767-4FCF-9AC2-374ED4789F46}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
