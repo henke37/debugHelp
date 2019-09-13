@@ -18,9 +18,13 @@ namespace Henke37.Win32.WaitChain {
 			}
 		}
 
-		public Task<List<WaitChanNodeInfo>> GetChainAsync(GetWaitChainFlags flags, UInt32 threadId) {
+		public async Task<List<WaitChanNodeInfo>> GetChainAsync(GetWaitChainFlags flags, UInt32 threadId) {
 			var operation = new AsyncOperation(this, flags, threadId);
-			return operation.GetTask();
+			try {
+				return await operation.GetTask();
+			} finally {
+				operation.Dispose();
+			}
 		}
 
 		internal unsafe delegate void Pwaitchaincallback(
