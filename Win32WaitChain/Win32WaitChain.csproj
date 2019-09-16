@@ -27,6 +27,7 @@
     <DefineConstants>TRACE;x86</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="PInvoke.Windows.Core" Version="0.5.184" />
     <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
   </ItemGroup>
 </Project>

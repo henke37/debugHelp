@@ -35,7 +35,6 @@
     <DefineConstants>TRACE;x86</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Henke37.DebugHelp.Core" Version="2.0.0-alpha" />
     <PackageReference Include="PInvoke.Kernel32" Version="0.5.184" />
     <PackageReference Include="PInvoke.Windows.Core" Version="0.5.184" />
     <PackageReference Include="System.Security.Principal" Version="4.3.0" />
