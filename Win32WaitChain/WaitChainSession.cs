@@ -53,17 +53,17 @@ namespace Henke37.Win32.WaitChain {
 		internal delegate HResult PCOGETCALLSTATE(int x,ref UInt32 y);
 		internal delegate HResult PCOGETACTIVATIONSTATE(Guid g,UInt32 x,ref UInt32 y);
 
-		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern void RegisterWaitChainCOMCallback(
 		  PCOGETCALLSTATE CallStateCallback,
 		  PCOGETACTIVATIONSTATE ActivationStateCallback
 		);
 
 
-		[DllImport("ole32.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("ole32.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern HResult CoGetCallState(int x, ref UInt32 y);
 
-		[DllImport("ole32.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("ole32.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern HResult CoGetActivationState(Guid g, UInt32 x, ref UInt32 y);
 	}
 }
