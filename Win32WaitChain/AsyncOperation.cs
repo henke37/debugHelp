@@ -34,7 +34,7 @@ namespace Henke37.Win32.WaitChain {
 		}
 
 		private void IssueCall() {
-			bool success = GetThreadWaitChain(session.handle, GetContext(), (uint)flags, threadId, ref nodeCount, nodeArray, out bool isCycle);
+			bool success = GetThreadWaitChain(session.handle, GCHandle.ToIntPtr(gcHandle), (uint)flags, threadId, ref nodeCount, nodeArray, out bool isCycle);
 			if(!success) {
 				int err = Marshal.GetLastWin32Error();
 				if(err != ERROR_IO_PENDING) {
@@ -65,8 +65,6 @@ namespace Henke37.Win32.WaitChain {
 		internal void SetException(Exception exception) {
 			completionSource.SetException(exception);
 		}
-
-		internal IntPtr GetContext() => GCHandle.ToIntPtr(gcHandle);
 
 		internal Task<List<WaitChanNodeInfo>> GetTask() => completionSource.Task;
 
