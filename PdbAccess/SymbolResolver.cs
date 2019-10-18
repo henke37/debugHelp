@@ -52,5 +52,10 @@ namespace Henke37.DebugHelp.PdbAccess {
 			thisClass.findChildren(SymTagEnum.SymTagBaseClass, null, (uint)NameSearchOptions.None, out var result);
 			return result.Item(0);
 		}
+
+		public IDiaSymbol FindFunctionAtAddr(IntPtr addr) {
+			session.findSymbolByVA((ulong)addr, SymTagEnum.SymTagFunction, out var result);
+			return result;
+		}
 	}
 }
