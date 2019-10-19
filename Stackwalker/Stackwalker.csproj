@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+  <PropertyGroup>
+    <ProjectGuid>{FAEC716F-5BA1-460E-B907-02B9E2579772}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Stackwalker</RootNamespace>
+    <AssemblyName>Stackwalker</AssemblyName>
+	<TargetFrameworks>net452;netstandard20</TargetFrameworks>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <COMReference Include="Dia2Lib.dll">
+      <Guid>106173a0-0173-4e5c-84e7-e915422be997</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DebugHelp\DebugHelp.csproj" />
+    <ProjectReference Include="..\PdbAccess\PdbAccess.csproj" />
+    <ProjectReference Include="..\StackWalkerAdapter\StackWalkerAdapter.vbproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Interop.Dia2Lib">
+      <HintPath>..\PdbAccess\obj\x86\Debug\netstandard20\Interop.Dia2Lib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
