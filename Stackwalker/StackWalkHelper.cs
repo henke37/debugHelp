@@ -4,9 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dia2Lib;
+using Henke37.DebugHelp.Win32;
 
 namespace Stackwalker {
 	internal class StackWalkHelper : FixedIDiaStackWalkHelper {
+
+		private ThreadContext Context;
+		private NativeThread Thread;
+		private LiveProcessMemoryAccessor MemoryAccessor;
+
+		internal StackWalkHelper(NativeThread thread, LiveProcessMemoryAccessor memoryAccessor) {
+			Thread = thread;
+			MemoryAccessor = memoryAccessor;
+		}
+
 		public void addressForVA(ulong va, ref uint pISect, ref uint pOffset) {
 			throw new NotImplementedException();
 		}
@@ -32,7 +43,8 @@ namespace Stackwalker {
 		}
 
 		public void readMemory(MemoryTypeEnum type, ulong va, uint cbData, ref uint pcbData, ref byte pbData) {
-			throw new NotImplementedException();
+			//MemoryAccessor.ReadBytes((IntPtr)va, cbData, pbData);
+			//pcbData = cbData;
 		}
 
 		public ulong registerValue_get(uint index) {

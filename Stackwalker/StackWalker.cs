@@ -1,4 +1,5 @@
 ﻿using Dia2Lib;
+using Henke37.DebugHelp.Win32;
 using Stackwalker.Stackwalker;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace Stackwalker {
 		private StackWalkHelper helper;
 		private IDiaStackWalkHelper adapter;
 
-		public StackWalker() {
+		public StackWalker(NativeThread thread) {
 			walker = new DiaStackWalker();
-			helper = new StackWalkHelper();
+			helper = new StackWalkHelper(thread);
 			adapter = new HelperAdapter(helper);
 		}
 

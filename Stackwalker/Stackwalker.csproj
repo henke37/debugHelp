@@ -24,6 +24,7 @@
     <ProjectReference Include="..\DebugHelp\DebugHelp.csproj" />
     <ProjectReference Include="..\PdbAccess\PdbAccess.csproj" />
     <ProjectReference Include="..\StackWalkerAdapter\StackWalkerAdapter.vbproj" />
+    <ProjectReference Include="..\Win32ProcessAccess\Win32ProcessAccess.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Interop.Dia2Lib">
