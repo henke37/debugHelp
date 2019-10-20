@@ -13,9 +13,15 @@ namespace Stackwalker {
 		private NativeThread Thread;
 		private LiveProcessMemoryAccessor MemoryAccessor;
 
+		private ThreadContext32 context;
+
 		internal StackWalkHelper(NativeThread thread, LiveProcessMemoryAccessor memoryAccessor) {
 			Thread = thread;
 			MemoryAccessor = memoryAccessor;
+		}
+
+		internal void InitializeForWalk() {
+			Context=Thread.GetContext();
 		}
 
 		public void addressForVA(ulong va, ref uint pISect, ref uint pOffset) {
