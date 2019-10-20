@@ -1,4 +1,4 @@
-﻿using Dia2Lib;
+﻿using DIA;
 using System;
 using System.Collections.Generic;
 
@@ -14,27 +14,27 @@ namespace Henke37.DebugHelp.PdbAccess {
 		}
 
 		public IDiaSymbol FindGlobal(string symbolName) {
-			session.findChildren(session.globalScope, SymTagEnum.SymTagData, symbolName, (uint)NameSearchOptions.CaseSensitive, out var result);
+			var result=session.findChildren(session.globalScope, SymTagEnum.Data, symbolName, NameSearchOptions.CaseSensitive);
 			return result.Item(0);
 		}
 
 		public IDiaSymbol FindClass(string className) {
-			session.findChildren(session.globalScope, SymTagEnum.SymTagUDT, className, (uint)NameSearchOptions.CaseSensitive, out var result);
+			var result = session.findChildren(session.globalScope, SymTagEnum.UDT, className, NameSearchOptions.CaseSensitive);
 			return result.Item(0);
 		}
 
 		public IDiaSymbol FindNestedClass(IDiaSymbol outerClass,string className) {
-			outerClass.findChildren(SymTagEnum.SymTagUDT, className, (uint)NameSearchOptions.CaseSensitive, out var result);
+			var result = outerClass.findChildren(SymTagEnum.UDT, className, NameSearchOptions.CaseSensitive);
 			return result.Item(0);
 		}
 
 		public IDiaSymbol FindTypeDef(string typeName) {
-			session.findChildren(session.globalScope, SymTagEnum.SymTagTypedef, typeName, (uint)NameSearchOptions.CaseSensitive, out var result);
+			var result = session.findChildren(session.globalScope, SymTagEnum.Typedef, typeName, NameSearchOptions.CaseSensitive);
 			return result.Item(0);
 		}
 
 		public IDiaSymbol FindField(IDiaSymbol classSymb, string fieldName) {
-			session.findChildren(classSymb, SymTagEnum.SymTagData, fieldName, (uint)NameSearchOptions.CaseSensitive, out var result);
+			var result = session.findChildren(classSymb, SymTagEnum.Data, fieldName, NameSearchOptions.CaseSensitive);
 			return result.Item(0);
 		}
 
@@ -49,12 +49,12 @@ namespace Henke37.DebugHelp.PdbAccess {
 		}
 
 		public IDiaSymbol GetBaseClass(IDiaSymbol thisClass) {
-			thisClass.findChildren(SymTagEnum.SymTagBaseClass, null, (uint)NameSearchOptions.None, out var result);
+			var result = thisClass.findChildren(SymTagEnum.BaseClass, null, NameSearchOptions.None);
 			return result.Item(0);
 		}
 
 		public IDiaSymbol FindFunctionAtAddr(IntPtr addr) {
-			session.findSymbolByVA((ulong)addr, SymTagEnum.SymTagFunction, out var result);
+			var result = session.findSymbolByVA((ulong)addr, SymTagEnum.Function);
 			return result;
 		}
 	}

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netstandard20</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard20</TargetFrameworks>
     <AssemblyName>Henke37.Win32.CdAccess</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Authors>Henke37</Authors>

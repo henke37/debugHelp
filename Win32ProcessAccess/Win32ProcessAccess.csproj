@@ -4,7 +4,7 @@
 		<OutputType>Library</OutputType>
 		<RootNamespace>Henke37.DebugHelp.Win32</RootNamespace>
 		<AssemblyName>Win32ProcessAccess</AssemblyName>
-		<TargetFramework>net452</TargetFramework>
+		<TargetFramework>net461</TargetFramework>
 		<FileAlignment>512</FileAlignment>
 		<Deterministic>true</Deterministic>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
