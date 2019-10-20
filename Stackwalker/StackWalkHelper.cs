@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dia2Lib;
+using Henke37.DebugHelp;
 using Henke37.DebugHelp.Win32;
 
 namespace Stackwalker {
@@ -11,11 +12,11 @@ namespace Stackwalker {
 
 		private ThreadContext Context;
 		private NativeThread Thread;
-		private LiveProcessMemoryAccessor MemoryAccessor;
+		private ProcessMemoryAccessor MemoryAccessor;
 
 		private ThreadContext32 context;
 
-		internal StackWalkHelper(NativeThread thread, LiveProcessMemoryAccessor memoryAccessor) {
+		internal StackWalkHelper(NativeThread thread, ProcessMemoryAccessor memoryAccessor) {
 			Thread = thread;
 			MemoryAccessor = memoryAccessor;
 		}
