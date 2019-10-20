@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace Henke37.DebugHelp.PdbAccess {
 	public class SymbolResolver {
-		private DiaSource source;
-		private IDiaSession session;
+		private readonly DiaSource source;
+		private readonly IDiaSession session;
 
 		public SymbolResolver(string pdbPath) {
 			source=new DiaSource();
