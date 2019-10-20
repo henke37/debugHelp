@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dia2Lib;
+using DIA;
 using Henke37.DebugHelp;
 using Henke37.DebugHelp.Win32;
 
 namespace Stackwalker {
-	internal class StackWalkHelper : FixedIDiaStackWalkHelper {
+	internal class StackWalkHelper : IDiaStackWalkHelper {
 
 		private ThreadContext Context;
 		private NativeThread Thread;
@@ -25,53 +25,46 @@ namespace Stackwalker {
 			Context=Thread.GetContext();
 		}
 
-		public void addressForVA(ulong va, ref uint pISect, ref uint pOffset) {
+		public int readMemory(MemoryTypeEnum type, ulong va, uint cbData, out uint pcbData, byte[] pbData) {
 			throw new NotImplementedException();
 		}
 
-		public void frameForVA(ulong va, ref IDiaFrameData ppFrame) {
+		public int searchForReturnAddress(IDiaFrameData frame, out ulong returnAddress) {
 			throw new NotImplementedException();
 		}
 
-		public void functionFragmentsForVA(ulong vaFunc, uint cbFunc, uint cFragments, ref ulong pVaFragment, ref uint pLenFragment) {
+		public int searchForReturnAddressStart(IDiaFrameData frame, ulong startAddress, out ulong returnAddress) {
 			throw new NotImplementedException();
 		}
 
-		public void imageForVA(ulong vaContext, ref ulong pvaImageStart) {
+		public int frameForVA(ulong va, out IDiaFrameData ppFrame) {
 			throw new NotImplementedException();
 		}
 
-		public void numberOfFunctionFragmentsForVA(ulong vaFunc, uint cbFunc, ref uint pNumFragments) {
+		public int symbolForVA(ulong va, out IDiaSymbol ppSymbol) {
 			throw new NotImplementedException();
 		}
 
-		public void pdataForVA(ulong va, uint cbData, ref uint pcbData, ref byte pbData) {
+		public int pdataForVA(ulong va, uint cbData, out uint pcbData, byte[] pbData) {
 			throw new NotImplementedException();
 		}
 
-		public void readMemory(MemoryTypeEnum type, ulong va, uint cbData, ref uint pcbData, ref byte pbData) {
-			//MemoryAccessor.ReadBytes((IntPtr)va, cbData, pbData);
-			//pcbData = cbData;
-		}
-
-		public ulong registerValue_get(uint index) {
+		public int imageForVA(ulong vaContext, out ulong pvaImageStart) {
 			throw new NotImplementedException();
 		}
 
-		public void registerValue_set(uint index, ulong value) {
+		public int addressForVA(ulong va, out uint pISect, out uint pOffset) {
 			throw new NotImplementedException();
 		}
 
-		public void searchForReturnAddress(IDiaFrameData frame, ref ulong returnAddress) {
+		public int numberOfFunctionFragmentsForVA(ulong vaFunc, uint cbFunc, out uint pNumFragments) {
 			throw new NotImplementedException();
 		}
 
-		public void searchForReturnAddressStart(IDiaFrameData frame, ulong startAddress, ref ulong returnAddress) {
+		public int functionFragmentsForVA(ulong vaFunc, uint cbFunc, uint cFragments, out ulong pVaFragment, out uint pLenFragment) {
 			throw new NotImplementedException();
 		}
 
-		public void symbolForVA(ulong va, ref IDiaSymbol ppSymbol) {
-			throw new NotImplementedException();
-		}
+		public ulong registerValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 	}
 }
