@@ -12,7 +12,6 @@ namespace Stackwalker {
 
 		private DiaStackWalker walker;
 		private StackWalkHelper helper;
-		private IDiaStackWalkHelper adapter;
 
 		public StackWalker(NativeThread thread, ProcessMemoryAccessor memoryReader) {
 			walker = new DiaStackWalker();
