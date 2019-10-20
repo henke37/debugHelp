@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net452;netstandard20</TargetFrameworks>
+		<TargetFrameworks>net461;netstandard20</TargetFrameworks>
 		<Authors>Henke37</Authors>
 		<PackageId>Henke37.DebugHelp.PdbAccess</PackageId>
 		<Version>2.0.0-alpha</Version>
@@ -27,14 +27,7 @@
     <DefineConstants>TRACE;x86</DefineConstants>
   </PropertyGroup>
 	<ItemGroup Condition="'$(Platform)'=='x86'">
-	  <COMReference Include="Dia2Lib.dll">
-	    <Guid>106173a0-0173-4e5c-84e7-e915422be997</Guid>
-	    <VersionMajor>2</VersionMajor>
-	    <VersionMinor>0</VersionMinor>
-	    <Lcid>0</Lcid>
-	    <WrapperTool>tlbimp</WrapperTool>
-	    <Isolated>false</Isolated>
-	  </COMReference>
+	  <PackageReference Include="DIA" Version="1.0.2" />
 	</ItemGroup>
 
 </Project>

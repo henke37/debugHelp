@@ -5,7 +5,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Stackwalker</RootNamespace>
     <AssemblyName>Stackwalker</AssemblyName>
-	<TargetFrameworks>net452;netstandard20</TargetFrameworks>
+	<TargetFrameworks>net461;netstandard20</TargetFrameworks>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <PlatformTarget>x86</PlatformTarget>
@@ -23,12 +23,9 @@
   <ItemGroup>
     <ProjectReference Include="..\DebugHelp\DebugHelp.csproj" />
     <ProjectReference Include="..\PdbAccess\PdbAccess.csproj" />
-    <ProjectReference Include="..\StackWalkerAdapter\StackWalkerAdapter.vbproj" />
     <ProjectReference Include="..\Win32ProcessAccess\Win32ProcessAccess.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Interop.Dia2Lib">
-      <HintPath>..\PdbAccess\obj\x86\Debug\netstandard20\Interop.Dia2Lib.dll</HintPath>
-    </Reference>
+	<PackageReference Include="DIA" Version="1.0.2" />
   </ItemGroup>
 </Project>

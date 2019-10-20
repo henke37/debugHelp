@@ -1,7 +1,6 @@
-﻿using Dia2Lib;
+﻿using DIA;
 using Henke37.DebugHelp;
 using Henke37.DebugHelp.Win32;
-using Stackwalker.Stackwalker;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +17,6 @@ namespace Stackwalker {
 		public StackWalker(NativeThread thread, ProcessMemoryAccessor memoryReader) {
 			walker = new DiaStackWalker();
 			helper = new StackWalkHelper(thread, memoryReader);
-			adapter = new HelperAdapter(helper);
 		}
 
 		public void Walk() {
