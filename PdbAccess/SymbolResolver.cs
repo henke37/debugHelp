@@ -13,6 +13,10 @@ namespace Henke37.DebugHelp.PdbAccess {
 			source.openSession(out session);
 		}
 
+		public void SetLoadAddress(IntPtr addr) {
+			session.loadAddress = (ulong)addr;
+		}
+
 		public IDiaSymbol FindGlobal(string symbolName) {
 			var result=session.findChildren(session.globalScope, SymTagEnum.Data, symbolName, NameSearchOptions.CaseSensitive);
 			return result.Item(0);
@@ -56,6 +60,10 @@ namespace Henke37.DebugHelp.PdbAccess {
 		public IDiaSymbol FindFunctionAtAddr(IntPtr addr) {
 			var result = session.findSymbolByVA((ulong)addr, SymTagEnum.Function);
 			return result;
+		}
+
+		public void AddressForVirtualAddress(IntPtr addr, out uint pISect, out uint pOffset) {
+			session.addressForVA((ulong)addr, out pISect, out pOffset);
 		}
 	}
 }

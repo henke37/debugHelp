@@ -62,9 +62,8 @@ namespace Stackwalker {
 		}
 
 		int IDiaStackWalkHelper.addressForVA(ulong va, out uint pISect, out uint pOffset) {
-			pISect = 0;
-			pOffset = 0;
-			return E_NOTIMPL;
+			Resolver.AddressForVirtualAddress((IntPtr)va, out pISect, out pOffset);
+			return S_OK;
 		}
 
 		int IDiaStackWalkHelper.numberOfFunctionFragmentsForVA(ulong vaFunc, uint cbFunc, out uint pNumFragments) {
