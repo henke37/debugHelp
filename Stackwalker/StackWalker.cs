@@ -1,5 +1,6 @@
 ﻿using DIA;
 using Henke37.DebugHelp;
+using Henke37.DebugHelp.PdbAccess;
 using Henke37.DebugHelp.Win32;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace Stackwalker {
 		private DiaStackWalker walker;
 		private StackWalkHelper helper;
 
-		public StackWalker(NativeThread thread, ProcessMemoryAccessor memoryReader) {
+		public StackWalker(NativeThread thread, ProcessMemoryAccessor memoryReader, SymbolResolver resolver) {
 			walker = new DiaStackWalker();
-			helper = new StackWalkHelper(thread, memoryReader);
+			helper = new StackWalkHelper(thread, memoryReader, resolver);
 		}
 
 		public IEnumerable<IDiaStackFrame> Walk() {
