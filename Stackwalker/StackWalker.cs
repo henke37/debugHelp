@@ -18,9 +18,15 @@ namespace Stackwalker {
 			helper = new StackWalkHelper(thread, memoryReader);
 		}
 
-		public void Walk() {
+		public IEnumerable<IDiaStackFrame> Walk() {
 			helper.InitializeForWalk();
-			//walker.getEnumFrames()
+			var frames=walker.getEnumFrames(helper);
+
+			IDiaStackFrame[] arr = new IDiaStackFrame[1];
+			for(; ; ) {
+				frames.Next(1, arr, out _);
+				yield return arr[0];
+			}
 		}
 	}
 }
