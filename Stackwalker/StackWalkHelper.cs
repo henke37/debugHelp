@@ -24,59 +24,59 @@ namespace Stackwalker {
 			Context=Thread.GetContext();
 		}
 
-		public int readMemory(MemoryTypeEnum type, ulong va, uint cbData, out uint pcbData, byte[] pbData) {
+		int IDiaStackWalkHelper.readMemory(MemoryTypeEnum type, ulong va, uint cbData, out uint pcbData, byte[] pbData) {
 			MemoryAccessor.ReadBytes((IntPtr)va, cbData, pbData);
 			pcbData = cbData;
 			return S_OK;
 		}
 
-		public int searchForReturnAddress(IDiaFrameData frame, out ulong returnAddress) {
+		int IDiaStackWalkHelper.searchForReturnAddress(IDiaFrameData frame, out ulong returnAddress) {
 			returnAddress = 0;
 			return E_NOTIMPL;
 		}
 
-		public int searchForReturnAddressStart(IDiaFrameData frame, ulong startAddress, out ulong returnAddress) {
+		int IDiaStackWalkHelper.searchForReturnAddressStart(IDiaFrameData frame, ulong startAddress, out ulong returnAddress) {
 			returnAddress = 0;
 			return E_NOTIMPL;
 		}
 
-		public int frameForVA(ulong va, out IDiaFrameData ppFrame) {
+		int IDiaStackWalkHelper.frameForVA(ulong va, out IDiaFrameData ppFrame) {
 			ppFrame = null;
 			return E_NOTIMPL;
 		}
 
-		public int symbolForVA(ulong va, out IDiaSymbol ppSymbol) {
+		int IDiaStackWalkHelper.symbolForVA(ulong va, out IDiaSymbol ppSymbol) {
 			ppSymbol = null;
 			return E_NOTIMPL;
 		}
 
-		public int pdataForVA(ulong va, uint cbData, out uint pcbData, byte[] pbData) {
+		int IDiaStackWalkHelper.pdataForVA(ulong va, uint cbData, out uint pcbData, byte[] pbData) {
 			pcbData = 0;
 			return E_NOTIMPL;
 		}
 
-		public int imageForVA(ulong vaContext, out ulong pvaImageStart) {
+		int IDiaStackWalkHelper.imageForVA(ulong vaContext, out ulong pvaImageStart) {
 			pvaImageStart = 0;
 			return E_NOTIMPL;
 		}
 
-		public int addressForVA(ulong va, out uint pISect, out uint pOffset) {
+		int IDiaStackWalkHelper.addressForVA(ulong va, out uint pISect, out uint pOffset) {
 			pISect = 0;
 			pOffset = 0;
 			return E_NOTIMPL;
 		}
 
-		public int numberOfFunctionFragmentsForVA(ulong vaFunc, uint cbFunc, out uint pNumFragments) {
+		int IDiaStackWalkHelper.numberOfFunctionFragmentsForVA(ulong vaFunc, uint cbFunc, out uint pNumFragments) {
 			pNumFragments = 0;
 			return E_NOTIMPL;
 		}
 
-		public int functionFragmentsForVA(ulong vaFunc, uint cbFunc, uint cFragments, out ulong pVaFragment, out uint pLenFragment) {
+		int IDiaStackWalkHelper.functionFragmentsForVA(ulong vaFunc, uint cbFunc, uint cFragments, out ulong pVaFragment, out uint pLenFragment) {
 			pVaFragment = 0;
 			pLenFragment = 0;
 			return E_NOTIMPL;
 		}
 
-		public ulong registerValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+		ulong IDiaStackWalkHelper.registerValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 	}
 }
