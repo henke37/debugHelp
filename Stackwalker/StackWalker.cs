@@ -19,6 +19,7 @@ namespace Stackwalker {
 		}
 
 		public void Walk() {
+			helper.InitializeForWalk();
 			//walker.getEnumFrames()
 		}
 	}
