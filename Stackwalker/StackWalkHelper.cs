@@ -78,5 +78,50 @@ namespace Stackwalker {
 		}
 
 		ulong IDiaStackWalkHelper.registerValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+		private ulong GetRegisterValue(int index) {
+			switch(index) {
+				case 17: return context.Eax;
+				case 18: return context.Ecx;
+				case 19: return context.Edx;
+				case 20: return context.Ebx;
+				case 21: return context.Esp;
+				case 22: return context.Ebp;
+				case 23: return context.Esi;
+				case 24: return context.Edi;
+				case 25: return context.SegEs;
+				case 26: return context.SegCs;
+				case 27: return context.SegSs;
+				case 28: return context.SegDs;
+				case 29: return context.SegFs;
+				case 30: return context.SegGs;
+				case 31: return context.Eip;
+				case 32: return (ulong)context.EFlags;
+				default:
+					throw new NotSupportedException();
+			}
+		}
+
+		private void SetRegisterValue(int index, ulong value) {
+			switch(index) {
+				case 17: context.Eax = (uint)value; return;
+				case 18: context.Ecx = (uint)value; return;
+				case 19: context.Edx = (uint)value; return;
+				case 20: context.Ebx = (uint)value; return;
+				case 21: context.Esp = (uint)value; return;
+				case 22: context.Ebp = (uint)value; return;
+				case 23: context.Esi = (uint)value; return;
+				case 24: context.Edi = (uint)value; return;
+				case 25: context.SegEs = (uint)value; return;
+				case 26: context.SegCs = (uint)value; return;
+				case 27: context.SegSs = (uint)value; return;
+				case 28: context.SegDs = (uint)value; return;
+				case 29: context.SegFs = (uint)value; return;
+				case 30: context.SegGs = (uint)value; return;
+				case 31: context.Eip = (uint)value; return;
+				case 32: context.EFlags = (EFlags)value; return;
+			}
+			throw new NotSupportedException();
+		}
 	}
 }
