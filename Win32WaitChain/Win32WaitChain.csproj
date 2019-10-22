@@ -13,6 +13,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
+	<LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>TRACE;x64</DefineConstants>

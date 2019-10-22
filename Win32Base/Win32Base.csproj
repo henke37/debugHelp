@@ -12,6 +12,8 @@
     <RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
     <Platforms>x64;x86</Platforms>
     <RootNamespace>Henke37.Win32.Base</RootNamespace>
+	<LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>TRACE;x64</DefineConstants>

@@ -21,6 +21,8 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageTags>ReadProcessMemory; OpenProcess; WriteProcessMemory</PackageTags>
 		<Platforms>x64;x86</Platforms>
+		<LangVersion>8.0</LangVersion>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>TRACE;x64</DefineConstants>
