@@ -16,7 +16,7 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			foreach(var baseClass in BaseClasses) {
 				if(baseClass.TypeDescriptor.MangledName == mangledName) return baseClass;
 			}
-			return null;
+			throw new KeyNotFoundException($"No base class with mangled name\"{mangledName}\"");
 		}
 
 		public BaseClassDescriptor this[string mangledName] {
