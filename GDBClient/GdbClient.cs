@@ -21,8 +21,8 @@ namespace Henke37.DebugHelp.Gdb {
 		private bool extendedMode = false;
 		private bool vSane;
 
-		private string pendingPacket;
-		private string pendingNotification;
+		private string? pendingPacket;
+		private string? pendingNotification;
 		private Dictionary<string, Action<string>> notificationMap;
 
 		public event Action<StopPacket> ThreadStopped;
