@@ -152,7 +152,7 @@ namespace Henke37.DebugHelp.Gdb {
 			return l;
 		}
 
-		public StopPacket AttachToProcess(int pid) {
+		public StopPacket? AttachToProcess(int pid) {
 			if(!vSane) throw new InvalidOperationException();
 			string reply = SendCommand($"vAttach;{pid:x}");
 
@@ -417,12 +417,12 @@ namespace Henke37.DebugHelp.Gdb {
 			if(pendingPacket!=null) {
 				string t = pendingPacket;
 				pendingPacket = null;
-				return pendingPacket;
+				return t;
 			}
-			return ReadPacketInternal();
+			return ReadPacketInternal()!;
 		}
 
-		private string ReadPacketInternal(bool waitForPacket=true) {
+		private string? ReadPacketInternal(bool waitForPacket=true) {
 			startRead:
 			readBuff.SetLength(0);
 
