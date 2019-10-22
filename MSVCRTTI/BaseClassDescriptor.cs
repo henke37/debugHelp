@@ -7,6 +7,12 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 		public uint NumContainedBases;
 		public PMD DisplacementData;
 
+		public BaseClassDescriptor(TypeDescriptor typeDescriptor, uint numContainedBases, PMD displacementData) {
+			TypeDescriptor = typeDescriptor ?? throw new ArgumentNullException(nameof(typeDescriptor));
+			NumContainedBases = numContainedBases;
+			DisplacementData = displacementData;
+		}
+
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		internal struct MemoryStruct {
 			public IntPtr pTypeDescriptor;

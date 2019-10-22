@@ -82,10 +82,11 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			BaseClassDescriptor.MemoryStruct memoryStruct = new BaseClassDescriptor.MemoryStruct();
 			processMemoryReader.ReadStruct(baseClassDescriptorPointer, ref memoryStruct);
 
-			BaseClassDescriptor desc = new BaseClassDescriptor();
-			desc.TypeDescriptor = GetTypeDescriptor(memoryStruct.pTypeDescriptor);
-			desc.DisplacementData = memoryStruct.DisplacementData;
-			desc.NumContainedBases = memoryStruct.NumContainedBases;
+			BaseClassDescriptor desc = new BaseClassDescriptor(
+				GetTypeDescriptor(memoryStruct.pTypeDescriptor),
+				memoryStruct.NumContainedBases,
+				memoryStruct.DisplacementData
+			);
 			return desc;
 		}
 
