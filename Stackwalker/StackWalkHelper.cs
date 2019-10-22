@@ -77,6 +77,7 @@ namespace Stackwalker {
 			return E_NOTIMPL;
 		}
 
+		//BUG: should be indexed property. or at least a pair of methods that has the index as an argument
 		ulong IDiaStackWalkHelper.registerValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
 		private ulong GetRegisterValue(int index) {
