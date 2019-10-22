@@ -4,8 +4,13 @@ using System.Runtime.InteropServices;
 
 namespace Henke37.DebugHelp.RTTI.MSVC {
 	public class ClassHierarchyDescriptor {
-		public ClassHierarchyFlags Flags;
 		public List<BaseClassDescriptor> BaseClasses;
+		public ClassHierarchyFlags Flags;
+
+		public ClassHierarchyDescriptor(List<BaseClassDescriptor> baseClasses, ClassHierarchyFlags flags) {
+			BaseClasses = baseClasses ?? throw new ArgumentNullException(nameof(baseClasses));
+			Flags = flags;
+		}
 
 		public BaseClassDescriptor GetBaseClass(string mangledName) {
 			foreach(var baseClass in BaseClasses) {

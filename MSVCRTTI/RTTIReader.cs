@@ -65,9 +65,10 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 
 			if(memoryStruct.Signature != 0) throw new InvalidDataException("Invalid class hierarchy signature");
 
-			ClassHierarchyDescriptor desc = new ClassHierarchyDescriptor();
-			desc.Flags = memoryStruct.Flags;
-			desc.BaseClasses = new List<BaseClassDescriptor>((int)memoryStruct.numBaseClasses);
+			ClassHierarchyDescriptor desc = new ClassHierarchyDescriptor(
+				new List<BaseClassDescriptor>((int)memoryStruct.numBaseClasses),
+				memoryStruct.Flags
+			);
 
 			IntPtr[] baseDescriptorPointers =processMemoryReader.ReadIntPtrArray(memoryStruct.pBaseClassArray, memoryStruct.numBaseClasses);
 
