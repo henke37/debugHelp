@@ -12,6 +12,7 @@ namespace Henke37.DebugHelp {
 		private int _position;
 
 		public ProcessReadMemmoryStream(ProcessMemoryReader reader, IntPtr startAddr, int length) {
+			if(reader == null) throw new ArgumentNullException(nameof(reader));
 			Reader = reader;
 			_startAddr = startAddr;
 			_length = length;
