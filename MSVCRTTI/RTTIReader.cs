@@ -42,11 +42,12 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			Debug.Assert(memoryStruct.pTypeDescriptor != IntPtr.Zero, "pTypeDescriptor shouldn't be 0!");
 			Debug.Assert(memoryStruct.pClassDescriptor != IntPtr.Zero, "pClassDescriptor shouldn't be 0!");
 
-			CompleteObjectLocator locator = new CompleteObjectLocator();
-			locator.ConstructorDescriptorOffset = memoryStruct.ConstructorDescriptorOffset;
-			locator.ObjectRootOffset = memoryStruct.ObjectRootOffset;
-			locator.TypeDescriptor = GetTypeDescriptor(memoryStruct.pTypeDescriptor);
-			locator.ClassHierarchyDescriptor = GetClassHierarchyDescriptor(memoryStruct.pClassDescriptor);
+			CompleteObjectLocator locator = new CompleteObjectLocator(
+				GetTypeDescriptor(memoryStruct.pTypeDescriptor),
+				GetClassHierarchyDescriptor(memoryStruct.pClassDescriptor),
+				memoryStruct.ConstructorDescriptorOffset,
+				memoryStruct.ObjectRootOffset
+			);
 
 			return locator;
 		}
