@@ -6,14 +6,18 @@ namespace Henke37.DebugHelp.Gdb {
 	}
 
 	public class StopReason : StopPacket {
-		public string Reason;
-		public object ReasonArg;
+		public string? Reason;
+		public object? ReasonArg;
 		public int ProcessId;
 		public int ThreadId;
 		public int Core;
 		public int Signal;
 
 		public Dictionary<int, byte[]> Registers;
+
+		public StopReason() {
+			Registers = new Dictionary<int, byte[]>();
+		}
 	}
 	public abstract class ProcessEndPacket : StopPacket {
 		public int ProccessId;

@@ -236,7 +236,6 @@ namespace Henke37.DebugHelp.Gdb {
 				case 'S':
 				case 'T': {
 					var reason = new StopReason();
-					reason.Registers = new Dictionary<int, byte[]>();
 					reason.Signal = Convert.ToInt32(reply.Substring(1, 2), 16);
 					parts = reply.Substring(3).Split(';');
 
