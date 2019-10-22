@@ -4,21 +4,22 @@
 		<TargetFrameworks>net461;netstandard20</TargetFrameworks>
 		<FileAlignment>512</FileAlignment>
 		<Deterministic>true</Deterministic>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>latest</LangVersion>
-    <RootNamespace>Henke37.DebugHelp</RootNamespace>
-    <Authors>Henke37</Authors>
-    <Description>Core base library for debugging.</Description>
-    <NeutralLanguage>en</NeutralLanguage>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageId>Henke37.DebugHelp.Core</PackageId>
-    <Version>2.0.0-alpha</Version>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Platforms>x86;x64</Platforms>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>8.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<RootNamespace>Henke37.DebugHelp</RootNamespace>
+		<Authors>Henke37</Authors>
+		<Description>Core base library for debugging.</Description>
+		<NeutralLanguage>en</NeutralLanguage>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>Henke37.DebugHelp.Core</PackageId>
+		<Version>2.0.0-alpha</Version>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Platforms>x86;x64</Platforms>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 	  <DefineConstants>TRACE;x64</DefineConstants>
