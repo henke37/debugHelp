@@ -375,6 +375,7 @@ namespace Henke37.DebugHelp.Gdb {
 			notificationDelegate?.Invoke(@event);
 		}
 
+#nullable disable warnings
 		private void AddNotificationHandler(string name,Action<string> handler) {
 			if(handler == null) throw new ArgumentNullException(nameof(handler));
 			notificationMap.TryGetValue(name, out Action<string> notificationDelegate);
@@ -386,6 +387,7 @@ namespace Henke37.DebugHelp.Gdb {
 				notificationMap[name] = notificationDelegate - handler;
 			}
 		}
+#nullable restore warnings
 
 		private void OnStopNotification(string @event) {
 			if(ThreadStopped == null) return;
