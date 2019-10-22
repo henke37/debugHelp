@@ -376,10 +376,12 @@ namespace Henke37.DebugHelp.Gdb {
 		}
 
 		private void AddNotificationHandler(string name,Action<string> handler) {
+			if(handler == null) throw new ArgumentNullException(nameof(handler));
 			notificationMap.TryGetValue(name, out Action<string> notificationDelegate);
 			notificationMap[name] = notificationDelegate + handler;
 		}
 		private void RemoveNotificationHandler(string name, Action<string> handler) {
+			if(handler == null) throw new ArgumentNullException(nameof(handler));
 			if(notificationMap.TryGetValue(name, out Action<string> notificationDelegate)) {
 				notificationMap[name] = notificationDelegate - handler;
 			}
