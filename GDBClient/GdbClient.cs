@@ -25,7 +25,7 @@ namespace Henke37.DebugHelp.Gdb {
 		private string? pendingNotification;
 		private Dictionary<string, Action<string>> notificationMap;
 
-		public event Action<StopPacket> ThreadStopped;
+		public event Action<StopPacket>? ThreadStopped;
 
 		public GdbClient() {
 			socket = new TcpClient(AddressFamily.InterNetwork);
@@ -362,7 +362,7 @@ namespace Henke37.DebugHelp.Gdb {
 		private void DispatchPendingNotification() {
 			//clear the pending notification first
 			//since this function is reentry safe
-			var currentNotification = pendingNotification;
+			var currentNotification = pendingNotification!;
 			pendingNotification = null;
 
 			int colonPos = currentNotification.IndexOf(':');
