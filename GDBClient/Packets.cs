@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Henke37.DebugHelp.Gdb {
 
@@ -52,5 +53,9 @@ namespace Henke37.DebugHelp.Gdb {
 	public class NoResumedThreads : StopPacket { }
 	public class ConsoleOutput : StopPacket {
 		public string Text;
+
+		public ConsoleOutput(string text) {
+			this.Text = text ?? throw new ArgumentNullException(nameof(text));
+		}
 	}
 }
