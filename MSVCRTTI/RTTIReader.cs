@@ -111,7 +111,7 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			return col.TypeDescriptor.MangledName;
 		}
 
-		public BaseClassDescriptor GetBaseClassDescriptorForObject(IntPtr objAddr, string mangledName) {
+		public BaseClassDescriptor? GetBaseClassDescriptorForObject(IntPtr objAddr, string mangledName) {
 			var col = readObjPtr(objAddr);
 			return col.ClassHierarchyDescriptor[mangledName];
 		}

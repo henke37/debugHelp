@@ -12,14 +12,14 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			Flags = flags;
 		}
 
-		public BaseClassDescriptor GetBaseClass(string mangledName) {
+		public BaseClassDescriptor? GetBaseClass(string mangledName) {
 			foreach(var baseClass in BaseClasses) {
 				if(baseClass.TypeDescriptor.MangledName == mangledName) return baseClass;
 			}
-			throw new KeyNotFoundException($"No base class with mangled name\"{mangledName}\"");
+			return null;
 		}
 
-		public BaseClassDescriptor this[string mangledName] {
+		public BaseClassDescriptor? this[string mangledName] {
 			get { return GetBaseClass(mangledName); }
 		}
 
