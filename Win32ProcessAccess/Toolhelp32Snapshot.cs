@@ -15,6 +15,7 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 		public Toolhelp32Snapshot(Toolhelp32SnapshotFlags flags, UInt32 processId) {
 			if(processId == 0) throw new ArgumentOutOfRangeException(nameof(processId), "The process id can't be zero!");
+			if((flags & Toolhelp32SnapshotFlags.Thread) == Toolhelp32SnapshotFlags.Thread) throw new ArgumentException("Per process thread filtering doesn't work.");
 			handle = CreateToolhelp32Snapshot((uint)flags, processId);
 			if(handle.IsInvalid) throw new Win32Exception();
 		}

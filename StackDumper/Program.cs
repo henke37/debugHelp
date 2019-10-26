@@ -24,7 +24,7 @@ namespace StackDumper {
 		}
 
 		private void DumpStacks() {
-			using(var snap = new Toolhelp32Snapshot(Toolhelp32SnapshotFlags.Thread, process.ProcessId)) {
+			using(var snap = new Toolhelp32Snapshot(Toolhelp32SnapshotFlags.Thread)) {
 				foreach(var threadEntry in snap.GetThreads().Where(t=>t.ProcessId==process.ProcessId)) {
 					Console.WriteLine($"Thread # {threadEntry.ThreadId}");
 					DumpThread(threadEntry);
