@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32WaitChain", "Win32Wait
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stackwalker", "Stackwalker\Stackwalker.csproj", "{FAEC716F-5BA1-460E-B907-02B9E2579772}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DIA", "..\diacom\ComInterfaces\DIA\DIA.csproj", "{B26AD97D-E148-411E-9365-99BC68403B7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackDumper", "StackDumper\StackDumper.csproj", "{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +157,30 @@ Global
 		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|x64.Build.0 = Release|Any CPU
 		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|x86.ActiveCfg = Release|Any CPU
 		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|x86.Build.0 = Release|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Debug|x64.Build.0 = Debug|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Debug|x86.Build.0 = Debug|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Release|x64.ActiveCfg = Release|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Release|x64.Build.0 = Release|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Release|x86.ActiveCfg = Release|Any CPU
+		{B26AD97D-E148-411E-9365-99BC68403B7E}.Release|x86.Build.0 = Release|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Debug|x64.Build.0 = Debug|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Debug|x86.Build.0 = Debug|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Release|x64.ActiveCfg = Release|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Release|x64.Build.0 = Release|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Release|x86.ActiveCfg = Release|Any CPU
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -160,6 +188,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3050E0B9-694E-45E3-BEE5-A2380C123CC6} = {C0CA01EB-B578-4C26-BEA2-E8346070C9B7}
 		{7AA00EC0-66E9-4F4D-AC37-F9DF498E4FDF} = {C0CA01EB-B578-4C26-BEA2-E8346070C9B7}
+		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883} = {C0CA01EB-B578-4C26-BEA2-E8346070C9B7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {86D768BF-7D68-4CF0-819F-6FD0F63A3223}

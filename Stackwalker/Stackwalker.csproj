@@ -13,11 +13,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\diacom\ComInterfaces\DIA\DIA.csproj" />
     <ProjectReference Include="..\DebugHelp\DebugHelp.csproj" />
     <ProjectReference Include="..\PdbAccess\PdbAccess.csproj" />
     <ProjectReference Include="..\Win32ProcessAccess\Win32ProcessAccess.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-	<PackageReference Include="DIA" Version="1.0.2" />
   </ItemGroup>
 </Project>

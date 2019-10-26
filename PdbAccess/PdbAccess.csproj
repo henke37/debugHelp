@@ -28,8 +28,8 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
 		<DefineConstants>TRACE;x86</DefineConstants>
 	</PropertyGroup>
-	<ItemGroup Condition="'$(Platform)'=='x86'">
-	  <PackageReference Include="DIA" Version="1.0.2" />
+	<ItemGroup>
+	  <ProjectReference Include="..\..\diacom\ComInterfaces\DIA\DIA.csproj" />
 	</ItemGroup>
 
 </Project>

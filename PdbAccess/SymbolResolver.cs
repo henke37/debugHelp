@@ -6,7 +6,7 @@ namespace Henke37.DebugHelp.PdbAccess {
 	public class SymbolResolver {
 		private readonly DiaSource source;
 		private readonly IDiaSession session;
-		private IDiaTable stackFrames;//BUG, IDiaEnumFrameData is missing
+		private IDiaEnumFrameData? stackFrames;
 
 		public SymbolResolver(string pdbPath) {
 			source=new DiaSource();
@@ -69,16 +69,17 @@ namespace Henke37.DebugHelp.PdbAccess {
 
 		public IDiaFrameData FrameDataForVirtualAddress(IntPtr addr) {
 			InitFrameEnumerator();
-			throw new NotImplementedException();
+			return stackFrames!.frameByVA((ulong)addr);
 		}
 
 		private void InitFrameEnumerator() {
 			if(stackFrames != null) return;
 			var tables = session.getEnumTables();
 			foreach(IDiaTable table in tables) {
-				stackFrames = table as IDiaTable;//BUG: Should be IDiaEnumFrameData
+				stackFrames = table as IDiaEnumFrameData;//BUG: Should be IDiaEnumFrameData
 				if(stackFrames != null) return;
 			}
+			throw new Exception("Failed to locate the IDiaEnumFrameData interface!");
 		}
 	}
 }
