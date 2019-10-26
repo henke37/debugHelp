@@ -13,6 +13,7 @@ namespace Stackwalker {
 		private SymbolResolver Resolver;
 
 		private const int S_OK=0;
+		private const int S_FALSE = 1;
 		private const int E_FAIL = unchecked((int)0x80004005);
 		private const int E_NOTIMPL = unchecked((int)0x80004001);
 
@@ -43,12 +44,18 @@ namespace Stackwalker {
 		}
 
 		int IDiaStackWalkHelper.frameForVA(ulong va, out IDiaFrameData ppFrame) {
-			ppFrame = null;
-			return E_NOTIMPL;
+			ppFrame = Resolver.FrameDataForVirtualAddress((IntPtr)va);
+			if(ppFrame == null) {
+				return S_FALSE;
+			}
+			return S_OK;
 		}
 
-		int IDiaStackWalkHelper.symbolForVA(ulong va, out IDiaSymbol ppSymbol) {
+		int IDiaStackWalkHelper.symbolForVA(ulong va, out IDiaSymbol? ppSymbol) {
 			ppSymbol = Resolver.FindFunctionAtAddr((IntPtr)va);
+			if(ppSymbol==null) {
+				return S_FALSE;
+			}
 			return S_OK;
 		}
 
@@ -95,11 +102,11 @@ namespace Stackwalker {
 				case CV_HREG_e.CV_REG_DS: retVal = Context.SegDs; return S_OK;
 				case CV_HREG_e.CV_REG_FS: retVal = Context.SegFs; return S_OK;
 				case CV_HREG_e.CV_REG_GS: retVal = Context.SegGs; return S_OK;
-				case CV_HREG_e.CV_REG_IP: retVal = Context.Eip; return S_OK;
+				case CV_HREG_e.CV_REG_EIP: retVal = Context.Eip; return S_OK;
 				case CV_HREG_e.CV_REG_EFLAGS: retVal = (ulong)Context.EFlags; return S_OK;
 				default:
 					retVal = 0;
-					return E_FAIL;
+					return E_NOTIMPL;
 			}
 		}
 
@@ -119,10 +126,10 @@ namespace Stackwalker {
 				case CV_HREG_e.CV_REG_DS: Context.SegDs = (uint)newVal; return S_OK;
 				case CV_HREG_e.CV_REG_FS: Context.SegFs = (uint)newVal; return S_OK;
 				case CV_HREG_e.CV_REG_GS: Context.SegGs = (uint)newVal; return S_OK;
-				case CV_HREG_e.CV_REG_IP: Context.Eip = (uint)newVal; return S_OK;
+				case CV_HREG_e.CV_REG_EIP: Context.Eip = (uint)newVal; return S_OK;
 				case CV_HREG_e.CV_REG_EFLAGS: Context.EFlags = (EFlags)newVal; return S_OK;
 			}
-			return E_FAIL;
+			return E_NOTIMPL;
 		}
 	}
 }
