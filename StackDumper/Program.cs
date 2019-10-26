@@ -61,6 +61,7 @@ namespace StackDumper {
 
 			string pdbPath = mainModule.Path.Replace(".exe", ".pdb");
 			resolver = new SymbolResolver(pdbPath);
+			resolver.SetLoadAddress(mainModule.BaseAddress);
 			memoryReader = new LiveProcessMemoryAccessor(process);
 		}
 	}
