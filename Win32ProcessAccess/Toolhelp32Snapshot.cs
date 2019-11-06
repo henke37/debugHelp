@@ -92,6 +92,31 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public IEnumerable<ThreadEntry> GetThreads(int procId) {
+			ThreadEntry.Native native = new ThreadEntry.Native();
+			native.dwSize = (uint)Marshal.SizeOf<ThreadEntry.Native>();
+			try {
+				bool success = Thread32First(handle, ref native);
+				if(!success) throw new Win32Exception();
+			} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
+				yield break;
+			}
+
+			yield return native.AsManaged();
+
+			for(; ; ) {
+				try {
+					bool success = Thread32Next(handle, ref native);
+					if(!success) throw new Win32Exception();
+				} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
+					yield break;
+				}
+
+				if(native.th32OwnerProcessID != procId) continue;
+				yield return native.AsManaged();
+			}
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern SafeToolhelp32SnapshotHandle CreateToolhelp32Snapshot(UInt32 flags, UInt32 procId);
 

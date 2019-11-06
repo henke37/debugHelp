@@ -11,8 +11,8 @@ namespace Henke37.DebugHelp.Win32 {
 		internal struct Native {
 			internal UInt32 dwSize;
 			UInt32 cntUsage;
-			UInt32 th32ThreadID;
-			UInt32 th32OwnerProcessID;
+			internal UInt32 th32ThreadID;
+			internal UInt32 th32OwnerProcessID;
 			Int32 tpBasePri;
 			Int32 tpDeltaPri;
 			UInt32 dwFlags;
