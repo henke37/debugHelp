@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace Henke37.DebugHelp.PdbAccess {
 	public class SymbolResolver {
-		private readonly DiaSource source;
+		private readonly IDiaDataSource source;
 		private readonly IDiaSession session;
 		private IDiaEnumFrameData? stackFrames;
 
 		public SymbolResolver(string pdbPath) {
-			source=new DiaSource();
+			source = DiaLoader.CreateDiaSource();
 			source.loadDataFromPdb(pdbPath);
 			source.openSession(out session);
 		}
