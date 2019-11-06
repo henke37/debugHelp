@@ -10,7 +10,7 @@
 		<PackageId>Henke37.DebugHelp.Gdb</PackageId>
 		<Authors>Henke37</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>2.0.0-alpha</Version>
+		<Version>2.1.0-alpha</Version>
 		<Description>Code to interact with gdbserver to debug processes on remote hosts.</Description>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
