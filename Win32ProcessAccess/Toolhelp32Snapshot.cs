@@ -92,7 +92,7 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
-		public IEnumerable<ThreadEntry> GetThreads(int procId) {
+		public IEnumerable<ThreadEntry> GetThreads(uint procId) {
 			ThreadEntry.Native native = new ThreadEntry.Native();
 			native.dwSize = (uint)Marshal.SizeOf<ThreadEntry.Native>();
 			try {
@@ -102,7 +102,9 @@ namespace Henke37.DebugHelp.Win32 {
 				yield break;
 			}
 
-			yield return native.AsManaged();
+			if(native.th32OwnerProcessID == procId) {
+				yield return native.AsManaged();
+			}
 
 			for(; ; ) {
 				try {
