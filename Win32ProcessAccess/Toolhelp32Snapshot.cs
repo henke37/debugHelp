@@ -13,7 +13,7 @@ namespace Henke37.DebugHelp.Win32 {
 			try {
 				handle = CreateToolhelp32Snapshot((uint)flags, 0);
 				if(handle.IsInvalid) throw new Win32Exception();
-			} catch(Win32Exception err) when (err.ErrorCode==IncompleteReadException.ErrorNumber) {
+			} catch(Win32Exception err) when (err.NativeErrorCode == IncompleteReadException.ErrorNumber) {
 				throw new IncompleteReadException(err);
 			}
 		}
@@ -23,7 +23,7 @@ namespace Henke37.DebugHelp.Win32 {
 			try { 
 				handle = CreateToolhelp32Snapshot((uint)flags, processId);
 				if(handle.IsInvalid) throw new Win32Exception();
-			} catch(Win32Exception err) when(err.ErrorCode==IncompleteReadException.ErrorNumber) {
+			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteReadException.ErrorNumber) {
 				throw new IncompleteReadException(err);
 			}
 		}
@@ -36,6 +36,8 @@ namespace Henke37.DebugHelp.Win32 {
 				if(!success) throw new Win32Exception();
 			} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
 				yield break;
+			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteReadException.ErrorNumber) {
+				throw new IncompleteReadException(err);
 			}
 
 			yield return native.AsManaged();
@@ -46,6 +48,8 @@ namespace Henke37.DebugHelp.Win32 {
 					if(!success) throw new Win32Exception();
 				} catch(Win32Exception err) when(err.NativeErrorCode == ErrNoMoreFiles) {
 					yield break;
+				} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteReadException.ErrorNumber) {
+					throw new IncompleteReadException(err);
 				}
 
 				yield return native.AsManaged();
