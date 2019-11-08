@@ -10,14 +10,22 @@ namespace Henke37.DebugHelp.Win32 {
 		private const int ErrNoMoreFiles = 18;
 
 		public Toolhelp32Snapshot(Toolhelp32SnapshotFlags flags) {
-			handle = CreateToolhelp32Snapshot((uint)flags, 0);
-			if(handle.IsInvalid) throw new Win32Exception();
+			try {
+				handle = CreateToolhelp32Snapshot((uint)flags, 0);
+				if(handle.IsInvalid) throw new Win32Exception();
+			} catch(Win32Exception err) when (err.ErrorCode==IncompleteReadException.ErrorNumber) {
+				throw new IncompleteReadException(err);
+			}
 		}
 		public Toolhelp32Snapshot(Toolhelp32SnapshotFlags flags, UInt32 processId) {
 			if(processId == 0) throw new ArgumentOutOfRangeException(nameof(processId), "The process id can't be zero!");
 			if((flags & Toolhelp32SnapshotFlags.Thread) == Toolhelp32SnapshotFlags.Thread) throw new ArgumentException("Per process thread filtering doesn't work.");
-			handle = CreateToolhelp32Snapshot((uint)flags, processId);
-			if(handle.IsInvalid) throw new Win32Exception();
+			try { 
+				handle = CreateToolhelp32Snapshot((uint)flags, processId);
+				if(handle.IsInvalid) throw new Win32Exception();
+			} catch(Win32Exception err) when(err.ErrorCode==IncompleteReadException.ErrorNumber) {
+				throw new IncompleteReadException(err);
+			}
 		}
 
 		public IEnumerable<ModuleEntry> GetModules() {
