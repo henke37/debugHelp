@@ -161,6 +161,11 @@ namespace Henke37.DebugHelp.Win32 {
 			bool success = TerminateThread(handle, exitCode);
 			if(!success) throw new Win32Exception();
 		}
+
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		public void QueueUserAPC(IntPtr pfnAPC, IntPtr dwData) {
+			bool success = QueueUserAPCNative(pfnAPC, handle, dwData);
+			if(!success) throw new Win32Exception();
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
@@ -195,5 +200,8 @@ namespace Henke37.DebugHelp.Win32 {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool OpenThreadToken(SafeThreadHandle procHandle, UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool IgnoreImpersonation, out SafeTokenHandle tokenHandle);
 
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "QueueUserAPC")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool QueueUserAPCNative(IntPtr pfnAPC, SafeThreadHandle procHandle, IntPtr dwData);
 	}
 }
