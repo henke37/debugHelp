@@ -146,17 +146,21 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Suspend() {
-			SuspendThread(handle);
+			int suspendCount = SuspendThread(handle);
+			if(suspendCount<0) throw new Win32Exception();
 		}
 
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Resume() {
-			ResumeThread(handle);
+			int suspendCount = ResumeThread(handle);
+			if(suspendCount < 0) throw new Win32Exception();
 		}
 
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
-			TerminateThread(handle, exitCode);
+			bool success = TerminateThread(handle, exitCode);
+			if(!success) throw new Win32Exception();
+		}
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
@@ -189,6 +193,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[DllImport("Advapi32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool OpenThreadToken(SafeThreadHandle procHandle, UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool IgnoreImpersonation, out SafeTokenHandle tokenHandle);
+		internal static extern bool OpenThreadToken(SafeThreadHandle procHandle, UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool IgnoreImpersonation, out SafeTokenHandle tokenHandle);
+
 	}
 }
