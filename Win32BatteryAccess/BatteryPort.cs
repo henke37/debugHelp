@@ -1,5 +1,6 @@
 ﻿using Henke37.Win32.Base;
 using Henke37.Win32.Base.AccessRights;
+using Henke37.Win32.DeviceEnum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Henke37.Win32.BatteryAccess {
 		internal NativeFileObject file;
 
 		internal const UInt64 InvalidTag = 0;
+
+		internal static readonly Guid BatteryGuid = new Guid(0x72631e54, 0x78A4, 0x11d0, 0xbc, 0xf7, 0x00, 0xaa, 0x00, 0xb7, 0xb3, 0x2a);
 
 		public BatteryPort(string path, bool readOnly = true) {
 			var rights = readOnly ? FileObjectAccessRights.GenericRead : FileObjectAccessRights.GenericRead | FileObjectAccessRights.GenericWrite;
@@ -27,6 +30,10 @@ namespace Henke37.Win32.BatteryAccess {
 			file.DeviceControlInputOutput<UInt64, UInt64>(DeviceIoControlCode.BatteryQueryTag, ref timeout, ref tagBuff);
 
 			return tagBuff;
+		}
+
+		static void GetBatteries() {
+			var devInfo = new DeviceInformationSet(BatteryGuid, DeviceInformationClassFlags.Present | DeviceInformationClassFlags.DeviceInterface);
 		}
 	}
 }

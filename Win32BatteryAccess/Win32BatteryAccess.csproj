@@ -34,5 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Win32Base\Win32Base.csproj" />
+    <ProjectReference Include="..\Win32DeviceEnum\Win32DeviceEnum.csproj" />
   </ItemGroup>
 </Project>
