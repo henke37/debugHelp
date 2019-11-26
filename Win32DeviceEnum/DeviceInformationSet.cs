@@ -25,61 +25,85 @@ namespace Henke37.Win32.DeviceEnum {
 		public IEnumerable<DeviceInterface> GetDevices() {
 
 			for(uint interfaceIndex=0;interfaceIndex<100;++interfaceIndex) {
-				DeviceInterface.Native native=new DeviceInterface.Native();
-				native.cdSize = (uint)Marshal.SizeOf(typeof(DeviceInterface.Native));
-				try {
-					bool success = SetupDiEnumDeviceInterfaces(
-						handle,
-						IntPtr.Zero,
-						IntPtr.Zero,
-						interfaceIndex,
-						ref native
-					);
-					if(!success) throw new Win32Exception();
-				} catch(Win32Exception err) when(err.NativeErrorCode==ERROR_NO_MORE_ITEMS) {
+				bool succes= TryGetInterface(interfaceIndex, out var inter);
+				if(succes) {
+					yield return inter!;
+				} else {
 					yield break;
-				}
-
-				{
-					bool success;
-					UInt32 requiredSize=0;
-					try {
-						success = SetupDiGetDeviceInterfaceDetailW(
-							handle,
-							native,
-							IntPtr.Zero,
-							0,
-							ref requiredSize,
-							IntPtr.Zero
-						);
-						if(!success) throw new Win32Exception();
-					} catch(Win32Exception err) when(err.NativeErrorCode == ERROR_INSUFFICIENT_BUFFER) {
-					}
-
-					success = SetupDiGetDeviceInterfaceDetailW(
-							handle,
-							native,
-							IntPtr.Zero,
-							0,
-							ref requiredSize,
-							IntPtr.Zero
-					);
-					if(!success) throw new Win32Exception();
 				}
 			}
 
 			yield break;
 		}
 
-		[DllImport("Setupapi.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "SetupDiGetClassDevsW")]
-		internal static extern unsafe DeviceInformationSetHandle SetupDiGetClassDevsGuid(Guid ClassGuid,
+		private unsafe bool TryGetInterface(uint interfaceIndex, out DeviceInterface? ret) {
+			DeviceInterface.Native native = new DeviceInterface.Native();
+			native.cdSize = (uint)Marshal.SizeOf(typeof(DeviceInterface.Native));
+			try {
+				bool success = SetupDiEnumDeviceInterfaces(
+					handle,
+					IntPtr.Zero,
+					IntPtr.Zero,
+					interfaceIndex,
+					ref native
+				);
+				if(!success) throw new Win32Exception();
+			} catch(Win32Exception err) when(err.NativeErrorCode == ERROR_NO_MORE_ITEMS) {
+				ret = null;
+				return false;
+			}
+
+			{
+				bool success;
+				UInt32 requiredSize = 0;
+				try {
+					success = SetupDiGetDeviceInterfaceDetailW(
+						handle,
+						native,
+						null,
+						0,
+						ref requiredSize,
+						IntPtr.Zero
+					);
+					if(!success) throw new Win32Exception();
+				} catch(Win32Exception err) when(err.NativeErrorCode == ERROR_INSUFFICIENT_BUFFER) {
+				}
+
+				byte[] buffer = new byte[requiredSize];
+
+				fixed(byte *bufferP= buffer) {
+					int varPartOffset= (int)Marshal.OffsetOf(typeof(DeviceInterface.DetailsNative), "cbSize");
+					*(UInt32*)bufferP = (uint)varPartOffset;
+
+					success = SetupDiGetDeviceInterfaceDetailW(
+							handle,
+							native,
+							bufferP,
+							requiredSize,
+							ref requiredSize,
+							IntPtr.Zero
+					);
+					if(!success) throw new Win32Exception();
+					char* stringPtr =(char*)(bufferP+varPartOffset);
+					string filePath = new string(stringPtr, 0, (int)requiredSize - varPartOffset);
+
+					ret = native.AsManaged(filePath);
+					return true;
+				}
+			}
+		}
+
+		[DllImport("Setupapi.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "SetupDiGetClassDevsW", CharSet = CharSet.Unicode)]
+		internal static extern unsafe DeviceInformationSetHandle SetupDiGetClassDevsGuid(
+			Guid ClassGuid,
 			IntPtr Enumerator,
 			IntPtr hwndParent,
 			DeviceInformationClassFlags flags
 		);
 
-		[DllImport("Setupapi.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "SetupDiGetClassDevsW")]
-		internal static extern unsafe DeviceInformationSetHandle SetupDiGetClassDevsEnumerator(IntPtr ClassGuid,
+		[DllImport("Setupapi.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "SetupDiGetClassDevsW", CharSet = CharSet.Unicode)]
+		internal static extern unsafe DeviceInformationSetHandle SetupDiGetClassDevsEnumerator(
+			IntPtr ClassGuid,
 			[MarshalAs(UnmanagedType.LPTStr)] string Enumerator,
 			IntPtr hwndParent,
 			DeviceInformationClassFlags flags
@@ -91,16 +115,16 @@ namespace Henke37.Win32.DeviceEnum {
 			DeviceInformationSetHandle DeviceInfoSet,
 			IntPtr DeviceInfoData,
 			IntPtr InterfaceClassGuid,
-			UInt32                     MemberIndex,
+			UInt32 MemberIndex,
 			ref DeviceInterface.Native DeviceInterfaceData
 		);
 
-		[DllImport("Setupapi.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("Setupapi.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool SetupDiGetDeviceInterfaceDetailW(
 			DeviceInformationSetHandle DeviceInfoSet,
 			DeviceInterface.Native DeviceInterfaceData,
-			IntPtr DeviceInterfaceDetailData,
+			byte* DeviceInterfaceDetailData,
 			UInt32 DeviceInterfaceDetailDataSize,
 			ref UInt32 RequiredSize,
 			IntPtr DeviceInfoData

@@ -16,14 +16,19 @@ namespace Henke37.Win32.DeviceEnum {
 			internal DeviceInterfaceFlags Flags;
 			internal UIntPtr Reserved;
 
-			public DeviceInterface AsManaged() {
+			public DeviceInterface AsManaged(string filePath) {
 				var di = new DeviceInterface() { 
 					InterfaceClassGuid = this.InterfaceClassGuid,
-					Flags = this.Flags
+					Flags = this.Flags,
+					FilePath=filePath
 				};
 
 				return di;
 			}
+		}
+
+		internal struct DetailsNative {
+			internal UInt32 cbSize;
 		}
 	}
 
