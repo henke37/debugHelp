@@ -60,6 +60,11 @@ namespace Henke37.Win32.BatteryAccess {
 		}
 
 		public DateTime GetManufactureDate(UInt64 BatteryTag) {
+			var natDate=QueryInformation<ManufactureDate>(QueryInformationLevel.ManufactureDate, BatteryTag);
+			return new DateTime(natDate.Year, natDate.Month, natDate.Day);
+		}
+
+		private T QueryInformation<T>(QueryInformationLevel manufactureDate, ulong batteryTag) {
 			throw new NotImplementedException();
 		}
 
