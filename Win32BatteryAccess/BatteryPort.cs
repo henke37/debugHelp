@@ -39,6 +39,40 @@ namespace Henke37.Win32.BatteryAccess {
 			return devInfo.GetDevices();
 		}
 
+		public BatteryStatus GetStatus(UInt64 BatteryTag) {
+			BatteryWaitStatus wait=new BatteryWaitStatus();
+			wait.BatteryTag = BatteryTag;
+			wait.Timeout = 0;
+			BatteryStatus status;
+			status = file.DeviceControlInputOutput<BatteryWaitStatus, BatteryStatus>(
+				DeviceIoControlCode.BatteryQueryStatus,
+				ref wait
+			);
+			return status;
+		}
 
+		public string GetSerialNumber(UInt64 BatteryTag) {
+			throw new NotImplementedException();
+		}
+
+		public string GetManufactureName(UInt64 BatteryTag) {
+			throw new NotImplementedException();
+		}
+
+		public DateTime GetManufactureDate(UInt64 BatteryTag) {
+			throw new NotImplementedException();
+		}
+
+		public string GetUniqueID(UInt64 BatteryTag) {
+			throw new NotImplementedException();
+		}
+
+		public string GetDeviceName(UInt64 BatteryTag) {
+			throw new NotImplementedException();
+		}
+
+		public TimeSpan GetEstimatedTime(UInt64 BatteryTag) {
+			throw new NotImplementedException();
+		}
 	}
 }
