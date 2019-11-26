@@ -12,6 +12,15 @@ namespace BatteryTest {
 
 			foreach(var device in devices) {
 				Console.WriteLine(device.FilePath);
+				var bat = new BatteryPort(device);
+				var tag = bat.BatteryTag;
+
+				var status=bat.GetStatus(tag);
+				Console.WriteLine(
+					"{0} {1} {2} {3}",
+					status.PowerState, status.Voltage,
+					status.Rate, status.Capacity
+				);
 			}
 		}
 	}
