@@ -59,11 +59,6 @@ namespace Henke37.Win32.BatteryAccess {
 			return QueryInfoString(QueryInformationLevel.ManufactureName, BatteryTag);
 		}
 
-		public DateTime GetManufactureDate(UInt64 BatteryTag) {
-			var natDate=QueryInformation<ManufactureDate>(QueryInformationLevel.ManufactureDate, BatteryTag);
-			return new DateTime(natDate.Year, natDate.Month, natDate.Day);
-		}
-
 		public string GetUniqueID(UInt64 BatteryTag) {
 			return QueryInfoString(QueryInformationLevel.UniqueID, BatteryTag);
 		}
@@ -73,19 +68,28 @@ namespace Henke37.Win32.BatteryAccess {
 		}
 
 		public TimeSpan GetEstimatedTime(UInt64 BatteryTag) {
-			throw new NotImplementedException();
+			var secs=QueryInformation<UInt64>(QueryInformationLevel.EstimatedTime, BatteryTag);
+			return new TimeSpan(0, 0, (int)secs);
 		}
 
 		public UInt64 GetTemperature(UInt64 BatteryTag) {
-			throw new NotImplementedException();
+			return QueryInformation<UInt64>(QueryInformationLevel.Temperature, BatteryTag);
+		}
+
+		public DateTime GetManufactureDate(UInt64 BatteryTag) {
+			var natDate = QueryInformation<ManufactureDate>(QueryInformationLevel.ManufactureDate, BatteryTag);
+			return new DateTime(natDate.Year, natDate.Month, natDate.Day);
 		}
 
 
-
-		private T QueryInformation<T>(QueryInformationLevel manufactureDate, ulong batteryTag) where T : unmanaged {
-			throw new NotImplementedException();
+		private T QueryInformation<T>(QueryInformationLevel informationLevel, ulong batteryTag) where T : unmanaged {
+			QueryInformation query = new QueryInformation() {
+				BatteryTag=batteryTag,
+				InformationLevel=informationLevel,
+				AtRate=0
+			};
+			return file.DeviceControlInputOutput<QueryInformation, T>(DeviceIoControlCode.BatteryQueryInformation, query);
 		}
-
 
 		private string QueryInfoString(QueryInformationLevel informationLevel, ulong batteryTag) {
 			throw new NotImplementedException();
