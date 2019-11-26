@@ -81,6 +81,11 @@ namespace Henke37.Win32.BatteryAccess {
 			return new DateTime(natDate.Year, natDate.Month, natDate.Day);
 		}
 
+		public BatteryInformation GetBatteryInformation(UInt64 BatteryTag) {
+			var natInfo = QueryInformation<BatteryInformation.Native>(QueryInformationLevel.Information, BatteryTag);
+			return natInfo.AsNative();
+		}
+
 
 		private T QueryInformation<T>(QueryInformationLevel informationLevel, ulong batteryTag) where T : unmanaged {
 			QueryInformation query = new QueryInformation() {
