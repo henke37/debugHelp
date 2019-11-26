@@ -9,6 +9,10 @@ namespace BatteryTest {
 	class Program {
 		static void Main(string[] args) {
 			var devices = BatteryPort.GetBatteries();
+
+			foreach(var device in devices) {
+				Console.WriteLine(device.FilePath);
+			}
 		}
 	}
 }
