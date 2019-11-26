@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.BatteryAccess {
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	internal struct QueryInformation {
 		internal UInt64 BatteryTag;
 		internal QueryInformationLevel InformationLevel;

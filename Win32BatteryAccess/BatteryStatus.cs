@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.BatteryAccess {
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct BatteryStatus {
 		public PowerStateFlags PowerState;
 		public UInt64 Capacity;

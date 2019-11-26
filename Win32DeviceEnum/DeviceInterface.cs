@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.DeviceEnum {
 	public class DeviceInterface {
@@ -10,6 +7,7 @@ namespace Henke37.Win32.DeviceEnum {
 		public DeviceInterfaceFlags Flags;
 		public string FilePath;
 
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		internal struct Native {
 			internal UInt32 cdSize;
 			internal Guid InterfaceClassGuid;
@@ -27,6 +25,7 @@ namespace Henke37.Win32.DeviceEnum {
 			}
 		}
 
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		internal struct DetailsNative {
 			internal UInt32 cbSize;
 		}
