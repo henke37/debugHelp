@@ -14,7 +14,9 @@ namespace Henke37.Win32.BatteryAccess {
 
 		internal static readonly Guid BatteryGuid = new Guid(0x72631e54, 0x78A4, 0x11d0, 0xbc, 0xf7, 0x00, 0xaa, 0x00, 0xb7, 0xb3, 0x2a);
 
-		public BatteryPort(string path, bool readOnly = true) {
+		public BatteryPort(DeviceInterface device, bool readOnly = true) : this(device.FilePath, readOnly) { }
+
+		private BatteryPort(string path, bool readOnly = true) {
 			var rights = readOnly ? FileObjectAccessRights.GenericRead : FileObjectAccessRights.GenericRead | FileObjectAccessRights.GenericWrite;
 			var share= readOnly ? FileShareMode.Read : FileShareMode.Write | FileShareMode.Read;
 			file = NativeFileObject.Open(path, rights, share, FileDisposition.OpenExisting, 0);
@@ -32,8 +34,11 @@ namespace Henke37.Win32.BatteryAccess {
 			return tagBuff;
 		}
 
-		static void GetBatteries() {
+		public static IEnumerable<DeviceInterface> GetBatteries() {
 			var devInfo = new DeviceInformationSet(BatteryGuid, DeviceInformationClassFlags.Present | DeviceInformationClassFlags.DeviceInterface);
+			return devInfo.GetDevices();
 		}
+
+
 	}
 }
