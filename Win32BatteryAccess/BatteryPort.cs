@@ -64,10 +64,6 @@ namespace Henke37.Win32.BatteryAccess {
 			return new DateTime(natDate.Year, natDate.Month, natDate.Day);
 		}
 
-		private T QueryInformation<T>(QueryInformationLevel manufactureDate, ulong batteryTag) {
-			throw new NotImplementedException();
-		}
-
 		public string GetUniqueID(UInt64 BatteryTag) {
 			return QueryInfoString(QueryInformationLevel.UniqueID, BatteryTag);
 		}
@@ -81,6 +77,12 @@ namespace Henke37.Win32.BatteryAccess {
 		}
 
 		public UInt64 GetTemperature(UInt64 BatteryTag) {
+			throw new NotImplementedException();
+		}
+
+
+
+		private T QueryInformation<T>(QueryInformationLevel manufactureDate, ulong batteryTag) where T : unmanaged {
 			throw new NotImplementedException();
 		}
 
