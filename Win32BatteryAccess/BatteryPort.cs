@@ -52,11 +52,11 @@ namespace Henke37.Win32.BatteryAccess {
 		}
 
 		public string GetSerialNumber(UInt64 BatteryTag) {
-			throw new NotImplementedException();
+			return QueryInfoString(QueryInformationLevel.SerialNumber, BatteryTag);
 		}
 
 		public string GetManufactureName(UInt64 BatteryTag) {
-			throw new NotImplementedException();
+			return QueryInfoString(QueryInformationLevel.ManufactureName, BatteryTag);
 		}
 
 		public DateTime GetManufactureDate(UInt64 BatteryTag) {
@@ -64,14 +64,23 @@ namespace Henke37.Win32.BatteryAccess {
 		}
 
 		public string GetUniqueID(UInt64 BatteryTag) {
-			throw new NotImplementedException();
+			return QueryInfoString(QueryInformationLevel.UniqueID, BatteryTag);
 		}
 
 		public string GetDeviceName(UInt64 BatteryTag) {
-			throw new NotImplementedException();
+			return QueryInfoString(QueryInformationLevel.DeviceName, BatteryTag);
 		}
 
 		public TimeSpan GetEstimatedTime(UInt64 BatteryTag) {
+			throw new NotImplementedException();
+		}
+
+		public UInt64 GetTemperature(UInt64 BatteryTag) {
+			throw new NotImplementedException();
+		}
+
+
+		private string QueryInfoString(QueryInformationLevel informationLevel, ulong batteryTag) {
 			throw new NotImplementedException();
 		}
 	}
