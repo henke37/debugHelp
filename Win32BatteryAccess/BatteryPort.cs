@@ -88,7 +88,7 @@ namespace Henke37.Win32.BatteryAccess {
 				InformationLevel=informationLevel,
 				AtRate=0
 			};
-			return file.DeviceControlInputOutput<QueryInformation, T>(DeviceIoControlCode.BatteryQueryInformation, query);
+			return file.DeviceControlInputOutput<QueryInformation, T>(DeviceIoControlCode.BatteryQueryInformation, ref query);
 		}
 
 		private string QueryInfoString(QueryInformationLevel informationLevel, ulong batteryTag) {
