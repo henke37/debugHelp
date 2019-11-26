@@ -24,7 +24,7 @@ namespace Henke37.Win32.DeviceEnum {
 
 		public IEnumerable<DeviceInterface> GetDevices() {
 
-			for(uint interfaceIndex=0;interfaceIndex<100;++interfaceIndex) {
+			for(uint interfaceIndex=0;;++interfaceIndex) {
 				bool succes= TryGetInterface(interfaceIndex, out var inter);
 				if(succes) {
 					yield return inter!;
@@ -32,8 +32,6 @@ namespace Henke37.Win32.DeviceEnum {
 					yield break;
 				}
 			}
-
-			yield break;
 		}
 
 		private unsafe bool TryGetInterface(uint interfaceIndex, out DeviceInterface? ret) {
