@@ -15,7 +15,7 @@ namespace Henke37.Win32.DeviceEnum {
 		private const int ERROR_INSUFFICIENT_BUFFER = 122;
 
 		internal DeviceInformationSet(Guid guid, DeviceInformationClassFlags flags) {
-			handle = SetupDiGetClassDevsGuid(guid, IntPtr.Zero, IntPtr.Zero, flags);
+			handle = SetupDiGetClassDevsGuid(ref guid, IntPtr.Zero, IntPtr.Zero, flags);
 		}
 
 		internal DeviceInformationSet(string enumerator, DeviceInformationClassFlags flags) {
@@ -93,7 +93,7 @@ namespace Henke37.Win32.DeviceEnum {
 
 		[DllImport("Setupapi.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "SetupDiGetClassDevsW", CharSet = CharSet.Unicode)]
 		internal static extern unsafe DeviceInformationSetHandle SetupDiGetClassDevsGuid(
-			Guid ClassGuid,
+			ref Guid ClassGuid,
 			IntPtr Enumerator,
 			IntPtr hwndParent,
 			DeviceInformationClassFlags flags
