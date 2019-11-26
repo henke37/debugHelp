@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdbAccess", "PdbAccess\PdbA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C0CA01EB-B578-4C26-BEA2-E8346070C9B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleVsFileMapping", "ModuleVsFileMapping\ModuleVsFileMapping.csproj", "{3050E0B9-694E-45E3-BEE5-A2380C123CC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuleVsFileMapping", "ModuleVsFileMapping\ModuleVsFileMapping.csproj", "{3050E0B9-694E-45E3-BEE5-A2380C123CC6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CdControl", "CdControl\CdControl.csproj", "{7AA00EC0-66E9-4F4D-AC37-F9DF498E4FDF}"
 EndProject
@@ -30,6 +30,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DIA", "..\diacom\ComInterfaces\DIA\DIA.csproj", "{B26AD97D-E148-411E-9365-99BC68403B7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackDumper", "StackDumper\StackDumper.csproj", "{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32BatteryAccess", "Win32BatteryAccess\Win32BatteryAccess.csproj", "{729B6538-C742-4F3C-BD7A-7AA237998365}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32DeviceEnum", "Win32DeviceEnum\Win32DeviceEnum.csproj", "{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -181,6 +185,26 @@ Global
 		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Release|x64.Build.0 = Release|Any CPU
 		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Release|x86.ActiveCfg = Release|Any CPU
 		{A369A3BF-7863-4B9B-A28E-8BAFEDA4B883}.Release|x86.Build.0 = Release|Any CPU
+		{729B6538-C742-4F3C-BD7A-7AA237998365}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{729B6538-C742-4F3C-BD7A-7AA237998365}.Debug|x64.ActiveCfg = Debug|x64
+		{729B6538-C742-4F3C-BD7A-7AA237998365}.Debug|x64.Build.0 = Debug|x64
+		{729B6538-C742-4F3C-BD7A-7AA237998365}.Debug|x86.ActiveCfg = Debug|x86
+		{729B6538-C742-4F3C-BD7A-7AA237998365}.Debug|x86.Build.0 = Debug|x86
+		{729B6538-C742-4F3C-BD7A-7AA237998365}.Release|Any CPU.ActiveCfg = Release|x86
+		{729B6538-C742-4F3C-BD7A-7AA237998365}.Release|x64.ActiveCfg = Release|x64
+		{729B6538-C742-4F3C-BD7A-7AA237998365}.Release|x64.Build.0 = Release|x64
+		{729B6538-C742-4F3C-BD7A-7AA237998365}.Release|x86.ActiveCfg = Release|x86
+		{729B6538-C742-4F3C-BD7A-7AA237998365}.Release|x86.Build.0 = Release|x86
+		{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}.Debug|x64.ActiveCfg = Debug|x64
+		{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}.Debug|x64.Build.0 = Debug|x64
+		{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}.Debug|x86.ActiveCfg = Debug|x86
+		{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}.Debug|x86.Build.0 = Debug|x86
+		{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}.Release|Any CPU.ActiveCfg = Release|x86
+		{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}.Release|x64.ActiveCfg = Release|x64
+		{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}.Release|x64.Build.0 = Release|x64
+		{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}.Release|x86.ActiveCfg = Release|x86
+		{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
