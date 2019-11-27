@@ -7,6 +7,12 @@ namespace Henke37.Win32.DeviceEnum {
 		public DeviceInterfaceFlags Flags;
 		public string FilePath;
 
+		public DeviceInterface(Guid interfaceClassGuid, DeviceInterfaceFlags flags, string filePath) {
+			InterfaceClassGuid = interfaceClassGuid;
+			Flags = flags;
+			FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
+		}
+
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		internal struct Native {
 			internal UInt32 cdSize;
@@ -15,13 +21,7 @@ namespace Henke37.Win32.DeviceEnum {
 			internal UIntPtr Reserved;
 
 			public DeviceInterface AsManaged(string filePath) {
-				var di = new DeviceInterface() { 
-					InterfaceClassGuid = this.InterfaceClassGuid,
-					Flags = this.Flags,
-					FilePath=filePath
-				};
-
-				return di;
+				return new DeviceInterface(InterfaceClassGuid, Flags, filePath);
 			}
 		}
 

@@ -15,6 +15,28 @@ namespace Henke37.Win32.BatteryAccess {
 		public UInt64 CriticalBias;
 		public UInt64 CycleCount;
 
+		public BatteryInformation(
+			BatteryCapabilitiesFlags capabilities,
+			BatteryTechnology batteryTechnology,
+			string chemistry,
+			ulong designatedCapacity,
+			ulong fullyChargedCapacity,
+			ulong defaultAlert1,
+			ulong defaultAlert2,
+			ulong criticalBias,
+			ulong cycleCount
+		) {
+			Capabilities = capabilities;
+			BatteryTechnology = batteryTechnology;
+			Chemistry = chemistry ?? throw new ArgumentNullException(nameof(chemistry));
+			DesignatedCapacity = designatedCapacity;
+			FullyChargedCapacity = fullyChargedCapacity;
+			DefaultAlert1 = defaultAlert1;
+			DefaultAlert2 = defaultAlert2;
+			CriticalBias = criticalBias;
+			CycleCount = cycleCount;
+		}
+
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		internal unsafe struct Native {
 			internal BatteryCapabilitiesFlags Capabilities;
@@ -35,17 +57,17 @@ namespace Henke37.Win32.BatteryAccess {
 					chemString = new string(chemP, 0, 4);
 				}
 
-				return new BatteryInformation() {
-					Capabilities = Capabilities,
-					BatteryTechnology = BatteryTechnology,
-					Chemistry = chemString,
-					DesignatedCapacity = DesignatedCapacity,
-					FullyChargedCapacity = FullyChargedCapacity,
-					DefaultAlert1 = DefaultAlert1,
-					DefaultAlert2 = DefaultAlert2,
-					CriticalBias = CriticalBias,
-					CycleCount = CycleCount
-				};
+				return new BatteryInformation(
+					Capabilities,
+					BatteryTechnology,
+					chemString,
+					DesignatedCapacity,
+					FullyChargedCapacity,
+					DefaultAlert1,
+					DefaultAlert2,
+					CriticalBias,
+					CycleCount
+				);
 			}
 		}
 	}
