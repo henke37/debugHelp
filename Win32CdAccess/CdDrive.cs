@@ -43,11 +43,11 @@ namespace Henke37.Win32.CdAccess {
 				}
 			}
 
-			return new TOC() {
-				FirstTrack = header.FirstTrack,
-				LastTrack = header.LastTrack,
-				Tracks = tracks
-			};
+			return new TOC(
+				header.FirstTrack,
+				header.LastTrack,
+				tracks
+			);
 		}
 
 		public unsafe string GetMediaCatalogNumber() {

@@ -8,6 +8,12 @@ namespace Henke37.Win32.CdAccess {
 		public byte LastTrack;
 		internal List<TrackEntry> Tracks;
 
+		public TOC(byte firstTrack, byte lastTrack, List<TrackEntry> tracks) {
+			FirstTrack = firstTrack;
+			LastTrack = lastTrack;
+			Tracks = tracks ?? throw new ArgumentNullException(nameof(tracks));
+		}
+
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal unsafe struct TocHeader {
 			UInt16 length;
