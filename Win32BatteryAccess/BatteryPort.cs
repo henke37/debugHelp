@@ -92,9 +92,14 @@ namespace Henke37.Win32.BatteryAccess {
 			return file.DeviceControlInputOutput<QueryInformation, T>(DeviceIoControlCode.BatteryQueryInformation, ref query);
 		}
 
-		private string QueryInfoString(QueryInformationLevel informationLevel, ulong batteryTag) {
+		private string QueryInfoString(QueryInformationLevel informationLevel, ulong batteryTag, int buffSize=128) {
 			QueryInformation query = new QueryInformation(batteryTag, informationLevel);
-			throw new NotImplementedException();
+
+			byte[] strBuff=new byte[buffSize];
+
+			var written=file.DeviceControlInputOutput<QueryInformation>(DeviceIoControlCode.BatteryQueryInformation, ref query, strBuff);
+
+			return Encoding.UTF8.GetString(strBuff, 0, (int)written);
 		}
 	}
 }
