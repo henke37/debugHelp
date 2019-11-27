@@ -62,8 +62,8 @@ namespace Henke37.Win32.CdAccess {
 				return null;
 			}
 
-			byte* b = catNr.MediaCatalog;
-			return ReadStrZ(catNr.MediaCatalog);
+
+			return new string((sbyte*)catNr.MediaCatalog);
 		}
 
 		public unsafe string? GetTrackISRC(byte track) {
@@ -78,18 +78,7 @@ namespace Henke37.Win32.CdAccess {
 				return null;
 			}
 
-			return ReadStrZ(isrc.TrackIsrc);
-		}
-
-		private static unsafe string ReadStrZ(byte* b) {
-			StringBuilder sb = new StringBuilder();
-			for(int i = 0; i < 15; i++) {
-				char c = (char)b[i];
-				if(c == 0) break;
-				sb.Append(c);
-			}
-
-			return sb.ToString();
+			return new string((sbyte*)isrc.TrackIsrc);
 		}
 
 		public RegionData GetRegionData() {
