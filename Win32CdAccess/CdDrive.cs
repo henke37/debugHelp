@@ -50,7 +50,7 @@ namespace Henke37.Win32.CdAccess {
 			);
 		}
 
-		public unsafe string GetMediaCatalogNumber() {
+		public unsafe string? GetMediaCatalogNumber() {
 			SubQDataFormat dataFormat = new SubQDataFormat() {
 				Format = (byte)SubQDataFormatFormat.MediaCatalog,
 				Track = 0
@@ -66,7 +66,7 @@ namespace Henke37.Win32.CdAccess {
 			return ReadStrZ(catNr.MediaCatalog);
 		}
 
-		public unsafe string GetTrackISRC(byte track) {
+		public unsafe string? GetTrackISRC(byte track) {
 			SubQDataFormat dataFormat = new SubQDataFormat() {
 				Format = (byte)SubQDataFormatFormat.TrackISRC,
 				Track = track
