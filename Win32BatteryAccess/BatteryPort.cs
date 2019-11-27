@@ -88,15 +88,12 @@ namespace Henke37.Win32.BatteryAccess {
 
 
 		private T QueryInformation<T>(QueryInformationLevel informationLevel, ulong batteryTag) where T : unmanaged {
-			QueryInformation query = new QueryInformation() {
-				BatteryTag=batteryTag,
-				InformationLevel=informationLevel,
-				AtRate=0
-			};
+			QueryInformation query = new QueryInformation(batteryTag,informationLevel);
 			return file.DeviceControlInputOutput<QueryInformation, T>(DeviceIoControlCode.BatteryQueryInformation, ref query);
 		}
 
 		private string QueryInfoString(QueryInformationLevel informationLevel, ulong batteryTag) {
+			QueryInformation query = new QueryInformation(batteryTag, informationLevel);
 			throw new NotImplementedException();
 		}
 	}

@@ -7,6 +7,12 @@ namespace Henke37.Win32.BatteryAccess {
 		internal UInt64 BatteryTag;
 		internal QueryInformationLevel InformationLevel;
 		internal Int64 AtRate;
+
+		public QueryInformation(ulong batteryTag, QueryInformationLevel informationLevel) : this() {
+			BatteryTag = batteryTag;
+			InformationLevel = informationLevel;
+			AtRate = 0;
+		}
 	}
 
 	internal enum QueryInformationLevel : UInt64 {
