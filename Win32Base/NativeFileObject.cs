@@ -78,13 +78,26 @@ namespace Henke37.Win32.Base {
 				if(!success) throw new Win32Exception();
 			}
 		}
-		internal unsafe void DeviceControlOutput(DeviceIoControlCode controlCode, byte[] outBuff) {
+		internal unsafe uint DeviceControlOutput(DeviceIoControlCode controlCode, byte[] outBuff) {
+			uint written = 0;
 			fixed (void* outBuffP = outBuff) {
-				bool success = DeviceIoControl(handle, controlCode, null, 0, outBuffP, (uint)outBuff.Length, out _, null);
+				bool success = DeviceIoControl(handle, controlCode, null, 0, outBuffP, (uint)outBuff.Length, out written, null);
 				if(!success) throw new Win32Exception();
 			}
+			return written;
 		}
 
+		internal unsafe uint DeviceControlInputOutput<TIn>(DeviceIoControlCode controlCode, ref TIn inBuff, byte[] outBuff) where TIn : unmanaged  {
+			uint written = 0;
+			fixed(void* inBuffP = &inBuff) {
+				fixed(byte* bufferP = outBuff) {
+					bool success = DeviceIoControl(handle, controlCode, inBuffP, (uint)Marshal.SizeOf<TIn>(), bufferP, (uint)outBuff.Length, out written, null);
+					if(!success) throw new Win32Exception();
+				}
+			}
+
+			return written;
+		}
 		internal unsafe void DeviceControlInputOutput<TIn, TOut>(DeviceIoControlCode controlCode, ref TIn inBuff, ref TOut outBuff) where TIn : unmanaged where TOut : unmanaged {
 			fixed (void* inBuffP = &inBuff, outBuffP = &outBuff) {
 				bool success = DeviceIoControl(handle, controlCode, inBuffP, (uint)Marshal.SizeOf<TIn>(), outBuffP, (uint)Marshal.SizeOf<TOut>(), out _, null);
