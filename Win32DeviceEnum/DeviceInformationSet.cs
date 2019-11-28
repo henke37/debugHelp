@@ -16,10 +16,12 @@ namespace Henke37.Win32.DeviceEnum {
 
 		internal DeviceInformationSet(Guid guid, DeviceInformationClassFlags flags) {
 			handle = SetupDiGetClassDevsGuid(ref guid, IntPtr.Zero, IntPtr.Zero, flags);
+			if(handle.IsInvalid) throw new Win32Exception();
 		}
 
 		internal DeviceInformationSet(string enumerator, DeviceInformationClassFlags flags) {
 			handle = SetupDiGetClassDevsEnumerator(IntPtr.Zero, enumerator, IntPtr.Zero, flags);
+			if(handle.IsInvalid) throw new Win32Exception();
 		}
 
 		public IEnumerable<DeviceInterface> GetDevices() {
