@@ -1,5 +1,8 @@
 ﻿using Henke37.Win32.CdAccess;
+using Henke37.Win32.DeviceEnum;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace CdControl {
@@ -7,8 +10,11 @@ namespace CdControl {
 
 		private CdDrive cdDrive;
 
+		private List<DeviceInterface> drives;
+
 		public DriverForm() {
 			InitializeComponent();
+			drives = CdDrive.GetCdDrives().ToList();
 			cdDrive = new CdDrive(@"\\.\\e:");
 		}
 

@@ -84,6 +84,10 @@
       <Project>{c243dc2a-a152-416d-b8ae-afa8c7e00810}</Project>
       <Name>Win32CdAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Win32DeviceEnum\Win32DeviceEnum.csproj">
+      <Project>{F8B02EF0-7299-4E7B-98AF-6CFD56493A1C}</Project>
+      <Name>Win32DeviceEnum</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

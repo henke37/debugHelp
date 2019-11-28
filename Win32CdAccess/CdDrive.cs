@@ -4,14 +4,22 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Henke37.Win32.Base;
 using Henke37.Win32.Base.AccessRights;
+using Henke37.Win32.DeviceEnum;
 
 namespace Henke37.Win32.CdAccess {
 	public class CdDrive {
 		internal NativeFileObject file;
 		private const int TOCTrackCount = 100;
 
+		private readonly static Guid CdDriveGuid = new Guid("53F56308-B6BF-11D0-94F2-00A0C91EFB8B");
+
 		public CdDrive(string path) {
 			file = NativeFileObject.Open(path, FileObjectAccessRights.GenericRead | FileObjectAccessRights.GenericWrite, FileShareMode.Write | FileShareMode.Read, FileDisposition.OpenExisting, 0);
+		}
+
+		public static IEnumerable<DeviceInterface> GetCdDrives() {
+			var devInfo = new DeviceInformationSet(CdDriveGuid, DeviceInformationClassFlags.Present | DeviceInformationClassFlags.DeviceInterface);
+			return devInfo.GetDevices();
 		}
 
 		public void Eject() {
