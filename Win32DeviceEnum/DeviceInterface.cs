@@ -26,8 +26,9 @@ namespace Henke37.Win32.DeviceEnum {
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		internal struct DetailsNative {
+		internal unsafe struct DetailsNative {
 			internal UInt32 cbSize;
+			fixed char data[1];
 		}
 	}
 

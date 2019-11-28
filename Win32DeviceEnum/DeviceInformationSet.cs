@@ -14,9 +14,13 @@ namespace Henke37.Win32.DeviceEnum {
 		private const int ERROR_NO_MORE_ITEMS = 259;
 		private const int ERROR_INSUFFICIENT_BUFFER = 122;
 
+		private Guid guid;
+
 		internal DeviceInformationSet(Guid guid, DeviceInformationClassFlags flags) {
 			handle = SetupDiGetClassDevsGuid(ref guid, IntPtr.Zero, IntPtr.Zero, flags);
 			if(handle.IsInvalid) throw new Win32Exception();
+
+			this.guid = guid;
 		}
 
 		internal DeviceInformationSet(string enumerator, DeviceInformationClassFlags flags) {
@@ -43,7 +47,7 @@ namespace Henke37.Win32.DeviceEnum {
 				bool success = SetupDiEnumDeviceInterfaces(
 					handle,
 					IntPtr.Zero,
-					IntPtr.Zero,
+					ref guid,
 					interfaceIndex,
 					ref native
 				);
@@ -59,7 +63,7 @@ namespace Henke37.Win32.DeviceEnum {
 				try {
 					success = SetupDiGetDeviceInterfaceDetailW(
 						handle,
-						native,
+						ref native,
 						null,
 						0,
 						ref requiredSize,
@@ -70,14 +74,15 @@ namespace Henke37.Win32.DeviceEnum {
 				}
 
 				byte[] buffer = new byte[requiredSize];
+				int varPartOffset = (int)Marshal.OffsetOf(typeof(DeviceInterface.DetailsNative), "data");
+				int structSize = Marshal.SizeOf(typeof(DeviceInterface.DetailsNative));
 
 				fixed(byte *bufferP= buffer) {
-					int varPartOffset= (int)Marshal.OffsetOf(typeof(DeviceInterface.DetailsNative), "cbSize");
-					*(UInt32*)bufferP = (uint)varPartOffset;
+					*(UInt32*)bufferP = (uint)structSize;
 
 					success = SetupDiGetDeviceInterfaceDetailW(
 							handle,
-							native,
+							ref native,
 							bufferP,
 							requiredSize,
 							ref requiredSize,
@@ -85,7 +90,7 @@ namespace Henke37.Win32.DeviceEnum {
 					);
 					if(!success) throw new Win32Exception();
 					char* stringPtr =(char*)(bufferP+varPartOffset);
-					string filePath = new string(stringPtr, 0, (int)requiredSize - varPartOffset);
+					string filePath = new string(stringPtr);
 
 					ret = native.AsManaged(filePath);
 					return true;
@@ -114,7 +119,7 @@ namespace Henke37.Win32.DeviceEnum {
 		internal static extern unsafe bool SetupDiEnumDeviceInterfaces(
 			DeviceInformationSetHandle DeviceInfoSet,
 			IntPtr DeviceInfoData,
-			IntPtr InterfaceClassGuid,
+			ref Guid InterfaceClassGuid,
 			UInt32 MemberIndex,
 			ref DeviceInterface.Native DeviceInterfaceData
 		);
@@ -123,7 +128,7 @@ namespace Henke37.Win32.DeviceEnum {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool SetupDiGetDeviceInterfaceDetailW(
 			DeviceInformationSetHandle DeviceInfoSet,
-			DeviceInterface.Native DeviceInterfaceData,
+			ref DeviceInterface.Native DeviceInterfaceData,
 			byte* DeviceInterfaceDetailData,
 			UInt32 DeviceInterfaceDetailDataSize,
 			ref UInt32 RequiredSize,
