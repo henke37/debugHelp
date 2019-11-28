@@ -13,9 +13,11 @@ namespace Henke37.Win32.CdAccess {
 
 		private readonly static Guid CdDriveGuid = new Guid("53F56308-B6BF-11D0-94F2-00A0C91EFB8B");
 
-		public CdDrive(string path) {
+		private CdDrive(string path) {
 			file = NativeFileObject.Open(path, FileObjectAccessRights.GenericRead | FileObjectAccessRights.GenericWrite, FileShareMode.Write | FileShareMode.Read, FileDisposition.OpenExisting, 0);
 		}
+
+		public CdDrive(DeviceInterface deviceInterface) : this(deviceInterface.FilePath) { }
 
 		public static IEnumerable<DeviceInterface> GetCdDrives() {
 			var devInfo = new DeviceInformationSet(CdDriveGuid, DeviceInformationClassFlags.Present | DeviceInformationClassFlags.DeviceInterface);

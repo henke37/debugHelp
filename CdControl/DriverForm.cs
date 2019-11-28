@@ -15,7 +15,7 @@ namespace CdControl {
 		public DriverForm() {
 			InitializeComponent();
 			drives = CdDrive.GetCdDrives().ToList();
-			cdDrive = new CdDrive(@"\\.\\e:");
+			cdDrive = new CdDrive(drives[0]);
 		}
 
 		private void Eject_btn_Click(object sender, EventArgs e) {
