@@ -11,6 +11,15 @@ namespace Henke37.DebugHelp.Win32 {
 		public string Name;
 		public string Path;
 
+		public ModuleEntry(IntPtr baseAddress, uint size, IntPtr handle, uint processId, string name, string path) {
+			BaseAddress = baseAddress;
+			Size = size;
+			Handle = handle;
+			ProcessId = processId;
+			Name = name ?? throw new ArgumentNullException(nameof(name));
+			Path = path ?? throw new ArgumentNullException(nameof(path));
+		}
+
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal struct Native {
 			internal UInt32 dwSize;
@@ -28,14 +37,7 @@ namespace Henke37.DebugHelp.Win32 {
 			string szExePath;
 
 			internal ModuleEntry AsManaged() {
-				return new ModuleEntry() {
-					BaseAddress = modBaseAddr,
-					Size = modBaseSize,
-					Handle = hModule,
-					ProcessId = th32ProcessID,
-					Name = szModule,
-					Path = szExePath
-				};
+				return new ModuleEntry(modBaseAddr, modBaseSize, hModule, th32ProcessID, szModule, szExePath);
 			}
 
 			private const int MAX_PATH = 260;

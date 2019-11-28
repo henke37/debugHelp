@@ -9,6 +9,13 @@ namespace Henke37.DebugHelp.Win32 {
 		public UInt32 ParentProcessId;
 		public string Executable;
 
+		public ProcessEntry(uint processId, uint parentProcessId, string executable, uint threadCount) {
+			ProcessId = processId;
+			ThreadCount = threadCount;
+			ParentProcessId = parentProcessId;
+			Executable = executable ?? throw new ArgumentNullException(nameof(executable));
+		}
+
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal struct Native {
 			internal UInt32 dwSize;
@@ -26,12 +33,7 @@ namespace Henke37.DebugHelp.Win32 {
 			private const int MAX_PATH = 260;
 
 			internal ProcessEntry AsManaged() {
-				return new ProcessEntry() {
-					Executable = szExePath,
-					ProcessId = th32ProcessID,
-					ParentProcessId = th32ParentProcessID,
-					ThreadCount = cntThreads
-				};
+				return new ProcessEntry(th32ProcessID, th32ParentProcessID, szExePath, cntThreads);
 			}
 		}
 
