@@ -80,6 +80,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Win32Base\Win32Base.csproj">
+      <Project>{DD1A28CE-0DC8-4F02-B157-FA92719B1DA7}</Project>
+      <Name>Win32Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Win32CdAccess\Win32CdAccess.csproj">
       <Project>{c243dc2a-a152-416d-b8ae-afa8c7e00810}</Project>
       <Name>Win32CdAccess</Name>

@@ -96,5 +96,13 @@ namespace Henke37.Win32.CdAccess {
 			file.DeviceControlOutput<RegionData.Native>(DeviceIoControlCode.DvdGetRegion, ref native);
 			return native.AsManaged();
 		}
+
+		public string GetMountPoint() {
+			StorageDeviceNumber native=new StorageDeviceNumber();
+
+			file.DeviceControlOutput(DeviceIoControlCode.StorageGetDeviceNumber, ref native);
+
+			return native.GetDeviceName();
+		}
 	}
 }

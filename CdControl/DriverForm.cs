@@ -1,4 +1,5 @@
-﻿using Henke37.Win32.CdAccess;
+﻿using Henke37.Win32.Base;
+using Henke37.Win32.CdAccess;
 using Henke37.Win32.DeviceEnum;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,13 @@ namespace CdControl {
 		private CdDrive cdDrive;
 
 		private List<DeviceInterface> drives;
+		private NativeFileNameConverter NameConverter;
 
 		public DriverForm() {
 			InitializeComponent();
+
+			NameConverter = new NativeFileNameConverter();
+
 			drives = CdDrive.GetCdDrives().ToList();
 			cdDrive = new CdDrive(drives[0]);
 		}
