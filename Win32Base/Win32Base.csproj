@@ -14,7 +14,7 @@
     <RootNamespace>Henke37.Win32.Base</RootNamespace>
 	<LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>TRACE;x64</DefineConstants>
