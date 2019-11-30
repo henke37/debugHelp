@@ -11,9 +11,22 @@
 		CdRomLoadMedia= 0x2480c,
 		CdRomEjectMedia= 0x24808,
 		CdRomRawRead = 0x2403e,
+		CdRomExclusiveAccess = 0x2c05c,
+		CdRomGetConfiguration = 0x24058,
+		CdRomGetControl = 0x24034,
+		CdRomGetDriveGeometry = 0x2404c,
+		CdRomGetDriveGeometryEx = 0x24050,
+		CdRomGetLastSession= 0x24038,
+		CdRomGetPerformance = 0x24070,
+		CdRomPlayAudio = 0x24018,
+		CdRomPauseAudio = 0x2400c,
+		CdRomResumeAudio = 0x24010,
+		CdRomSeekAudio = 0x24004,
+		CdRomStopAudio = 0x24008,
 		BatteryQueryTag = 0x294040,
 		BatteryQueryInformation= 0x294044,
 		BatteryQueryStatus= 0x29404c,
-		BatterySetInformation = 0x298048
+		BatterySetInformation = 0x298048,
+		IdePassThrough = 0x4d028
 	}
 }
