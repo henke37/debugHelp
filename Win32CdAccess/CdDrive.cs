@@ -44,7 +44,7 @@ namespace Henke37.Win32.CdAccess {
 			fixed (byte* buffPP = buff) {
 				header = Marshal.PtrToStructure<TOC.TocHeader>((IntPtr)buffPP);
 
-				byte* buffP = buffPP;
+				byte* buffP = buffPP + Marshal.SizeOf<TOC.TocHeader>();
 				for(var trackIndex = 0; trackIndex < header.LastTrack; ++trackIndex) {
 					var entry = Marshal.PtrToStructure<TrackEntry.Native>((IntPtr)buffP);
 					tracks.Add(entry.AsNative());

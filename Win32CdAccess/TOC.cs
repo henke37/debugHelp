@@ -39,5 +39,20 @@ namespace Henke37.Win32.CdAccess {
 				return new TrackEntry() { StartAddr = StartAddr };
 			}
 		}
+
+		public enum TrackAddr {
+			NoData=0,
+			Position=1,
+			MediaCatalogNumber=2,
+			ISRC=3
+		}
+
+		public enum TrackCtrl {
+			AudioNoPreEmphasis=0,
+			AudioWithPreEmphasis=1,
+			Data =4,
+			DataIncremental=5,
+
+		}
 	}
 }
