@@ -24,7 +24,28 @@ namespace Henke37.Win32.CdAccess {
 	}
 
 	public class TrackEntry {
+		public byte TrackNumber;
 		public uint StartAddr;
+		public TrackAddr Addr;
+		public TrackCtrl Ctrl;
+
+		internal TrackEntry(byte trackNumber, uint startAddr, byte CtrlAddr) {
+			TrackNumber = trackNumber;
+			StartAddr = startAddr;
+			Ctrl = (TrackCtrl)(CtrlAddr & 0x0F);
+			Addr = (TrackAddr)((CtrlAddr>>4) & 0x0F);
+		}
+
+		private TrackCtrl TypeCtrl => Ctrl & ~TrackCtrl.DigitalCopyAllowed;
+
+		public bool IsData => TypeCtrl == TrackCtrl.Data || TypeCtrl == TrackCtrl.DataIncremental;
+		public bool IsStereoAudio => TypeCtrl == TrackCtrl.StereoAudioNoPreEmphasis || TypeCtrl == TrackCtrl.StereoAudioWithPreEmphasis;
+		public bool IsQuadAudio => TypeCtrl == TrackCtrl.QuadAudioNoPreEmphasis || TypeCtrl == TrackCtrl.QuadAudioWithPreEmphasis;
+		public bool IsAudio => IsStereoAudio || IsQuadAudio;
+		public bool IsDigitalCopyAllowed => (Ctrl & TrackCtrl.DigitalCopyAllowed)!=0;
+		public bool HasPreEmphasis => TypeCtrl == TrackCtrl.StereoAudioWithPreEmphasis || TypeCtrl == TrackCtrl.QuadAudioWithPreEmphasis;
+
+		public bool IsLeadOut => TrackNumber == 0xAA;
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal unsafe struct Native {
@@ -36,7 +57,7 @@ namespace Henke37.Win32.CdAccess {
 			UInt32 StartAddr;
 
 			internal TrackEntry AsNative() {
-				return new TrackEntry() { StartAddr = StartAddr };
+				return new TrackEntry(TrackNumber, StartAddr, CtrlAdr);
 			}
 		}
 
@@ -47,12 +68,15 @@ namespace Henke37.Win32.CdAccess {
 			ISRC=3
 		}
 
+		[Flags]
 		public enum TrackCtrl {
-			AudioNoPreEmphasis=0,
-			AudioWithPreEmphasis=1,
+			StereoAudioNoPreEmphasis=0,
+			StereoAudioWithPreEmphasis=1,
+			QuadAudioNoPreEmphasis = 8,
+			QuadAudioWithPreEmphasis = 9,
 			Data =4,
 			DataIncremental=5,
-
+			DigitalCopyAllowed=2
 		}
 	}
 }
