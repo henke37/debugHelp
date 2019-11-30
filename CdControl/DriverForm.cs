@@ -32,7 +32,7 @@ namespace CdControl {
 		}
 
 		private void GetTOC_btn_Click(object sender, EventArgs e) {
-			var toc=cdDrive.GetTOC();
+			var toc=cdDrive.GetFullTOC();
 		}
 	}
 }

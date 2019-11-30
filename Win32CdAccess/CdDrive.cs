@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using Henke37.Win32.Base;
@@ -56,6 +57,38 @@ namespace Henke37.Win32.CdAccess {
 			return new TOC(
 				header.FirstTrack,
 				header.LastTrack,
+				tracks
+			);
+		}
+
+		public unsafe FullToc GetFullTOC() {
+			ReadTocEx readToc = new ReadTocEx(ReadTocFormat.FullToc, true);
+
+			int buffSize = Marshal.SizeOf<FullToc.FullTocHeader>() + Marshal.SizeOf<TocFullDataBlock.Native>() * TOCTrackCount;
+			byte[] buff = new byte[buffSize];
+
+			var tracks = new List<TocFullDataBlock>();
+
+			FullToc.FullTocHeader header;
+
+			file.DeviceControlInputOutput(DeviceIoControlCode.CdRomReadTOC, ref readToc, buff);
+			fixed(byte* buffPP = buff) {
+				header = Marshal.PtrToStructure<FullToc.FullTocHeader>((IntPtr)buffPP);
+
+				byte* buffP = buffPP + Marshal.SizeOf<FullToc.FullTocHeader>();
+				byte* buffEndP = buffP + (header.Length - 2);
+				for(var trackIndex = 0; buffP < buffEndP; ++trackIndex) {
+					var entry = Marshal.PtrToStructure<TocFullDataBlock.Native>((IntPtr)buffP);
+					Debug.Assert(entry.Zero == 0);
+					tracks.Add(entry.AsManaged());
+
+					buffP += Marshal.SizeOf<TocFullDataBlock.Native>();
+				}
+			}
+
+			return new FullToc(
+				header.FirstCompleteSession,
+				header.LastCompleteSession,
 				tracks
 			);
 		}
