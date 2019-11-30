@@ -10,7 +10,8 @@
 		CdRomReadQChannel = 0x2402c,
 		CdRomLoadMedia= 0x2480c,
 		CdRomEjectMedia= 0x24808,
-		BatteryQueryTag= 0x294040,
+		CdRomRawRead = 0x2403e,
+		BatteryQueryTag = 0x294040,
 		BatteryQueryInformation= 0x294044,
 		BatteryQueryStatus= 0x29404c,
 		BatterySetInformation = 0x298048

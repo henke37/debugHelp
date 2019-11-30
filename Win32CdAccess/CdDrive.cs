@@ -104,5 +104,18 @@ namespace Henke37.Win32.CdAccess {
 
 			return native.GetDeviceName();
 		}
+
+		public void RawRead(UInt64 diskOffset, UInt32 sectorCount, TrackReadMode readMode, byte[] buffer) {
+			RawReadInfo info = new RawReadInfo() {
+				DiskOffset = diskOffset,
+				SectorCount = sectorCount,
+				ReadMode = readMode
+			};
+			RawRead(info, buffer);
+		}
+
+		private void RawRead(RawReadInfo info, byte[] buffer) {
+			file.DeviceControlInputOutput(DeviceIoControlCode.CdRomRawRead, ref info, buffer);
+		}
 	}
 }
