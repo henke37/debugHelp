@@ -36,6 +36,10 @@ namespace Henke37.Win32.CdAccess {
 			Addr = (TrackAddr)((CtrlAddr>>4) & 0x0F);
 		}
 
+		public override string ToString() {
+			return String.Format("{0} {1} {2}", TrackNumber, IsAudio?"Audio":"Data", StartAddr);
+		}
+
 		private TrackCtrl TypeCtrl => Ctrl & ~TrackCtrl.DigitalCopyAllowed;
 
 		public bool IsData => TypeCtrl == TrackCtrl.Data || TypeCtrl == TrackCtrl.DataIncremental;
