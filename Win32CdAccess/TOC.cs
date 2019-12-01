@@ -101,6 +101,9 @@ namespace Henke37.Win32.CdAccess {
 			};
 		}
 
+		public int TotalFrames => ((Minutes * 60) + Seconds) * FramesPerSec + Frames;
+		public float TotalSeconds => (Minutes * 60) + (float)Seconds + ((float)Frames) / FramesPerSec;
+
 		public override string ToString() {
 			return $"{Minutes:D2}:{Seconds:D2}:{Frames:D2}";
 		}
