@@ -104,6 +104,14 @@ namespace Stackwalker {
 				case CV_HREG_e.CV_REG_GS: retVal = Context.SegGs; return S_OK;
 				case CV_HREG_e.CV_REG_EIP: retVal = Context.Eip; return S_OK;
 				case CV_HREG_e.CV_REG_EFLAGS: retVal = (ulong)Context.EFlags; return S_OK;
+				case CV_HREG_e.CV_REG_AX: retVal = 0x0000FFFF & Context.Eax; return S_OK;
+				case CV_HREG_e.CV_REG_BX: retVal = 0x0000FFFF & Context.Ebx; return S_OK;
+				case CV_HREG_e.CV_REG_CX: retVal = 0x0000FFFF & Context.Ecx; return S_OK;
+				case CV_HREG_e.CV_REG_DX: retVal = 0x0000FFFF & Context.Edx; return S_OK;
+				case CV_HREG_e.CV_REG_SI: retVal = 0x0000FFFF & Context.Esi; return S_OK;
+				case CV_HREG_e.CV_REG_DI: retVal = 0x0000FFFF & Context.Edi; return S_OK;
+				case CV_HREG_e.CV_REG_SP: retVal = 0x0000FFFF & Context.Esp; return S_OK;
+				case CV_HREG_e.CV_REG_BP: retVal = 0x0000FFFF & Context.Ebp; return S_OK;
 				default:
 					retVal = 0;
 					return E_NOTIMPL;
