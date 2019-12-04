@@ -71,7 +71,7 @@ namespace Henke37.Win32.CdAccess {
 
 			FullToc.FullTocHeader header;
 
-			file.DeviceControlInputOutput(DeviceIoControlCode.CdRomReadTOC, ref readToc, buff);
+			file.DeviceControlInputOutput(DeviceIoControlCode.CdRomReadTOCEx, ref readToc, buff);
 			fixed(byte* buffPP = buff) {
 				header = Marshal.PtrToStructure<FullToc.FullTocHeader>((IntPtr)buffPP);
 

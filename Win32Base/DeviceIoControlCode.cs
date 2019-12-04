@@ -7,6 +7,7 @@
 		DiskLoadMedia = 0x7480c,
 		DvdGetRegion= 0x335014,
 		CdRomReadTOC= 0x24000,
+		CdRomReadTOCEx= 0x24054,
 		CdRomReadQChannel = 0x2402c,
 		CdRomLoadMedia= 0x2480c,
 		CdRomEjectMedia= 0x24808,
