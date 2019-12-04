@@ -33,6 +33,9 @@ namespace Henke37.Win32.CdAccess {
 				((byte)(readFormat) << 4) | (useMsf?1:0)
 			);
 		}
+
+		public ReadTocFormat Format => (ReadTocFormat)(FormatMsf >> 4);
+		public bool UseMsf => (FormatMsf & 1) != 0;
 	}
 
 	internal enum ReadTocFormat : byte {
