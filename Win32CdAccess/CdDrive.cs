@@ -61,8 +61,8 @@ namespace Henke37.Win32.CdAccess {
 			);
 		}
 
-		public unsafe FullToc GetFullTOC() {
-			ReadTocEx readToc = new ReadTocEx(ReadTocFormat.FullToc, true);
+		public unsafe FullToc GetFullTOC(int session) {
+			ReadTocEx readToc = new ReadTocEx(ReadTocFormat.FullToc, true, session);
 
 			int buffSize = Marshal.SizeOf<FullToc.FullTocHeader>() + Marshal.SizeOf<TocFullDataBlock.Native>() * TOCTrackCount;
 			byte[] buff = new byte[buffSize];
