@@ -60,7 +60,8 @@ namespace Henke37.Win32.CdAccess {
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal struct FullTocHeader {
-			internal ushort Length;
+			internal byte LengthHi;
+			internal byte LengthLo;
 			internal byte FirstCompleteSession;
 			internal byte LastCompleteSession;
 		}

@@ -76,8 +76,10 @@ namespace Henke37.Win32.CdAccess {
 				header = Marshal.PtrToStructure<FullToc.FullTocHeader>((IntPtr)buffPP);
 				Debug.Assert(header.FirstCompleteSession == 1);
 
+				int length = header.LengthLo | header.LengthHi << 8; 
+
 				byte* buffP = buffPP + Marshal.SizeOf<FullToc.FullTocHeader>();
-				byte* buffEndP = buffP + (header.Length - 2);
+				byte* buffEndP = buffP + (length - 2);
 				for(var trackIndex = 0; buffP < buffEndP; ++trackIndex) {
 					var entry = Marshal.PtrToStructure<TocFullDataBlock.Native>((IntPtr)buffP);
 					Debug.Assert(entry.Zero == 0);
