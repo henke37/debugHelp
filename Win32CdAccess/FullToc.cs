@@ -95,6 +95,10 @@ namespace Henke37.Win32.CdAccess {
 		public bool IsDigitalCopyAllowed => (Ctrl & TrackCtrl.DigitalCopyAllowed) != 0;
 		public bool HasPreEmphasis => TypeCtrl == TrackCtrl.StereoAudioWithPreEmphasis || TypeCtrl == TrackCtrl.QuadAudioWithPreEmphasis;
 
+		public override string ToString() {
+			return $"{TypeCtrl} {Point} {ATime} {StartPosition}";
+		}
+
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal struct Native {
 			internal byte SessionNumber;
