@@ -85,6 +85,7 @@ namespace Henke37.Win32.CdAccess {
 	}
 
 
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct TrackTime {
 		public byte Minutes;
 		public byte Seconds;
