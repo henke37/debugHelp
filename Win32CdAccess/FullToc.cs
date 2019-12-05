@@ -30,12 +30,12 @@ namespace Henke37.Win32.CdAccess {
 
 		private static byte MakeFmtMsf(ReadTocFormat readFormat, bool useMsf) {
 			return (byte)(
-				((byte)(readFormat) << 4) | (useMsf?1:0)
+				((byte)readFormat) | (useMsf?0x80:0x00)
 			);
 		}
 
-		public ReadTocFormat Format => (ReadTocFormat)(FormatMsf >> 4);
-		public bool UseMsf => (FormatMsf & 1) != 0;
+		public ReadTocFormat Format => (ReadTocFormat)(FormatMsf &0x0F);
+		public bool UseMsf => (FormatMsf & 0x80) != 0;
 	}
 
 	internal enum ReadTocFormat : byte {
