@@ -101,14 +101,14 @@ namespace Henke37.Win32.CdAccess {
 			internal byte CtrlAddr;
 			internal byte TrackNumber;
 			internal byte Point;
-			internal byte MsfExtra1;
-			internal byte MsfExtra2;
-			internal byte MsfExtra3;
-			internal byte Zero;
-
 			internal byte Minutes;
 			internal byte Seconds;
 			internal byte Frames;
+			internal byte Zero;
+
+			internal byte PMinutes;
+			internal byte PSeconds;
+			internal byte PFrames;
 
 			public TocFullDataBlock AsManaged() {
 				return new TocFullDataBlock(SessionNumber,
@@ -116,14 +116,14 @@ namespace Henke37.Win32.CdAccess {
 					TrackNumber,
 					Point,
 					new TrackTime() {
-						Minutes = MsfExtra1,
-						Seconds = MsfExtra2,
-						Frames = MsfExtra3
-					},
-					new TrackTime() {
 						Minutes = Minutes,
 						Seconds = Seconds,
 						Frames = Frames
+					},
+					new TrackTime() {
+						Minutes = PMinutes,
+						Seconds = PSeconds,
+						Frames = PFrames
 					}
 				);
 			}
