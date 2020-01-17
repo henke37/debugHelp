@@ -5,7 +5,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ModuleVsFileMapping</RootNamespace>
     <AssemblyName>ModuleVsFileMapping</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>

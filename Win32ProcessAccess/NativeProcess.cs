@@ -324,6 +324,11 @@ namespace Henke37.DebugHelp.Win32 {
 			return new NativeToken(tokenHandle);
 		}
 
+		public void SetValidCallTargets(IntPtr regionStartAddr, UInt32 RegionSize, ControlFlowCallTargetInfo[] OffsetInformation) {
+			bool success = SetProcessValidCallTargets(handle, regionStartAddr, RegionSize, (uint) OffsetInformation.Length, OffsetInformation);
+			if(!success) throw new Win32Exception();
+		}
+
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			bool success = TerminateProcess(handle, exitCode);
@@ -404,6 +409,10 @@ namespace Henke37.DebugHelp.Win32 {
 			out UInt64 lpProcessAffinityMask,
 			out UInt64 lpSystemAffinityMask
 		);
+
+		[DllImport("Kernelbase.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "SetProcessValidCallTargets")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool SetProcessValidCallTargets(SafeProcessHandle handle, IntPtr regionStartAddr, UInt32 RegionSize, uint NumberOfOffsets, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] ControlFlowCallTargetInfo[] OffsetInformation);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "GetProcessIoCounters")]
 		[return: MarshalAs(UnmanagedType.Bool)]
