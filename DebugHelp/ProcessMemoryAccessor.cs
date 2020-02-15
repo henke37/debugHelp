@@ -27,5 +27,11 @@ namespace Henke37.DebugHelp {
 				WriteBytes(buffP, dstAddr, (uint)sizeof(T));
 			}
 		}
+
+		public void WriteInt16(IntPtr dstAddr, short value) {
+			scratchBuff[0] = (byte)(value&0x00FF);
+			scratchBuff[1] = (byte)((value>>8)&0x00FF);
+			WriteBytes(scratchBuff, dstAddr, 2);
+		}
 	}
 }
