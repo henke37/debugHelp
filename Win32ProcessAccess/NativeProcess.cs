@@ -112,6 +112,14 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
+		public bool IsImmersiveProcess {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get {
+				return IsImmersiveProcessNative(handle);
+			}
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public ProcessTimes GetProcessTimes() {
@@ -378,6 +386,10 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "IsWow64Process")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool IsWow64ProcessNative(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+
+		[DllImport("User32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "IsImmersiveProcess")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool IsImmersiveProcessNative(SafeProcessHandle handle);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
