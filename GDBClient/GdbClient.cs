@@ -49,7 +49,7 @@ namespace Henke37.DebugHelp.Gdb {
 		#region public commands
 		
 		public override void ReadBytes(IntPtr addr, uint size, byte[] readBuff) {
-			string reply = SendCommand($"m{addr:x},{size:x}");
+			string reply = SendCommand($"m{addr.ToString("X")},{size:x}");
 			if(reply == "") throw new UnsupportedCommandException();
 			if(reply.Length==3 && reply.StartsWith("E")) {
 				GDBException.ThrowFromReply(reply);
@@ -221,7 +221,7 @@ namespace Henke37.DebugHelp.Gdb {
 		}
 
 		private void CheckSupportedCommands() {
-			string reply=SendCommand("qSupported:multiprocess:QAllow");
+			string reply=SendCommand("qSupported:multiprocess;QAllow;qXfer:osdata:read");
 			SupportStatus=reply.Split(';');
 		}
 
