@@ -62,6 +62,15 @@ namespace Henke37.Win32.Base.SafeHandles {
 			}
 		}
 
+		public PublicObjectBasicInformation ObjectInformation {
+			get {
+				var info = new PublicObjectBasicInformation.Native();
+				QueryObjectInformation(ObjectInformationClass.ObjectBasicInformation, ref info);
+
+				return info.AsManaged();
+			}
+		}
+
 		internal unsafe T QueryObjectInformation<T>(ObjectInformationClass infoClass, ref T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				PInvoke.NTSTATUS status = NtQueryObject(handle, infoClass, buffP, (uint)sizeof(T), out _);
