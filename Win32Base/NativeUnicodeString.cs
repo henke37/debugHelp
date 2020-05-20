@@ -3,18 +3,25 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Henke37.Win32.Base {
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	internal unsafe struct NativeUnicodeString {
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct UNICODE_STRING : IDisposable {
+        public ushort Length;
+        public ushort MaximumLength;
+        private IntPtr buffer;
 
-		//In BYTES
-		UInt16 Length;
-		UInt16 MaxLength;
+        public UNICODE_STRING(string s) {
+            Length = (ushort)(s.Length * 2);
+            MaximumLength = (ushort)(Length + 2);
+            buffer = Marshal.StringToHGlobalUni(s);
+        }
 
-		//Char!=byte in C#
-		char* Buffer;
+        public void Dispose() {
+            Marshal.FreeHGlobal(buffer);
+            buffer = IntPtr.Zero;
+        }
 
-		public string AsManagedString() {
-			return new string(Buffer);
-		}
-	}
+        public override string ToString() {
+            return Marshal.PtrToStringUni(buffer);
+        }
+    }
 }
