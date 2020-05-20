@@ -53,6 +53,23 @@ namespace Henke37.Win32.Base.SafeHandles {
 			}
 		}
 
+		public string ObjectTypeName {
+			get {
+				var info = new PublicObjectTypeInformation();
+				QueryObjectInformation(ObjectInformationClass.ObjectTypeInformation, ref info);
+
+				return info.TypeName;
+			}
+		}
+
+		internal unsafe T QueryObjectInformation<T>(ObjectInformationClass infoClass, ref T buff) where T : unmanaged {
+			fixed(void* buffP = &buff) {
+				PInvoke.NTSTATUS status = NtQueryObject(handle, infoClass, buffP, (uint)sizeof(T), out _);
+				if(status.Severity != PInvoke.NTSTATUS.SeverityCode.STATUS_SEVERITY_SUCCESS) throw new PInvoke.NTStatusException(status);
+				return buff;
+			}
+		}
+
 		[SecurityCritical]
 		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
 		internal static unsafe IntPtr DuplicateHandleLocal(IntPtr sourceHandle, uint desiredAccess, bool inheritHandle, DuplicateOptions options) {
@@ -90,5 +107,7 @@ namespace Henke37.Win32.Base.SafeHandles {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool DuplicateHandle(SafeProcessHandle sourceProcess, IntPtr sourceHandle, SafeProcessHandle destinationProcess, IntPtr destinationHandlePtr, uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, DuplicateOptions dwOptions);
 
+		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
+		internal static extern unsafe PInvoke.NTSTATUS NtQueryObject(IntPtr handle, ObjectInformationClass informationClass, void* buffer, uint bufferLength, out uint returnLength);
 	}
 }
