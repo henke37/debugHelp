@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Permissions;
 
 namespace Henke37.Win32.Base.SafeHandles {
 	internal abstract class SafeKernelObjHandle : SafeHandleZeroOrMinusOneIsInvalid {
@@ -30,11 +31,14 @@ namespace Henke37.Win32.Base.SafeHandles {
 		}
 
 		public bool Inheritable {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var success = GetHandleInformation(handle, out UInt32 flags);
 				if(!success) throw new Win32Exception();
 				return (flags & FlagInherit) != 0;
 			}
+			[SecurityCritical]
 			set {
 				var success = SetHandleInformation(handle, FlagInherit, value ? FlagInherit : 0);
 				if(!success) throw new Win32Exception();
@@ -42,11 +46,14 @@ namespace Henke37.Win32.Base.SafeHandles {
 		}
 
 		public bool ProtectedFromClose {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var success = GetHandleInformation(handle, out UInt32 flags);
 				if(!success) throw new Win32Exception();
 				return (flags & FlagProtectFromClose) != 0;
 			}
+			[SecurityCritical]
 			set {
 				var success = SetHandleInformation(handle, FlagProtectFromClose, value ? FlagProtectFromClose : 0);
 				if(!success) throw new Win32Exception();
@@ -54,6 +61,8 @@ namespace Henke37.Win32.Base.SafeHandles {
 		}
 
 		public string ObjectTypeName {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var info = new PublicObjectTypeInformation();
 				QueryObjectInformation(ObjectInformationClass.ObjectTypeInformation, ref info);
@@ -63,6 +72,8 @@ namespace Henke37.Win32.Base.SafeHandles {
 		}
 
 		public PublicObjectBasicInformation ObjectInformation {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var info = new PublicObjectBasicInformation.Native();
 				QueryObjectInformation(ObjectInformationClass.ObjectBasicInformation, ref info);
