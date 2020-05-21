@@ -10,7 +10,7 @@ using System.Security.Permissions;
 namespace Henke37.Win32.Base.SafeHandles {
 	internal abstract class SafeKernelObjHandle : SafeHandleZeroOrMinusOneIsInvalid {
 		private const uint FlagInherit = 0x00000001;
-		private const uint FlagProtectFromClose = 0x00000001;
+		private const uint FlagProtectFromClose = 0x00000002;
 
 		protected static readonly IntPtr InvalidHandleValue = new IntPtr(-1);
 
