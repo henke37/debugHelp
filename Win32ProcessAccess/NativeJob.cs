@@ -10,6 +10,10 @@ using System.Security;
 using System.Security.Permissions;
 
 namespace Henke37.DebugHelp.Win32 {
+
+#if NETFRAMEWORK
+	[HostProtection(ExternalProcessMgmt=true)]
+#endif
 	public class NativeJob {
 
 		private SafeJobHandle handle;
@@ -39,7 +43,6 @@ namespace Henke37.DebugHelp.Win32 {
 			return new NativeJob(handle);
 		}
 
-		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.ControlThread)]
 		[SecuritySafeCritical]
 		public void AttachProcess(NativeProcess process) {
 			AttachProcess(process.handle);
@@ -60,7 +63,6 @@ namespace Henke37.DebugHelp.Win32 {
 			}
 		}
 
-		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.ControlThread)]
 		[SecuritySafeCritical]
 		void Terminate(UInt32 exitCode) {
 			TerminateJobObject(handle, exitCode);
