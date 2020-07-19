@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 
 namespace Henke37.DebugHelp.Win32 {
+#if NETFRAMEWORK
+	[HostProtection(SecurityInfrastructure = true)]
+#endif
 	public class NativeToken : IDisposable, IEquatable<NativeToken> {
 		private SafeTokenHandle tokenHandle;
 
