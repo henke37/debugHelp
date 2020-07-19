@@ -14,7 +14,7 @@ namespace Henke37.DebugHelp.Win32 {
 #if NETFRAMEWORK
 	[HostProtection(ExternalProcessMgmt=true)]
 #endif
-	public class NativeJob {
+	public class NativeJob : IDisposable {
 
 		private SafeJobHandle handle;
 
@@ -102,5 +102,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool TerminateJobObject(SafeJobHandle handle, UInt32 exitCode);
+
+		public void Dispose() => handle.Dispose();
 	}
 }
