@@ -40,7 +40,7 @@ namespace Henke37.DebugHelp.Win32 {
 
 		[SecuritySafeCritical]
 		[SuppressUnmanagedCodeSecurity]
-		public static unsafe NativeJob Open(string jobName, JobAccessRights accessRights, bool inheritHandle=false) {
+		public static unsafe NativeJob Open(string jobName, JobAccessRights accessRights = JobAccessRights.All, bool inheritHandle=false) {
 			SafeJobHandle handle = OpenJobObjectA((uint)accessRights, inheritHandle, jobName);
 			if(handle.IsInvalid) throw new Win32Exception();
 			return new NativeJob(handle);
