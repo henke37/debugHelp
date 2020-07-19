@@ -26,6 +26,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[SuppressUnmanagedCodeSecurity]
 		public static unsafe NativeJob Create() {
 			SafeJobHandle handle = CreateJobObjectA(null, null);
+			if(handle.IsInvalid) throw new Win32Exception();
 			return new NativeJob(handle);
 		}
 
@@ -33,6 +34,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[SuppressUnmanagedCodeSecurity]
 		public static unsafe NativeJob Create(string jobName) {
 			SafeJobHandle handle = CreateJobObjectA(null, jobName);
+			if(handle.IsInvalid) throw new Win32Exception();
 			return new NativeJob(handle);
 		}
 
@@ -40,6 +42,7 @@ namespace Henke37.DebugHelp.Win32 {
 		[SuppressUnmanagedCodeSecurity]
 		public static unsafe NativeJob Open(string jobName, JobAccessRights accessRights, bool inheritHandle=false) {
 			SafeJobHandle handle = OpenJobObjectA((uint)accessRights, inheritHandle, jobName);
+			if(handle.IsInvalid) throw new Win32Exception();
 			return new NativeJob(handle);
 		}
 
@@ -69,11 +72,11 @@ namespace Henke37.DebugHelp.Win32 {
 		}
 
 
-		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Ansi)]
 		internal static unsafe extern SafeJobHandle CreateJobObjectA(SecurityAttributes* securityAttributes, [MarshalAs(UnmanagedType.LPStr)] string? jobName);
 
 
-		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Ansi)]
 		internal static unsafe extern SafeJobHandle OpenJobObjectA(UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool inheritHandle,[MarshalAs(UnmanagedType.LPStr)] string jobName);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
