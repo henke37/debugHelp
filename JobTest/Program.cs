@@ -11,11 +11,12 @@ namespace JobTest {
 		static void Main(string[] args) {
 
 			using(NativeJob job = NativeJob.Create()) {
-				var basic = job.BasicLimitInformation;
+				var extended = job.ExtendedLimitInformation;
 
-				basic.LimitFlags = LimitFlags.JobTime;
-				basic.PerJobUserTimeLimit = new TimeSpan(0, 5, 0);
-				job.BasicLimitInformation = basic;
+				extended.LimitFlags = LimitFlags.JobTime | LimitFlags.JobMemory;
+				extended.PerJobUserTimeLimit = new TimeSpan(0, 5, 0);
+				extended.JobMemoryLimit = 1024 * 1024 * 100;
+				job.ExtendedLimitInformation = extended;
 			}
 			
 		}

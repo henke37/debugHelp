@@ -90,6 +90,18 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			}
 		}
 
+		public ExtendedLimitInformation ExtendedLimitInformation {
+			get {
+				ExtendedLimitInformation.Native native;
+				QueryInformationJob(JobInformationClass.ExtendedLimitInformation, out native);
+				return native.AsManaged();
+			}
+			set {
+				ExtendedLimitInformation.Native native = new ExtendedLimitInformation.Native(value);
+				SetInformationJob(JobInformationClass.ExtendedLimitInformation, ref native);
+			}
+		}
+
 		public BasicUIRestrictions BasicUIRestrictions {
 			get {
 				BasicUIRestrictionsStruct native;

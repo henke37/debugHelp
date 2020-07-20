@@ -20,6 +20,19 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		public UInt32 PriorityClass;
 		public UInt32 SchedulingClass;
 
+		public BasicLimitInformation() { }
+		internal BasicLimitInformation(Native native) {
+			PerProcessUserTimeLimit = TimeSpan.FromTicks(native.PerProcessUserTimeLimit.QuadPart);
+			PerJobUserTimeLimit = TimeSpan.FromTicks(native.PerJobUserTimeLimit.QuadPart);
+			LimitFlags = native.LimitFlags;
+			MinimumWorkingSetSize = native.MinimumWorkingSetSize;
+			MaximumWorkingSetSize = native.MaximumWorkingSetSize;
+			ActiveProcessLimit = native.ActiveProcessLimit;
+			Affinity = native.Affinity;
+			PriorityClass = native.PriorityClass;
+			SchedulingClass = native.SchedulingClass;
+		}
+
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct Native {
 			internal LargeInteger PerProcessUserTimeLimit;
@@ -50,17 +63,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			}
 
 			public BasicLimitInformation AsManaged() {
-				return new BasicLimitInformation() {
-					PerProcessUserTimeLimit = TimeSpan.FromTicks(PerProcessUserTimeLimit.QuadPart),
-					PerJobUserTimeLimit = TimeSpan.FromTicks(PerJobUserTimeLimit.QuadPart),
-					LimitFlags = LimitFlags,
-					MinimumWorkingSetSize = MinimumWorkingSetSize,
-					MaximumWorkingSetSize = MaximumWorkingSetSize,
-					ActiveProcessLimit = ActiveProcessLimit,
-					Affinity = Affinity,
-					PriorityClass = PriorityClass,
-					SchedulingClass = SchedulingClass
-				};
+				return new BasicLimitInformation(this);
 			}
 		}
 	}
