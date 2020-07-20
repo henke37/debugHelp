@@ -12,6 +12,10 @@ namespace JobTest {
 
 			using(NativeJob job = NativeJob.Create()) {
 				var basic = job.BasicLimitInformation;
+
+				basic.LimitFlags = LimitFlags.JobTime;
+				basic.PerJobUserTimeLimit = new TimeSpan(0, 5, 0);
+				job.BasicLimitInformation = basic;
 			}
 			
 		}
