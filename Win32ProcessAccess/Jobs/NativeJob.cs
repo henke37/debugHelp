@@ -94,6 +94,14 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			}
 		}
 
+		public EndOfJobTimeAction EndOfJobTimeAction {
+			get {
+				EndOfJobTimeActionStruct native;
+				QueryInformationJob(JobInformationClass.EndOfJobTimeInformation, out native);
+				return native.endOfJobTimeAction;
+			}
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Ansi)]
 		internal static unsafe extern SafeJobHandle CreateJobObjectA(SecurityAttributes* securityAttributes, [MarshalAs(UnmanagedType.LPStr)] string? jobName);
 
