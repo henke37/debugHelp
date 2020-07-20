@@ -1,4 +1,5 @@
-﻿using Henke37.DebugHelp.Win32.Jobs;
+﻿using Henke37.DebugHelp.Win32;
+using Henke37.DebugHelp.Win32.Jobs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace JobTest {
 		static void Main(string[] args) {
 
 			using(NativeJob job = NativeJob.Create()) {
-
+				var basic = job.BasicLimitInformation;
 			}
 			
 		}

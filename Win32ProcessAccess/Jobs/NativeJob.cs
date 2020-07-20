@@ -58,7 +58,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			if(!success) throw new Win32Exception();
 		}
 
-		internal unsafe T QueryInformationJob<T>(JobInformationClass infoClass, ref T buff) where T : unmanaged {
+		internal unsafe T QueryInformationJob<T>(JobInformationClass infoClass, out T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				bool success = QueryInformationJobObject(handle, infoClass, buffP, (uint)sizeof(T), out _);
 				if(!success) throw new Win32Exception();
@@ -76,6 +76,14 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		[SecuritySafeCritical]
 		void Terminate(UInt32 exitCode) {
 			TerminateJobObject(handle, exitCode);
+		}
+
+		public BasicLimitInformation BasicLimitInformation {
+			get {
+				BasicLimitInformation.Native native;
+				QueryInformationJob(JobInformationClass.BasicLimitInformation, out native);
+				return native.AsManaged();
+			}
 		}
 
 
