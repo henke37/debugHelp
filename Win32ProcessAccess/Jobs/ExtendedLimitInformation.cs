@@ -7,10 +7,17 @@ using System.Threading.Tasks;
 
 namespace Henke37.DebugHelp.Win32.Jobs {
 	public class ExtendedLimitInformation : BasicLimitInformation {
+#if x64
 		public UInt64 ProcessMemoryLimit;
 		public UInt64 JobMemoryLimit;
 		public UInt64 PeakProcessMemoryUsed;
 		public UInt64 PeakJobMemoryUsed;
+#elif x86
+		public UInt32 ProcessMemoryLimit;
+		public UInt32 JobMemoryLimit;
+		public UInt32 PeakProcessMemoryUsed;
+		public UInt32 PeakJobMemoryUsed;
+#endif
 
 		public ExtendedLimitInformation() { }
 		internal ExtendedLimitInformation(Native native) : base(native.basic) {
@@ -25,11 +32,17 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			internal BasicLimitInformation.Native basic;
 
 			IOCounters IOCounters;
-
+#if x64
 			public UInt64 ProcessMemoryLimit;
 			public UInt64 JobMemoryLimit;
 			public UInt64 PeakProcessMemoryUsed;
 			public UInt64 PeakJobMemoryUsed;
+#elif x86
+			public UInt32 ProcessMemoryLimit;
+			public UInt32 JobMemoryLimit;
+			public UInt32 PeakProcessMemoryUsed;
+			public UInt32 PeakJobMemoryUsed;
+#endif
 
 			public Native(ExtendedLimitInformation managed) {
 				basic = new BasicLimitInformation.Native(managed);

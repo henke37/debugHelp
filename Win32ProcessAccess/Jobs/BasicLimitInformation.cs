@@ -10,8 +10,13 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 
 		public LimitFlags LimitFlags;
 
+#if x86
 		public UInt32 MinimumWorkingSetSize;
 		public UInt32 MaximumWorkingSetSize;
+#elif x64
+		public UInt64 MinimumWorkingSetSize;
+		public UInt64 MaximumWorkingSetSize;
+#endif
 
 		public UInt32 ActiveProcessLimit;
 
@@ -39,9 +44,13 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			internal LargeInteger PerJobUserTimeLimit;
 
 			public LimitFlags LimitFlags;
-
+#if x86
 			public UInt32 MinimumWorkingSetSize;
 			public UInt32 MaximumWorkingSetSize;
+#elif x64
+			public UInt64 MinimumWorkingSetSize;
+			public UInt64 MaximumWorkingSetSize;
+#endif
 
 			public UInt32 ActiveProcessLimit;
 
