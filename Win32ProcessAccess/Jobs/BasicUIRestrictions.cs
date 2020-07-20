@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Henke37.DebugHelp.Win32.Jobs {
 	[Flags]
@@ -14,6 +15,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		WriteClipboard = 0x00000004
 	}
 
+	[StructLayout(LayoutKind.Sequential)]
 	internal struct BasicUIRestrictionsStruct {
 		public BasicUIRestrictions restrictions;
 	}
