@@ -35,6 +35,15 @@ namespace Henke37.DebugHelp.Win32 {
 			return new NativeProcess(handle);
 		}
 
+		private static NativeProcess? CachedCurrent;
+		public static NativeProcess Current {
+			get {
+				if(CachedCurrent != null) return CachedCurrent;
+				CachedCurrent = new NativeProcess(SafeProcessHandle.CurrentProcess);
+				return CachedCurrent;
+			}
+		}
+
 		public void Dispose() => handle.Dispose();
 		public void Close() => handle.Close();
 
