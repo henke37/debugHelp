@@ -86,6 +86,13 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			}
 		}
 
+		public BasicUIRestrictions BasicUIRestrictions {
+			get {
+				BasicUIRestrictionsStruct native;
+				QueryInformationJob(JobInformationClass.BasicUIRestrictions, out native);
+				return native.restrictions;
+			}
+		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Ansi)]
 		internal static unsafe extern SafeJobHandle CreateJobObjectA(SecurityAttributes* securityAttributes, [MarshalAs(UnmanagedType.LPStr)] string? jobName);
