@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 
-namespace Henke37.DebugHelp.Win32 {
+namespace Henke37.DebugHelp.Win32.Jobs {
 
 #if NETFRAMEWORK
 	[HostProtection(ExternalProcessMgmt=true)]
