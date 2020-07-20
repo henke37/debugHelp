@@ -30,6 +30,11 @@ namespace Henke37.Win32.Base.SafeHandles {
 			return CompareObjectHandles(other.handle, handle);
 		}
 
-
+		public override bool IsInvalid {
+			get {
+				if(handle.ToInt32() == -1) return false;
+				return base.IsInvalid;
+			}
+		}
 	}
 }
