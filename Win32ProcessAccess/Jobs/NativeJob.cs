@@ -84,6 +84,10 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 				QueryInformationJob(JobInformationClass.BasicLimitInformation, out native);
 				return native.AsManaged();
 			}
+			set {
+				BasicLimitInformation.Native native = new BasicLimitInformation.Native(value);
+				SetInformationJob(JobInformationClass.BasicLimitInformation, ref native);
+			}
 		}
 
 		public BasicUIRestrictions BasicUIRestrictions {
@@ -91,6 +95,10 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 				BasicUIRestrictionsStruct native;
 				QueryInformationJob(JobInformationClass.BasicUIRestrictions, out native);
 				return native.restrictions;
+			}
+			set {
+				BasicUIRestrictionsStruct native=new BasicUIRestrictionsStruct(value);
+				SetInformationJob(JobInformationClass.BasicUIRestrictions, ref native);
 			}
 		}
 
@@ -100,6 +108,10 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 				QueryInformationJob(JobInformationClass.EndOfJobTimeInformation, out native);
 				return native.endOfJobTimeAction;
 			}
+			set {
+				EndOfJobTimeActionStruct native=new EndOfJobTimeActionStruct(value);
+				SetInformationJob(JobInformationClass.EndOfJobTimeInformation, ref native);
+			}
 		}
 
 		public NetRateControlInformation NetRateControlInformation {
@@ -107,6 +119,9 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 				NetRateControlInformation native;
 				QueryInformationJob(JobInformationClass.NetRateControlInformation, out native);
 				return native;
+			}
+			set {
+				SetInformationJob(JobInformationClass.NetRateControlInformation, ref value);
 			}
 		}
 

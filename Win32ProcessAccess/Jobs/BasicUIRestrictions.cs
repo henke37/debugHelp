@@ -18,5 +18,9 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 	[StructLayout(LayoutKind.Sequential)]
 	internal struct BasicUIRestrictionsStruct {
 		public BasicUIRestrictions restrictions;
+
+		public BasicUIRestrictionsStruct(BasicUIRestrictions value) : this() {
+			this.restrictions = value;
+		}
 	}
 }
