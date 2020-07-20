@@ -90,16 +90,16 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static unsafe extern bool AssignProcessToJobObject(SafeJobHandle jobHandle, SafeProcessHandle procHandle);
 
-		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool QueryInformationJobObject(SafeJobHandle handle, JobInformationClass informationClass, void* buffer, uint bufferLength, out uint returnLength);
 
 
-		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool SetInformationJobObject(SafeJobHandle handle, JobInformationClass informationClass, void* buffer, uint bufferLength);
 
-		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
+		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool TerminateJobObject(SafeJobHandle handle, UInt32 exitCode);
 
