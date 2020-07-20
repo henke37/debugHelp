@@ -102,6 +102,14 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			}
 		}
 
+		public NetRateControlInformation NetRateControlInformation {
+			get {
+				NetRateControlInformation native;
+				QueryInformationJob(JobInformationClass.NetRateControlInformation, out native);
+				return native;
+			}
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Ansi)]
 		internal static unsafe extern SafeJobHandle CreateJobObjectA(SecurityAttributes* securityAttributes, [MarshalAs(UnmanagedType.LPStr)] string? jobName);
 
