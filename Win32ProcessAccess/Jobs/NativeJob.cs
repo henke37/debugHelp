@@ -25,7 +25,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		[SecuritySafeCritical]
 		[SuppressUnmanagedCodeSecurity]
 		public static unsafe NativeJob Create() {
-			SafeJobHandle handle = CreateJobObjectA(null, null);
+			SafeJobHandle handle = CreateJobObjectW(null, null);
 			if(handle.IsInvalid) throw new Win32Exception();
 			return new NativeJob(handle);
 		}
@@ -33,7 +33,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		[SecuritySafeCritical]
 		[SuppressUnmanagedCodeSecurity]
 		public static unsafe NativeJob Create(string jobName) {
-			SafeJobHandle handle = CreateJobObjectA(null, jobName);
+			SafeJobHandle handle = CreateJobObjectW(null, jobName);
 			if(handle.IsInvalid) throw new Win32Exception();
 			return new NativeJob(handle);
 		}
@@ -41,7 +41,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		[SecuritySafeCritical]
 		[SuppressUnmanagedCodeSecurity]
 		public static unsafe NativeJob Open(string jobName, JobAccessRights accessRights = JobAccessRights.All, bool inheritHandle=false) {
-			SafeJobHandle handle = OpenJobObjectA((uint)accessRights, inheritHandle, jobName);
+			SafeJobHandle handle = OpenJobObjectW((uint)accessRights, inheritHandle, jobName);
 			if(handle.IsInvalid) throw new Win32Exception();
 			return new NativeJob(handle);
 		}
@@ -165,12 +165,12 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			if(!success) throw new Win32Exception();
 		}
 
-		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Ansi)]
-		internal static unsafe extern SafeJobHandle CreateJobObjectA(SecurityAttributes* securityAttributes, [MarshalAs(UnmanagedType.LPStr)] string? jobName);
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
+		internal static unsafe extern SafeJobHandle CreateJobObjectW(SecurityAttributes* securityAttributes, [MarshalAs(UnmanagedType.LPWStr)] string? jobName);
 
 
-		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Ansi)]
-		internal static unsafe extern SafeJobHandle OpenJobObjectA(UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool inheritHandle,[MarshalAs(UnmanagedType.LPStr)] string jobName);
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
+		internal static unsafe extern SafeJobHandle OpenJobObjectW(UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool inheritHandle,[MarshalAs(UnmanagedType.LPWStr)] string jobName);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
