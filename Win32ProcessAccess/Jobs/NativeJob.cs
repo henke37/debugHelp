@@ -137,6 +137,18 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			}
 		}
 
+		public CpuRateControlInformation CpuRateControlInformation {
+			get {
+				CpuRateControlInformation.Native native;
+				QueryInformationJob(JobInformationClass.CpuRateControlInformation, out native);
+				return new CpuRateControlInformation(native);
+			}
+			set {
+				CpuRateControlInformation.Native native = new CpuRateControlInformation.Native(value);
+				SetInformationJob(JobInformationClass.CpuRateControlInformation, ref native);
+			}
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Ansi)]
 		internal static unsafe extern SafeJobHandle CreateJobObjectA(SecurityAttributes* securityAttributes, [MarshalAs(UnmanagedType.LPStr)] string? jobName);
 
