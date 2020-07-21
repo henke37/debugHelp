@@ -47,6 +47,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		}
 
 		[SecuritySafeCritical]
+		[SuppressUnmanagedCodeSecurity]
 		public void AttachProcess(NativeProcess process) {
 			AttachProcess(process.handle);
 		}
@@ -58,6 +59,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			if(!success) throw new Win32Exception();
 		}
 
+		[SuppressUnmanagedCodeSecurity]
 		internal unsafe T QueryInformationJob<T>(JobInformationClass infoClass, out T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				bool success = QueryInformationJobObject(handle, infoClass, buffP, (uint)sizeof(T), out _);
@@ -66,6 +68,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			}
 		}
 
+		[SuppressUnmanagedCodeSecurity]
 		internal unsafe void SetInformationJob<T>(JobInformationClass infoClass, ref T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				bool success = SetInformationJobObject(handle, infoClass, buffP, (uint)sizeof(T));
@@ -74,6 +77,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		}
 
 		[SecuritySafeCritical]
+		[SuppressUnmanagedCodeSecurity]
 		void Terminate(UInt32 exitCode) {
 			TerminateJobObject(handle, exitCode);
 		}
@@ -149,6 +153,7 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			}
 		}
 
+		[SuppressUnmanagedCodeSecurity]
 		public bool IsProcessInJob(NativeProcess process) {
 			bool success = IsProcessInJobNative(process.handle, handle, out bool result);
 			if(!success) throw new Win32Exception();
