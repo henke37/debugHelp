@@ -160,6 +160,11 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			return result;
 		}
 
+		internal void GrantAccessToUSERHandle(IntPtr userHandle, bool grant) {
+			bool success = UserHandleGrantAccess(userHandle, handle, grant);
+			if(!success) throw new Win32Exception();
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Ansi)]
 		internal static unsafe extern SafeJobHandle CreateJobObjectA(SecurityAttributes* securityAttributes, [MarshalAs(UnmanagedType.LPStr)] string? jobName);
 
@@ -187,6 +192,11 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "IsProcessInJob")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool IsProcessInJobNative(SafeProcessHandle processHandle, SafeJobHandle jobHandle, [MarshalAs(UnmanagedType.Bool)] out bool result);
+
+
+		[DllImport("User32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern unsafe bool UserHandleGrantAccess(IntPtr userHandle, SafeJobHandle jobHandle, [MarshalAs(UnmanagedType.Bool)] bool grant);
 
 		public void Dispose() => handle.Dispose();
 	}
