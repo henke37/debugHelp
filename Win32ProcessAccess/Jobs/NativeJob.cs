@@ -149,6 +149,12 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 			}
 		}
 
+		public bool IsProcessInJob(NativeProcess process) {
+			bool success = IsProcessInJobNative(process.handle, handle, out bool result);
+			if(!success) throw new Win32Exception();
+			return result;
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Ansi)]
 		internal static unsafe extern SafeJobHandle CreateJobObjectA(SecurityAttributes* securityAttributes, [MarshalAs(UnmanagedType.LPStr)] string? jobName);
 
@@ -172,6 +178,10 @@ namespace Henke37.DebugHelp.Win32.Jobs {
 		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool TerminateJobObject(SafeJobHandle handle, UInt32 exitCode);
+
+		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "IsProcessInJob")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern unsafe bool IsProcessInJobNative(SafeProcessHandle processHandle, SafeJobHandle jobHandle, [MarshalAs(UnmanagedType.Bool)] out bool result);
 
 		public void Dispose() => handle.Dispose();
 	}
