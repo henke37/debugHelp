@@ -26,6 +26,7 @@ namespace Henke37.Win32.Base.SafeHandles {
 		}
 
 		[SuppressUnmanagedCodeSecurity]
+		[SecuritySafeCritical]
 		override protected bool ReleaseHandle() {
 			return CloseHandle(handle);
 		}
