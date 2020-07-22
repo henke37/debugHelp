@@ -3,7 +3,6 @@ using Henke37.Win32.Processes;
 using Henke37.Win32.SafeHandles;
 using System;
 using System.ComponentModel;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;

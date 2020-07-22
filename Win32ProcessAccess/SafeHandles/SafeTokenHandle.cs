@@ -1,5 +1,5 @@
 ﻿using System;
-using Henke37.Win32.SafeHandles;
+
 namespace Henke37.Win32.SafeHandles {
 	internal class SafeTokenHandle : SafeKernelObjHandle, IEquatable<SafeTokenHandle> {
 		public SafeTokenHandle(IntPtr newHandle, bool ownsHandle=true) : base(newHandle, ownsHandle) {

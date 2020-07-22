@@ -1,5 +1,4 @@
-﻿using Henke37.Win32.SafeHandles;
-using System;
+﻿using System;
 
 namespace Henke37.Win32.SafeHandles {
 	class SafeJobHandle : SafeKernelObjHandle, IEquatable<SafeJobHandle> {

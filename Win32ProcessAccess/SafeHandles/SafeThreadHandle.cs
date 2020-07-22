@@ -1,5 +1,4 @@
-﻿using Henke37.Win32.SafeHandles;
-using System;
+﻿using System;
 using System.Security.Permissions;
 
 namespace Henke37.Win32.SafeHandles {
