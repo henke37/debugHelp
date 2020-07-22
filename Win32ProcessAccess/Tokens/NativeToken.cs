@@ -28,20 +28,18 @@ namespace Henke37.Win32.Tokens {
 
 		public TokenElevationType ElevationType {
 			get {
-				TokenElevationType elevationType=new TokenElevationType();
-				GetTokenInformation<TokenElevationType>(TokenInformationClass.TokenElevationType, ref elevationType);
+				GetTokenInformation(TokenInformationClass.ElevationType, out TokenElevationType elevationType);
 				return elevationType;
 			}
 		}
 
 		[HostProtection(MayLeakOnAbort = true)]
 		public NativeToken GetLinkedToken() {
-			IntPtr newHandle=new IntPtr();
-			GetTokenInformation<IntPtr>(TokenInformationClass.TokenLinkedToken, ref newHandle);
+			GetTokenInformation(TokenInformationClass.LinkedToken, out IntPtr newHandle);
 			return new NativeToken(new SafeTokenHandle(newHandle));
 		}
 
-		internal unsafe void GetTokenInformation<T>(TokenInformationClass infoClass, ref T buff) where T : unmanaged {
+		internal unsafe void GetTokenInformation<T>(TokenInformationClass infoClass, out T buff) where T : unmanaged {
 			fixed (void* buffP = &buff) {
 				bool success = GetTokenInformation(tokenHandle, infoClass, buffP, (uint)sizeof(T), out _);
 				if(!success) throw new Win32Exception();
