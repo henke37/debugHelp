@@ -46,11 +46,19 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
+		public void AdjustPrivilege(UInt64 priv, PrivilegeStatus newState, out PrivilegeStatus oldState) {
+			throw new NotImplementedException();
+		}
+
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern unsafe PInvoke.NTSTATUS NtCompareTokens(SafeTokenHandle handle1, SafeTokenHandle handle2, [MarshalAs(UnmanagedType.Bool)] out bool equal);
 
 		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool GetTokenInformation(SafeTokenHandle handle, TokenInformationClass informationClass, void* outBuff, UInt32 outBuffLen, out UInt32 retLen);
+
+		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern unsafe bool AdjustTokenPrivileges(SafeTokenHandle handle, [MarshalAs(UnmanagedType.Bool)] bool disableEverything, void* newState, UInt32 outBuffLen, void* oldState, out UInt32 retLen);
 	}
 }
