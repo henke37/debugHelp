@@ -1,5 +1,6 @@
 ﻿using Henke37.Win32.SafeHandles;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
@@ -46,8 +47,46 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
-		public void AdjustPrivilege(UInt64 priv, PrivilegeStatus newState, out PrivilegeStatus oldState) {
-			throw new NotImplementedException();
+		public unsafe void AdjustPrivilege(UInt64 priv, PrivilegeAttributes newState, out PrivilegeAttributes oldState) {
+			LuidAndAttributes inBuff = new LuidAndAttributes(priv, newState);
+			void* inBuffP = (void*)&inBuff;
+			LuidAndAttributes outBuff = new LuidAndAttributes();
+			void* outBuffP = (void*)&outBuff;
+
+			uint size= (uint)sizeof(LuidAndAttributes);
+
+			bool success=AdjustTokenPrivileges(tokenHandle, false, inBuffP, size, outBuffP, out _);
+			if(!success) throw new Win32Exception();
+
+			oldState = outBuff.Attributes;
+		}
+
+		public LuidAndAttributes[] Privileges {
+			get {
+				return GetPrivileges();
+			}
+		}
+
+		private unsafe LuidAndAttributes[] GetPrivileges() {
+			UInt32 size = (UInt32)(4 + sizeof(LuidAndAttributes) * 36);
+			byte[] buff = new byte[size];
+			buff[0] = 36;
+			fixed(byte* buffP = buff) {
+				bool success = GetTokenInformation(tokenHandle, TokenInformationClass.Privileges, buffP, size, out _);
+				if(!success) throw new Win32Exception();
+				int privCount = buff[0];
+
+				var outBuff = new LuidAndAttributes[privCount];
+
+				var arrStart = (LuidAndAttributes*)(buffP + 4);
+
+				for(int privIndex = 0; privIndex < privCount; privIndex++) {
+
+					outBuff[privIndex] = arrStart[privIndex];
+				}
+
+				return outBuff;
+			}
 		}
 
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]

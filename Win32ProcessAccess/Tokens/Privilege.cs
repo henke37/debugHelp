@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.Tokens {
@@ -48,15 +49,51 @@ namespace Henke37.Win32.Tokens {
 			return luid;
 		}
 
-		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
+		internal static string LookupPrivilegeName(UInt64 luid) {
+			UInt32 size = 32;
+			char[] nameBuff = new char[size];
+			bool success = LookupPrivilegeNameW(null, ref luid, nameBuff, ref size);
+			if(!success) throw new Win32Exception();
+			return new String(nameBuff, 0, (int)size);
+		}
+
+		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		internal static extern unsafe bool LookupPrivilegeValueW(string? system, string name, out UInt64 luid);
+		internal static extern unsafe bool LookupPrivilegeValueW([MarshalAs(UnmanagedType.LPWStr)] string? system, string name, out UInt64 luid);
+
+		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern unsafe bool LookupPrivilegeNameW([MarshalAs(UnmanagedType.LPWStr)] string? system, ref UInt64 luid, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] char[] name, ref UInt32 nameLen);
 	}
 
-	public enum PrivilegeStatus {
+	public enum PrivilegeAttributes {
 		None = 0,
 		EnabledByDefault = 0x00000001,
 		Enabled = 0x00000002,
 		Removed = 0X00000004
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct LuidAndAttributes {
+		[DebuggerDisplay("{Privilege.LookupPrivilegeName(LUID)}")]
+		public UInt64 LUID;
+		public PrivilegeAttributes Attributes;
+
+		public LuidAndAttributes(UInt64 LUID, PrivilegeAttributes attributes) {
+			this.LUID = LUID;
+			Attributes = attributes;
+		}
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	internal struct TokenPrivilege {
+		private UInt32 Count;
+
+		public LuidAndAttributes Privilege;
+
+		public TokenPrivilege(UInt64 LUID, PrivilegeAttributes attributes) : this() {
+			Count = 1;
+			Privilege = new LuidAndAttributes(LUID, attributes);
+		}
 	}
 }
