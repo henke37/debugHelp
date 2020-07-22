@@ -66,14 +66,14 @@ namespace Henke37.Win32.Tokens {
 		internal static extern unsafe bool LookupPrivilegeNameW([MarshalAs(UnmanagedType.LPWStr)] string? system, ref UInt64 luid, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] char[] name, ref UInt32 nameLen);
 	}
 
-	public enum PrivilegeAttributes {
+	public enum PrivilegeAttributes : UInt32 {
 		None = 0,
 		EnabledByDefault = 0x00000001,
 		Enabled = 0x00000002,
 		Removed = 0X00000004
 	}
 
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack=1, Size = 12)]
 	public struct LuidAndAttributes {
 		[DebuggerDisplay("{Privilege.LookupPrivilegeName(LUID)}")]
 		public UInt64 LUID;
