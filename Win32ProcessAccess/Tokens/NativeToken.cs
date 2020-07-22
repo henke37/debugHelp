@@ -60,5 +60,9 @@ namespace Henke37.Win32.Tokens {
 		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool AdjustTokenPrivileges(SafeTokenHandle handle, [MarshalAs(UnmanagedType.Bool)] bool disableEverything, void* newState, UInt32 outBuffLen, void* oldState, out UInt32 retLen);
+
+		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern unsafe bool AdjustTokenGroups(SafeTokenHandle handle, [MarshalAs(UnmanagedType.Bool)] bool resetToDefault, void* newState, UInt32 outBuffLen, void* oldState, out UInt32 retLen);
 	}
 }
