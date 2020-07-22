@@ -1,9 +1,12 @@
-﻿using Henke37.DebugHelp.Win32;
-using System;
+﻿using System;
 using System.Linq;
-using Henke37.DebugHelp.Win32.AccessRights;
 using System.Collections.Generic;
-using Henke37.Win32.Base;
+
+using Henke37.Win32.AccessRights;
+using Henke37.Win32.Files;
+using Henke37.Win32.Memory;
+using Henke37.Win32.Processes;
+using Henke37.Win32.Snapshots;
 
 namespace ModuleVsFileMapping {
 	class Program {

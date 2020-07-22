@@ -1,8 +1,8 @@
-﻿using Henke37.Win32.Base.SafeHandles;
+﻿using Henke37.Win32.SafeHandles;
 using System;
 using System.Security.Permissions;
 
-namespace Henke37.DebugHelp.Win32.SafeHandles {
+namespace Henke37.Win32.SafeHandles {
 	internal sealed class SafeThreadHandle : SafeKernelObjHandle, IEquatable<SafeThreadHandle> {
 		internal SafeThreadHandle(IntPtr handle, bool ownsHandle = true) : base(handle, ownsHandle) {
 		}

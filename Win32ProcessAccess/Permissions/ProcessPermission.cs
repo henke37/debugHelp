@@ -7,7 +7,7 @@ using System.Security.Permissions;
 
 //https://docs.microsoft.com/en-us/dotnet/api/system.security.codeaccesspermission?view=netframework-4.8
 
-namespace Henke37.DebugHelp.Win32.Permissions {
+namespace Henke37.Win32.Permissions {
 	[Serializable]
 	sealed internal class ProcessPermission : CodeAccessPermission, IUnrestrictedPermission {
 

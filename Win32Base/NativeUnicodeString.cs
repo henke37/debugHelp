@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Henke37.Win32.Base {
+namespace Henke37.Win32 {
     [StructLayout(LayoutKind.Sequential)]
     internal struct UNICODE_STRING : IDisposable {
         public ushort Length;

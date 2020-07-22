@@ -1,4 +1,4 @@
-﻿namespace Henke37.DebugHelp.Win32.Jobs {
+﻿namespace Henke37.Win32.Jobs {
 	internal enum JobInformationClass {
 		AssociateCompletionPortInformation = 7,
 		BasicAccountingInformation = 1,

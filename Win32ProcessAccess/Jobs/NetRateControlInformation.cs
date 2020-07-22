@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Henke37.DebugHelp.Win32.Jobs {
+namespace Henke37.Win32.Jobs {
 	public struct NetRateControlInformation {
 		public UInt64 MaxBandwidth;
 		public NetRateControlFlags Flags;

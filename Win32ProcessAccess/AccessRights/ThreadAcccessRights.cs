@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Henke37.DebugHelp.Win32.AccessRights {
+namespace Henke37.Win32.AccessRights {
 	[Flags]
 	public enum ThreadAcccessRights : UInt32 {
 		None = 0,

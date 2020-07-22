@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using Henke37.Win32.Base;
-using Henke37.Win32.Base.AccessRights;
+
+using Henke37.Win32.AccessRights;
 using Henke37.Win32.DeviceEnum;
+using Henke37.Win32.Files;
 
 namespace Henke37.Win32.CdAccess {
 	public class CdDrive {

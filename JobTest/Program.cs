@@ -1,5 +1,6 @@
-﻿using Henke37.DebugHelp.Win32;
-using Henke37.DebugHelp.Win32.Jobs;
+﻿using Henke37.Win32;
+using Henke37.Win32.Jobs;
+using Henke37.Win32.Processes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

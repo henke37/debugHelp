@@ -1,7 +1,7 @@
 ﻿using System;
-using Henke37.Win32.Base.SafeHandles;
+using Henke37.Win32.SafeHandles;
 
-namespace Henke37.DebugHelp.Win32.SafeHandles {
+namespace Henke37.Win32.SafeHandles {
 	internal class SafeToolhelp32SnapshotHandle : SafeKernelObjHandle, IEquatable<SafeToolhelp32SnapshotHandle> {
 		internal SafeToolhelp32SnapshotHandle(IntPtr handle) : base(handle, true) {
 		}

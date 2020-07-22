@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System;
 
-namespace Henke37.Win32.Base.SafeHandles {
+namespace Henke37.Win32.SafeHandles {
 	internal class SafeFileObjectHandle : SafeKernelObjHandle, IEquatable<SafeFileObjectHandle>, IEquatable<SafeFileHandle> {
 		internal static readonly SafeFileObjectHandle InvalidHandle=new SafeFileObjectHandle(InvalidHandleValue,false);
 

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Henke37.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Henke37.DebugHelp.Win32.Jobs {
+namespace Henke37.Win32.Jobs {
 	public class ExtendedLimitInformation : BasicLimitInformation {
 #if x64
 		public UInt64 ProcessMemoryLimit;

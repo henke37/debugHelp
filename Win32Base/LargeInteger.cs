@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Henke37.Win32.Base {
+namespace Henke37.Win32 {
 	[StructLayout(LayoutKind.Explicit, Size = 8)]
 	public struct LargeInteger {
 		[FieldOffset(0)] public Int64 QuadPart;

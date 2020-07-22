@@ -1,7 +1,7 @@
-﻿using Henke37.Win32.Base.SafeHandles;
+﻿using Henke37.Win32.SafeHandles;
 using System;
 
-namespace Henke37.DebugHelp.Win32.SafeHandles {
+namespace Henke37.Win32.SafeHandles {
 	class SafeJobHandle : SafeKernelObjHandle, IEquatable<SafeJobHandle> {
 		private SafeJobHandle() : base(true) {
 		}

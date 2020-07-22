@@ -1,9 +1,8 @@
-﻿using Henke37.Win32.Base;
-using Henke37.Win32.Base.AccessRights;
+﻿using Henke37.Win32.AccessRights;
 using Henke37.Win32.DeviceEnum;
+using Henke37.Win32.Files;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Henke37.Win32.BatteryAccess {

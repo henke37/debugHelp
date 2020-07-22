@@ -2,7 +2,8 @@
 using DIA;
 using Henke37.DebugHelp;
 using Henke37.DebugHelp.PdbAccess;
-using Henke37.DebugHelp.Win32;
+using Henke37.Win32;
+using Henke37.Win32.Threads;
 
 namespace Stackwalker {
 	internal class StackWalkHelper : IDiaStackWalkHelper {

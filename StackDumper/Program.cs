@@ -1,13 +1,14 @@
 ﻿using Henke37.DebugHelp;
 using Henke37.DebugHelp.PdbAccess;
-using Henke37.DebugHelp.Win32;
-using Henke37.DebugHelp.Win32.AccessRights;
+using Henke37.Win32.AccessRights;
+using Henke37.Win32.Memory;
+using Henke37.Win32.Processes;
+using Henke37.Win32.Snapshots;
+using Henke37.Win32.Threads;
+
 using Stackwalker;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StackDumper {
 	class Program {

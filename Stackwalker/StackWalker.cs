@@ -1,7 +1,8 @@
 ﻿using DIA;
 using Henke37.DebugHelp;
 using Henke37.DebugHelp.PdbAccess;
-using Henke37.DebugHelp.Win32;
+using Henke37.Win32;
+using Henke37.Win32.Threads;
 using System;
 using System.Collections.Generic;
 using System.Linq;

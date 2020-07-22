@@ -1,8 +1,7 @@
-﻿using Henke37.Win32.Base;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Henke37.DebugHelp.Win32.Jobs {
+namespace Henke37.Win32.Jobs {
 
 	public class BasicLimitInformation {
 		public TimeSpan PerProcessUserTimeLimit;

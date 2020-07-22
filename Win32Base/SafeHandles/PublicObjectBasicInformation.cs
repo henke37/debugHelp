@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Henke37.Win32.Base.SafeHandles {
+namespace Henke37.Win32.SafeHandles {
 	public class PublicObjectBasicInformation {
 		public UInt32 Attributes;
 		public UInt32 GrantedAccess;

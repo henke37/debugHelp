@@ -1,7 +1,6 @@
-﻿using Henke37.DebugHelp.Win32.AccessRights;
-using Henke37.DebugHelp.Win32.SafeHandles;
-using Henke37.Win32.Base;
-using Henke37.Win32.Base.SafeHandles;
+﻿using Henke37.Win32.AccessRights;
+using Henke37.Win32.Processes;
+using Henke37.Win32.SafeHandles;
 using System;
 using System.ComponentModel;
 using System.Runtime.ConstrainedExecution;
@@ -9,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 
-namespace Henke37.DebugHelp.Win32.Jobs {
+namespace Henke37.Win32.Jobs {
 
 #if NETFRAMEWORK
 	[HostProtection(ExternalProcessMgmt=true)]

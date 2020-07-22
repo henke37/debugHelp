@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Henke37.DebugHelp.Win32.Jobs {
+namespace Henke37.Win32.Jobs {
 	[StructLayout(LayoutKind.Sequential)]
 	internal struct EndOfJobTimeActionStruct {
 		public EndOfJobTimeAction endOfJobTimeAction;
