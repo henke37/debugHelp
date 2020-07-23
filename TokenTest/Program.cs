@@ -8,6 +8,8 @@ namespace TokenTest {
 			using(NativeToken token=NativeProcess.Current.OpenToken(TokenAccessLevels.Query | TokenAccessLevels.AdjustPrivileges)) {
 				var privs = token.Privileges;
 				token.AdjustPrivilege(Privilege.IncreaseWorkingSet, PrivilegeAttributes.Enabled, out _);
+
+				var linked = token.GetLinkedToken();
 			}
 		}
 	}
