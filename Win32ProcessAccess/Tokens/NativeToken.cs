@@ -138,6 +138,13 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
+		public ImpersonationLevel ImpersonationLevel {
+			get {
+				GetTokenInformation(TokenInformationClass.ImpersonationLevel, out ImpersonationLevel level);
+				return level;
+			}
+		}
+
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern unsafe PInvoke.NTSTATUS NtCompareTokens(SafeTokenHandle handle1, SafeTokenHandle handle2, [MarshalAs(UnmanagedType.Bool)] out bool equal);
 
