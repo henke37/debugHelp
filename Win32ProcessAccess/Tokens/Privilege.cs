@@ -66,6 +66,7 @@ namespace Henke37.Win32.Tokens {
 		internal static extern unsafe bool LookupPrivilegeNameW([MarshalAs(UnmanagedType.LPWStr)] string? system, ref UInt64 luid, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] char[] name, ref UInt32 nameLen);
 	}
 
+	[Flags]
 	public enum PrivilegeAttributes : UInt32 {
 		None = 0,
 		EnabledByDefault = 0x00000001,
