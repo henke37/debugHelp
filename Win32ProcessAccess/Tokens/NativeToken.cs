@@ -131,6 +131,13 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
+		public MandatoryPolicy MandatoryPolicy {
+			get {
+				GetTokenInformation(TokenInformationClass.MandatoryPolicy, out MandatoryPolicy policy);
+				return policy;
+			}
+		}
+
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern unsafe PInvoke.NTSTATUS NtCompareTokens(SafeTokenHandle handle1, SafeTokenHandle handle2, [MarshalAs(UnmanagedType.Bool)] out bool equal);
 
