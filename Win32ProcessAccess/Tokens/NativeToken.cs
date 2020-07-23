@@ -159,6 +159,13 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
+		public bool IsAppContainer {
+			get {
+				GetTokenInformation(TokenInformationClass.IsAppContainer, out UInt32 result);
+				return result != 0;
+			}
+		}
+
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern unsafe PInvoke.NTSTATUS NtCompareTokens(SafeTokenHandle handle1, SafeTokenHandle handle2, [MarshalAs(UnmanagedType.Bool)] out bool equal);
 
