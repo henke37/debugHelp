@@ -57,6 +57,14 @@ namespace Henke37.Win32.Tokens {
 			return new String(nameBuff, 0, (int)size);
 		}
 
+		internal static string LookUpPrivilegeDisplayName(string name) {
+			UInt32 size = 80;
+			char[] dispNameBuff = new char[size];
+			bool success = LookupPrivilegeDisplayNameW(null, name, dispNameBuff, ref size, out _);
+			if(!success) throw new Win32Exception();
+			return new String(dispNameBuff, 0, (int)size);
+		}
+
 		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool LookupPrivilegeValueW([MarshalAs(UnmanagedType.LPWStr)] string? system, string name, out UInt64 luid);
@@ -64,6 +72,11 @@ namespace Henke37.Win32.Tokens {
 		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool LookupPrivilegeNameW([MarshalAs(UnmanagedType.LPWStr)] string? system, ref UInt64 luid, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] char[] name, ref UInt32 nameLen);
+
+
+		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern unsafe bool LookupPrivilegeDisplayNameW([MarshalAs(UnmanagedType.LPWStr)] string? system, [MarshalAs(UnmanagedType.LPWStr)] string name, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] char[] displayName, ref UInt32 displayNameLen, out UInt32 langCode);
 	}
 
 	[Flags]
@@ -86,6 +99,7 @@ namespace Henke37.Win32.Tokens {
 		}
 
 		public string PrivilegeName => Privilege.LookupPrivilegeName(LUID);
+		public string DisplayName => Privilege.LookUpPrivilegeDisplayName(PrivilegeName);
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
