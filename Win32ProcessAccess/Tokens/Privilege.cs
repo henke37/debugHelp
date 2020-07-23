@@ -76,7 +76,7 @@ namespace Henke37.Win32.Tokens {
 
 	[StructLayout(LayoutKind.Sequential, Pack=1, Size = 12)]
 	public struct LuidAndAttributes {
-		[DebuggerDisplay("{Privilege.LookupPrivilegeName(LUID)}")]
+		[DebuggerDisplay("{PrivilegeName} {Attributes}")]
 		public UInt64 LUID;
 		public PrivilegeAttributes Attributes;
 
@@ -84,6 +84,8 @@ namespace Henke37.Win32.Tokens {
 			this.LUID = LUID;
 			Attributes = attributes;
 		}
+
+		public string PrivilegeName => Privilege.LookupPrivilegeName(LUID);
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
