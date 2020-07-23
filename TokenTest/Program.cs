@@ -1,16 +1,13 @@
 ﻿using Henke37.Win32.Processes;
 using Henke37.Win32.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Principal;
 
 namespace TokenTest {
 	class Program {
 		static void Main(string[] args) {
-			using(NativeToken token=NativeProcess.Current.OpenToken(System.Security.Principal.TokenAccessLevels.Query)) {
+			using(NativeToken token=NativeProcess.Current.OpenToken(TokenAccessLevels.Query | TokenAccessLevels.AdjustPrivileges)) {
 				var privs = token.Privileges;
+				token.AdjustPrivilege(Privilege.IncreaseWorkingSet, PrivilegeAttributes.Enabled, out _);
 			}
 		}
 	}
