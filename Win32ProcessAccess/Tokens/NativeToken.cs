@@ -138,6 +138,13 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
+		public bool IsElevated {
+			get {
+				GetTokenInformation(TokenInformationClass.Elevation, out UInt32 result);
+				return result != 0;
+			}
+		}
+
 		public MandatoryPolicy MandatoryPolicy {
 			get {
 				GetTokenInformation(TokenInformationClass.MandatoryPolicy, out MandatoryPolicy policy);
