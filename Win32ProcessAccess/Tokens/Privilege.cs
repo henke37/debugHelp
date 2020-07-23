@@ -50,7 +50,7 @@ namespace Henke37.Win32.Tokens {
 		}
 
 		internal static string LookupPrivilegeName(UInt64 luid) {
-			UInt32 size = 32;
+			UInt32 size = 45;
 			char[] nameBuff = new char[size];
 			bool success = LookupPrivilegeNameW(null, ref luid, nameBuff, ref size);
 			if(!success) throw new Win32Exception();
