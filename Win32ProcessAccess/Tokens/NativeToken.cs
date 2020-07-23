@@ -96,6 +96,13 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
+		public UInt32 SessionId {
+			get {
+				GetTokenInformation(TokenInformationClass.SessionId, out UInt32 sessionId);
+				return sessionId;
+			}
+		}
+
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern unsafe PInvoke.NTSTATUS NtCompareTokens(SafeTokenHandle handle1, SafeTokenHandle handle2, [MarshalAs(UnmanagedType.Bool)] out bool equal);
 
