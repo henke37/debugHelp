@@ -105,8 +105,29 @@ namespace Henke37.Win32.Tokens {
 
 		public bool HasRestrictions {
 			get {
-				GetTokenInformation(TokenInformationClass.HasRestrictions, out UInt32 restrictions);
-				return restrictions != 0;
+				GetTokenInformation(TokenInformationClass.HasRestrictions, out UInt32 result);
+				return result != 0;
+			}
+		}
+
+		public bool VirtualizationAllowed {
+			get {
+				GetTokenInformation(TokenInformationClass.VirtualizationAllowed, out UInt32 result);
+				return result != 0;
+			}
+		}
+
+		public bool VirtualizationEnabled {
+			get {
+				GetTokenInformation(TokenInformationClass.VirtualizationEnabled, out UInt32 result);
+				return result != 0;
+			}
+		}
+
+		public bool UIAccess {
+			get {
+				GetTokenInformation(TokenInformationClass.UIAccess, out UInt32 result);
+				return result != 0;
 			}
 		}
 
