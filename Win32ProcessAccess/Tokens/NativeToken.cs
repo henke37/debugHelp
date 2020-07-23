@@ -103,6 +103,13 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
+		public bool HasRestrictions {
+			get {
+				GetTokenInformation(TokenInformationClass.HasRestrictions, out UInt32 restrictions);
+				return restrictions != 0;
+			}
+		}
+
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern unsafe PInvoke.NTSTATUS NtCompareTokens(SafeTokenHandle handle1, SafeTokenHandle handle2, [MarshalAs(UnmanagedType.Bool)] out bool equal);
 
