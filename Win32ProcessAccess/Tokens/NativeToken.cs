@@ -48,17 +48,17 @@ namespace Henke37.Win32.Tokens {
 		}
 
 		public unsafe void AdjustPrivilege(UInt64 priv, PrivilegeAttributes newState, out PrivilegeAttributes oldState) {
-			LuidAndAttributes inBuff = new LuidAndAttributes(priv, newState);
+			TokenPrivilege inBuff = new TokenPrivilege(priv, newState);
 			void* inBuffP = (void*)&inBuff;
-			LuidAndAttributes outBuff = new LuidAndAttributes();
+			TokenPrivilege outBuff = new TokenPrivilege();
 			void* outBuffP = (void*)&outBuff;
 
-			uint size= (uint)sizeof(LuidAndAttributes);
+			uint size= (uint)sizeof(TokenPrivilege);
 
 			bool success=AdjustTokenPrivileges(tokenHandle, false, inBuffP, size, outBuffP, out _);
 			if(!success) throw new Win32Exception();
 
-			oldState = outBuff.Attributes;
+			oldState = outBuff.Privilege.Attributes;
 		}
 
 		public LuidAndAttributes[] Privileges {
