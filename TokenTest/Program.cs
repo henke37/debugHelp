@@ -5,7 +5,7 @@ using System.Security.Principal;
 namespace TokenTest {
 	class Program {
 		static void Main(string[] args) {
-			using(NativeToken token=NativeProcess.Current.OpenToken(TokenAccessLevels.Query | TokenAccessLevels.AdjustPrivileges)) {
+			using(NativeToken token=NativeProcess.Current.OpenToken(TokenAccessLevels.Query | TokenAccessLevels.QuerySource | TokenAccessLevels.AdjustPrivileges)) {
 				var privs = token.Privileges;
 				token.AdjustPrivilege(Privilege.IncreaseWorkingSet, PrivilegeAttributes.Enabled, out _);
 

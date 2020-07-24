@@ -173,6 +173,14 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
+		public TokenSource TokenSource {
+			get {
+				TokenSource.Native native;
+				GetTokenInformation(TokenInformationClass.Source, out native);
+				return new TokenSource(native);
+			}
+		}
+
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern unsafe PInvoke.NTSTATUS NtCompareTokens(SafeTokenHandle handle1, SafeTokenHandle handle2, [MarshalAs(UnmanagedType.Bool)] out bool equal);
 
