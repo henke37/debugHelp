@@ -44,7 +44,8 @@ namespace Henke37.DebugHelp {
 			return arr;
 		}
 
-		private unsafe void ReadStructArr<T>(IntPtr addr, T[] arr) where T : unmanaged {
+		[SecuritySafeCritical]
+		public unsafe void ReadStructArr<T>(IntPtr addr, T[] arr) where T : unmanaged {
 			int arrLen = arr.Length;
 			for(int i = 0; i < arrLen; ++i) {
 				ReadStruct(addr, ref arr[i]);
