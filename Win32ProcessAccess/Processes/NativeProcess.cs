@@ -15,6 +15,7 @@ using Henke37.Win32.Memory;
 using Henke37.Win32.FileMappings;
 using Henke37.Win32.Tokens;
 using Henke37.Win32.Snapshots;
+using Henke37.Win32.Threads;
 
 namespace Henke37.Win32.Processes {
 #if NETFRAMEWORK
@@ -24,6 +25,37 @@ namespace Henke37.Win32.Processes {
 		internal SafeProcessHandle handle;
 		private const int ERROR_BAD_LENGTH = 24;
 		private const int WaitForSingleObjectTimeOut = 0x00000102;
+
+		public const CreateProcessFlags SupportedCreateProcessFlags = CreateProcessFlags.BreakAwayFromJob |
+			CreateProcessFlags.CreateNewConsole | CreateProcessFlags.CreateNewProcessGroup |
+			CreateProcessFlags.CreateNoWindow | CreateProcessFlags.DefaultErrorMode |
+			CreateProcessFlags.DetachedProcess | CreateProcessFlags.InheritParentAffinity |
+			CreateProcessFlags.PreserveCodeAuthZLevel | CreateProcessFlags.Suspended;
+		public const StartupInfoFlags SupportedStartupInfoFlags = StartupInfoFlags.ForceOffFeedback | StartupInfoFlags.ForceOnFeedback |
+			StartupInfoFlags.PreventPinning | StartupInfoFlags.TitleIsAppId | StartupInfoFlags.TitleIsLinkName |
+			StartupInfoFlags.UntrustedSource;
+
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		public static unsafe NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoFlags flags2, string currentDirectory, out NativeThread firstThread) {
+			if((flags & ~SupportedCreateProcessFlags) != 0) {
+				throw new ArgumentException("Unsupported CreateProcessFlags given!");
+			}
+			if((flags2 & ~SupportedStartupInfoFlags)!=0) {
+				throw new ArgumentException("Unsupported StartupInfoFlags given");
+			}
+
+			StartupInfoW startupInfo = new StartupInfoW(flags2);
+			ProcessInformation processInfo;
+
+			bool success = CreateProcessW(applicationName, commandLine, null, null, false, (UInt32)flags, null, currentDirectory, &startupInfo, &processInfo);
+			if(!success) throw new Win32Exception();
+
+			firstThread = new NativeThread(new SafeThreadHandle(processInfo.hThread));
+			return new NativeProcess(new SafeProcessHandle(processInfo.hProcess));
+		}
 
 		internal NativeProcess(SafeProcessHandle handle) {
 			if(handle.IsInvalid) throw new ArgumentException("Handle must be valid!", nameof(handle));
@@ -498,6 +530,21 @@ namespace Henke37.Win32.Processes {
 		[DllImport("Advapi32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool OpenProcessToken(SafeProcessHandle procHandle, UInt32 access, out SafeTokenHandle tokenHandle);
+
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern unsafe bool CreateProcessW(
+			[MarshalAs(UnmanagedType.LPWStr)] string lpApplicationName,
+			[MarshalAs(UnmanagedType.LPWStr)] string lpCommandLine,
+			SecurityAttributes * lpProcessAttributes,
+			SecurityAttributes * lpThreadAttributes,
+			[MarshalAs(UnmanagedType.Bool)] bool inheritHandles,
+			UInt32 flags,
+			void* environment,
+			[MarshalAs(UnmanagedType.LPWStr)] string lpCurrentDirectory,
+			StartupInfoW *startupInfo,
+			ProcessInformation *processInfo
+		);
 
 	}
 }
