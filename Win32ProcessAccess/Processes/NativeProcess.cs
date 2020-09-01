@@ -33,7 +33,9 @@ namespace Henke37.Win32.Processes {
 			CreateProcessFlags.PreserveCodeAuthZLevel | CreateProcessFlags.Suspended;
 		public const StartupInfoFlags SupportedStartupInfoFlags = StartupInfoFlags.ForceOffFeedback | StartupInfoFlags.ForceOnFeedback |
 			StartupInfoFlags.PreventPinning | StartupInfoFlags.TitleIsAppId | StartupInfoFlags.TitleIsLinkName |
-			StartupInfoFlags.UntrustedSource;
+			StartupInfoFlags.UntrustedSource |
+			StartupInfoFlags.UseCountChars | StartupInfoFlags.UseFillAttribute | StartupInfoFlags.UseHotKey |
+			StartupInfoFlags.UsePosition | StartupInfoFlags.UseShowWindow | StartupInfoFlags.UseSize | StartupInfoFlags.UseSTDHandles;
 
 		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoFlags flags2, string currentDirectory, out NativeThread firstThread) {
 			StartupInfoW startupInfo = new StartupInfoW(flags2);
