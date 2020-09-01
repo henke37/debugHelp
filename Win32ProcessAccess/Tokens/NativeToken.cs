@@ -133,7 +133,7 @@ namespace Henke37.Win32.Tokens {
 
 		public bool SandBoxInert {
 			get {
-				GetTokenInformation(TokenInformationClass.UIAccess, out UInt32 result);
+				GetTokenInformation(TokenInformationClass.SandBoxInert, out UInt32 result);
 				return result != 0;
 			}
 		}
