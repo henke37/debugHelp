@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.Tokens {
+	[StructLayout(LayoutKind.Sequential)]
 	public struct TokenStatistics {
 		public UInt64 TokenId;
 		public UInt64 AuthenticationId;

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.Processes {
 	internal unsafe struct StartupInfoW {
 		UInt32 cb;
+	[StructLayout(LayoutKind.Sequential)]
 		internal Char *lpReserved;
 		internal Char *lpDesktop;
 		internal Char *lpTitle;
