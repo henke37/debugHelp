@@ -1,12 +1,6 @@
-﻿using Henke37.Win32;
-using Henke37.Win32.Jobs;
+﻿using Henke37.Win32.Jobs;
 using Henke37.Win32.Processes;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JobTest {
 	class Program {
@@ -19,8 +13,7 @@ namespace JobTest {
 				job.ExtendedLimitInformation = extended;
 
 				if(args.Length >= 1) {
-					using(Process process = Process.Start(args[0]))
-					using(NativeProcess natProcess = NativeProcess.FromProcess(process)) {
+					using(NativeProcess natProcess = NativeProcess.CreateProcess(args[0],null, CreateProcessFlags.None, StartupInfoFlags.None, null, out _)) {
 						job.AttachProcess(natProcess);
 					}
 				}
