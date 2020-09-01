@@ -35,19 +35,23 @@ namespace Henke37.Win32.Processes {
 			StartupInfoFlags.PreventPinning | StartupInfoFlags.TitleIsAppId | StartupInfoFlags.TitleIsLinkName |
 			StartupInfoFlags.UntrustedSource;
 
+		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoFlags flags2, string currentDirectory, out NativeThread firstThread) {
+			StartupInfoW startupInfo = new StartupInfoW(flags2);
+			return CreateProcess(applicationName, commandLine, flags, startupInfo, currentDirectory, out firstThread);
+		}
+
 #if NETFRAMEWORK
 		[HostProtection(MayLeakOnAbort = true)]
 #endif
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public static unsafe NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoFlags flags2, string currentDirectory, out NativeThread firstThread) {
+		public static unsafe NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, string currentDirectory, out NativeThread firstThread) {
 			if((flags & ~SupportedCreateProcessFlags) != 0) {
 				throw new ArgumentException("Unsupported CreateProcessFlags given!");
 			}
-			if((flags2 & ~SupportedStartupInfoFlags)!=0) {
+			if((startupInfo.dwFlags & ~SupportedStartupInfoFlags) != 0) {
 				throw new ArgumentException("Unsupported StartupInfoFlags given");
 			}
 
-			StartupInfoW startupInfo = new StartupInfoW(flags2);
 			ProcessInformation processInfo;
 
 			bool success = CreateProcessW(applicationName, commandLine, null, null, false, (UInt32)flags, null, currentDirectory, &startupInfo, &processInfo);

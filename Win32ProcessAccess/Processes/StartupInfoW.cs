@@ -2,26 +2,26 @@
 using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.Processes {
-	internal unsafe struct StartupInfoW {
-		UInt32 cb;
 	[StructLayout(LayoutKind.Sequential)]
+	public unsafe struct StartupInfoW {
+		private UInt32 cb;
 		internal Char *lpReserved;
-		internal Char *lpDesktop;
-		internal Char *lpTitle;
-		internal Int32 dwX;
-		internal Int32 dwY;
-		internal UInt32 dwXSize;
-		internal UInt32 dwYSize;
-		internal UInt32 dwXCountChars;
-		internal UInt32 dwYCountChars;
-		internal UInt32 dwFillAttribute;
-		internal StartupInfoFlags dwFlags;
-		internal UInt16 wShowWindow;
-		internal UInt16 cbReserved2;
-		internal void *lpReserved2;
-		internal IntPtr hStdInput;
-		internal IntPtr hStdOutput;
-		internal IntPtr hStdError;
+		public Char *lpDesktop;
+		public Char *lpTitle;
+		public Int32 dwX;
+		public Int32 dwY;
+		public UInt32 dwXSize;
+		public UInt32 dwYSize;
+		public UInt32 dwXCountChars;
+		public UInt32 dwYCountChars;
+		public UInt32 dwFillAttribute;
+		public StartupInfoFlags dwFlags;
+		public UInt16 wShowWindow;
+		private UInt16 cbReserved2;
+		private void *lpReserved2;
+		public IntPtr hStdInput;
+		public IntPtr hStdOutput;
+		public IntPtr hStdError;
 
 		internal StartupInfoW(StartupInfoFlags flags) {
 			lpReserved = null;
