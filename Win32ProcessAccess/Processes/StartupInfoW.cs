@@ -40,7 +40,15 @@ namespace Henke37.Win32.Processes {
 			hStdOutput = default;
 			hStdError = default;
 
+			ValidateFlags(flags);
+
 			cb = (uint)sizeof(StartupInfoW);
+		}
+
+		private static void ValidateFlags(StartupInfoFlags flags) {
+			if((flags & StartupInfoFlags.UseHotKey)!=0 && (flags & StartupInfoFlags.UseSTDHandles)!=0) {
+				throw new ArgumentException("Invalid flags combination");
+			}
 		}
 	}
 }
