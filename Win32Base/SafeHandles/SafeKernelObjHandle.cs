@@ -8,7 +8,7 @@ using System.Security;
 using System.Security.Permissions;
 
 namespace Henke37.Win32.SafeHandles {
-	internal abstract class SafeKernelObjHandle : SafeHandleZeroOrMinusOneIsInvalid {
+	public abstract class SafeKernelObjHandle : SafeHandleZeroOrMinusOneIsInvalid {
 		private const uint FlagInherit = 0x00000001;
 		private const uint FlagProtectFromClose = 0x00000002;
 

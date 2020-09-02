@@ -441,6 +441,8 @@ namespace Henke37.Win32.Processes {
 			return new NativeProcess(SafeProcessHandle.DuplicateFrom(stdProcess.Handle, (uint)accessRights));
 		}
 
+		public SafeProcessHandle Handle => handle;
+
 		public static implicit operator NativeProcess(Process stdProcess) => FromProcess(stdProcess);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
