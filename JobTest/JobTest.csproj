@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,6 +52,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Win32Base\Win32Base.csproj">
+      <Project>{DD1A28CE-0DC8-4F02-B157-FA92719B1DA7}</Project>
+      <Name>Win32Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Win32ProcessAccess\Win32ProcessAccess.csproj">
       <Project>{E57BAFA0-7748-4011-913D-1258E90AF6C2}</Project>
       <Name>Win32ProcessAccess</Name>
