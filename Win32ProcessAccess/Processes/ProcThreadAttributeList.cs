@@ -36,7 +36,7 @@ namespace Henke37.Win32.Processes {
 		}
 
 		[SuppressUnmanagedCodeSecurity]
-		internal unsafe void AddAttribute<T>(ProcThreadAttribute att, T* val) where T : unmanaged {
+		public unsafe void AddAttribute<T>(ProcThreadAttribute att, T* val) where T : unmanaged {
 			if(disposedValue) throw new ObjectDisposedException("ProcThreadAttributeList");
 
 			bool success = UpdateProcThreadAttribute(lpAttributeList, 0, (UInt32)att, val, (uint)sizeof(T), null, null);
