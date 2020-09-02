@@ -16,22 +16,24 @@ namespace JobTest {
 				job.ExtendedLimitInformation = extended;
 
 				if(args.Length >= 1) {
-
-					using(var atts = new ProcThreadAttributeList(1)) {
-
-						var shellProc = GetShellProcess();
-
-						IntPtr shellHandle = shellProc.Handle.DangerousGetHandle();
-
-						atts.AddAttribute<IntPtr>(ProcThreadAttribute.ParentProcess, &shellHandle);
-
-						using(NativeProcess natProcess = NativeProcess.CreateProcess(args[0], null, CreateProcessFlags.None, StartupInfoFlags.None, atts, null, out _)) {
-							job.AttachProcess(natProcess);
-						}
-					}
+					StartProcess(args, job);
 				}
 			}
 			
+		}
+
+		private static unsafe void StartProcess(string[] args, NativeJob job) {
+			using(var atts = new ProcThreadAttributeList(1)) 
+			using(var shellProc = GetShellProcess()) {
+
+				IntPtr shellHandle = shellProc.Handle.DangerousGetHandle();
+
+				atts.AddAttribute<IntPtr>(ProcThreadAttribute.ParentProcess, &shellHandle);
+
+				using(NativeProcess natProcess = NativeProcess.CreateProcess(args[0], null, CreateProcessFlags.None, StartupInfoFlags.None, atts, null, out _)) {
+					job.AttachProcess(natProcess);
+				}
+			}			
 		}
 
 		static NativeProcess GetShellProcess() {
