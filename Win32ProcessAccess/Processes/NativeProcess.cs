@@ -53,6 +53,27 @@ namespace Henke37.Win32.Processes {
 			return CreateProcessInternal(applicationName, commandLine, flags, startupInfo, currentDirectory, out firstThread);
 		}
 
+		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoFlags flags2, ProcThreadAttributeList atts, string currentDirectory, out NativeThread firstThread) {
+			StartupInfoW startupInfo = new StartupInfoW(flags2);
+			return CreateProcess(applicationName, commandLine, flags, startupInfo, atts, currentDirectory, out firstThread);
+		}
+
+		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, ProcThreadAttributeList atts, string currentDirectory, out NativeThread firstThread) {
+			if((flags & ~SupportedCreateProcessFlags) != 0) {
+				throw new ArgumentException("Unsupported CreateProcessFlags given!");
+			}
+			if((startupInfo.dwFlags & ~SupportedStartupInfoFlags) != 0) {
+				throw new ArgumentException("Unsupported StartupInfoFlags given");
+			}
+			if(atts.IsDisposed) throw new ObjectDisposedException("Atts");
+
+			StartupInfoExW startupInfoEx=new StartupInfoExW(startupInfo, atts);
+
+			flags |= CreateProcessFlags.ExtendedStartupInfoPresent;
+
+			return CreateProcessInternal(applicationName, commandLine, flags, startupInfoEx, currentDirectory, out firstThread);
+		}
+
 #if NETFRAMEWORK
 		[HostProtection(MayLeakOnAbort = true)]
 #endif
@@ -61,6 +82,20 @@ namespace Henke37.Win32.Processes {
 			ProcessInformation processInfo;
 
 			bool success = CreateProcessW(applicationName, commandLine, null, null, false, (UInt32)flags, null, currentDirectory, &startupInfo, &processInfo);
+			if(!success) throw new Win32Exception();
+
+			firstThread = new NativeThread(new SafeThreadHandle(processInfo.hThread));
+			return new NativeProcess(new SafeProcessHandle(processInfo.hProcess));
+		}
+
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		private static unsafe NativeProcess CreateProcessInternal(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoExW startupInfo, string currentDirectory, out NativeThread firstThread) {
+			ProcessInformation processInfo;
+
+			bool success = CreateProcessW(applicationName, commandLine, null, null, false, (UInt32)flags, null, currentDirectory, &startupInfo.StartupInfo, &processInfo);
 			if(!success) throw new Win32Exception();
 
 			firstThread = new NativeThread(new SafeThreadHandle(processInfo.hThread));

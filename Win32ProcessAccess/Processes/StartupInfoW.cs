@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Henke37.Win32.Processes {
 	[StructLayout(LayoutKind.Sequential)]
 	public unsafe struct StartupInfoW {
-		private UInt32 cb;
+		internal UInt32 cb;
 		internal Char *lpReserved;
 		public Char *lpDesktop;
 		public Char *lpTitle;

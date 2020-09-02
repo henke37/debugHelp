@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Henke37.Win32.SafeHandles;
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -9,7 +10,7 @@ namespace Henke37.Win32.Processes {
 
 		internal unsafe Native* lpAttributeList;
 
-		internal ProcThreadAttributeList(uint count) {
+		public ProcThreadAttributeList(uint count) {
 			Init(count);
 		}
 
@@ -17,12 +18,13 @@ namespace Henke37.Win32.Processes {
 
 		[SuppressUnmanagedCodeSecurity]
 		private unsafe void Init(uint count) {
-			InitializeProcThreadAttributeList(lpAttributeList, count, 0, out uint size);
+			uint size =0;
+			InitializeProcThreadAttributeList(lpAttributeList, count, 0, ref size);
 
 			try {
 				lpAttributeList = (Native*)Marshal.AllocHGlobal((int)size);
 
-				bool success = InitializeProcThreadAttributeList(lpAttributeList, count, 0, out size);
+				bool success = InitializeProcThreadAttributeList(lpAttributeList, count, 0, ref size);
 				if(!success) throw new Win32Exception();
 			} catch(Exception err) {
 				Marshal.FreeHGlobal((IntPtr)lpAttributeList);
@@ -34,10 +36,10 @@ namespace Henke37.Win32.Processes {
 		}
 
 		[SuppressUnmanagedCodeSecurity]
-		internal unsafe void AddAttribute<T>(ProcThreadAttribute att, T val) where T : unmanaged {
+		internal unsafe void AddAttribute<T>(ProcThreadAttribute att, T* val) where T : unmanaged {
 			if(disposedValue) throw new ObjectDisposedException("ProcThreadAttributeList");
 
-			bool success = UpdateProcThreadAttribute(lpAttributeList, 0, (UInt32)att, &val, (uint)sizeof(T), null, null);
+			bool success = UpdateProcThreadAttribute(lpAttributeList, 0, (UInt32)att, val, (uint)sizeof(T), null, null);
 			if(!success) throw new Win32Exception();
 		}
 
@@ -55,7 +57,7 @@ namespace Henke37.Win32.Processes {
 			ProcThreadAttributeList.Native* lpAttributeList,
 			UInt32 dwAttributeCount,
 			UInt32 dwFlags,
-			out UInt32 lpSize
+			ref UInt32 lpSize
 		);
 
 		[DllImport("Kernel32.dll", SetLastError = true)]
