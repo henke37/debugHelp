@@ -16,6 +16,7 @@ using Henke37.Win32.FileMappings;
 using Henke37.Win32.Tokens;
 using Henke37.Win32.Snapshots;
 using Henke37.Win32.Threads;
+using Henke37.Win32.Base;
 
 namespace Henke37.Win32.Processes {
 #if NETFRAMEWORK
@@ -359,16 +360,47 @@ namespace Henke37.Win32.Processes {
 		public IntPtr PebBaseAddress {
 			get {
 				ProcessBasicInformation info = new ProcessBasicInformation();
-				QueryInformationProcess<ProcessBasicInformation>(ProcessInformationClass.BasicInformation, ref info);
+				QueryInformationProcess<ProcessBasicInformation>(ProcessInformationClass.BasicInformation, ref info, out _);
 				return info.PebBaseAddress;
 			}
 		}
 
-		internal unsafe T QueryInformationProcess<T>(ProcessInformationClass infoClass, ref T buff) where T : unmanaged {
+		[Undocumented]
+		internal IntPtr[] QueryInformationProcessArray<T>(ProcessInformationClass infoClass) {
+			uint validItems=1;
+			IntPtr[] buff;
+			for(; ; ) {
+				buff = new IntPtr[validItems];
+				try {
+					QueryInformationProcessArrayInternal(infoClass, ref buff, ref validItems);
+				} catch (PInvoke.NTStatusException err) when (err.NativeErrorCode==PInvoke.NTSTATUS.Code.STATUS_INFO_LENGTH_MISMATCH) {
+					continue;
+				}
+				break;
+			}
+			return buff;
+		}
+
+		[Undocumented]
+		internal unsafe T QueryInformationProcess<T>(ProcessInformationClass infoClass, ref T buff, out uint returnSize) where T : unmanaged {
 			fixed (void* buffP = &buff) {
-				PInvoke.NTSTATUS status = NtQueryInformationProcess(handle, infoClass, buffP, (uint)sizeof(T), out _);
+				PInvoke.NTSTATUS status = NtQueryInformationProcess(handle, infoClass, buffP, (uint)sizeof(T), out returnSize);
 				if(status.Severity != PInvoke.NTSTATUS.SeverityCode.STATUS_SEVERITY_SUCCESS) throw new PInvoke.NTStatusException(status);
 				return buff;
+			}
+		}
+
+		[Undocumented]
+		internal unsafe T[] QueryInformationProcessArrayInternal<T>(ProcessInformationClass infoClass, ref T[] buff, ref uint validItemCount) where T : unmanaged {
+			uint returnSize=0;
+			fixed(void* buffP = buff) {
+				try {
+					PInvoke.NTSTATUS status = NtQueryInformationProcess(handle, infoClass, buffP, (uint)sizeof(T) * validItemCount, out returnSize);
+					if(status.Severity != PInvoke.NTSTATUS.SeverityCode.STATUS_SEVERITY_SUCCESS) throw new PInvoke.NTStatusException(status);
+					return buff;
+				} finally {
+					validItemCount = returnSize / ((uint)sizeof(T));
+				}
 			}
 		}
 
