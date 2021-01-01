@@ -61,8 +61,8 @@ namespace StackDumper {
 			ModuleEntry mainModule = process.GetModules().First(m => m.Name == executableName);
 
 			string pdbPath = mainModule.Path.Replace(".exe", ".pdb");
-			resolver = new SymbolResolver(pdbPath);
-			resolver.SetLoadAddress(mainModule.BaseAddress);
+			resolver = new SymbolResolver();
+			resolver.AddPdb(pdbPath,mainModule.BaseAddress);
 			memoryReader = new LiveProcessMemoryAccessor(process);
 		}
 	}
