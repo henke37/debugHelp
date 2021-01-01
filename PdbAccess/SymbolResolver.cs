@@ -4,43 +4,59 @@ using System.Collections.Generic;
 
 namespace Henke37.DebugHelp.PdbAccess {
 	public class SymbolResolver {
-		private readonly IDiaDataSource source;
-		private readonly IDiaSession session;
-		private IDiaEnumFrameData? stackFrames;
 
-		public SymbolResolver(string pdbPath) {
-			source = DiaLoader.CreateDiaSource();
-			source.loadDataFromPdb(pdbPath);
-			source.openSession(out session);
+		private readonly List<PDBEntry> pdbEntries;
+
+		public SymbolResolver() {
+			pdbEntries = new List<PDBEntry>();
 		}
 
-		public void SetLoadAddress(IntPtr addr) {
-			session.loadAddress = (ulong)addr;
+		public void AddPdb(string pdbPath) {
+			var pdb = new PDBEntry(pdbPath);
+			pdbEntries.Add(pdb);
+		}
+
+		public void AddPdb(string pdbPath, IntPtr loadAddr) {
+			var pdb = new PDBEntry(pdbPath);
+			pdb.LoadAddress=loadAddr;
+			pdbEntries.Add(pdb);
 		}
 
 		public IDiaSymbol FindGlobal(string symbolName) {
-			var result=session.findChildren(session.globalScope, SymTagEnum.Data, symbolName, NameSearchOptions.CaseSensitive);
-			return result.Item(0);
+			foreach(var pdb in pdbEntries) {
+				var result = pdb.session.findChildren(pdb.session.globalScope, SymTagEnum.Data, symbolName, NameSearchOptions.CaseSensitive);
+				if(result.count>0) return result.Item(0);
+			}
+			throw new KeyNotFoundException();
 		}
 
 		public IDiaSymbol FindClass(string className) {
-			var result = session.findChildren(session.globalScope, SymTagEnum.UDT, className, NameSearchOptions.CaseSensitive);
-			return result.Item(0);
+			foreach(var pdb in pdbEntries) {
+				var result = pdb.session.findChildren(pdb.session.globalScope, SymTagEnum.UDT, className, NameSearchOptions.CaseSensitive);
+				if(result.count > 0) return result.Item(0);
+			}
+			throw new KeyNotFoundException();
 		}
 
-		public IDiaSymbol FindNestedClass(IDiaSymbol outerClass,string className) {
+		public IDiaSymbol FindNestedClass(IDiaSymbol outerClass, string className) {
 			var result = outerClass.findChildren(SymTagEnum.UDT, className, NameSearchOptions.CaseSensitive);
 			return result.Item(0);
 		}
 
 		public IDiaSymbol FindTypeDef(string typeName) {
-			var result = session.findChildren(session.globalScope, SymTagEnum.Typedef, typeName, NameSearchOptions.CaseSensitive);
-			return result.Item(0);
+			foreach(var pdb in pdbEntries) {
+				var result = pdb.session.findChildren(pdb.session.globalScope, SymTagEnum.Typedef, typeName, NameSearchOptions.CaseSensitive);
+				if(result.count > 0) return result.Item(0);
+			}
+			throw new KeyNotFoundException();
 		}
 
 		public IDiaSymbol FindField(IDiaSymbol classSymb, string fieldName) {
-			var result = session.findChildren(classSymb, SymTagEnum.Data, fieldName, NameSearchOptions.CaseSensitive);
-			return result.Item(0);
+			foreach(var pdb in pdbEntries) {
+				var result = pdb.session.findChildren(classSymb, SymTagEnum.Data, fieldName, NameSearchOptions.CaseSensitive);
+				if(result.count > 0) return result.Item(0);
+			}
+			throw new KeyNotFoundException();
 		}
 
 		public int FieldOffset(IDiaSymbol classSymb, string fieldName) {
@@ -59,27 +75,51 @@ namespace Henke37.DebugHelp.PdbAccess {
 		}
 
 		public IDiaSymbol FindFunctionAtAddr(IntPtr addr) {
-			var result = session.findSymbolByVA((ulong)addr, SymTagEnum.Function);
-			return result;
+			foreach(var pdb in pdbEntries) {
+				var result = pdb.session.findSymbolByVA((ulong)addr, SymTagEnum.Function);
+				return result;
+			}
+			throw new KeyNotFoundException();
 		}
 
 		public void AddressForVirtualAddress(IntPtr addr, out uint pISect, out uint pOffset) {
-			session.addressForVA((ulong)addr, out pISect, out pOffset);
-		}
-
-		public IDiaFrameData FrameDataForVirtualAddress(IntPtr addr) {
-			InitFrameEnumerator();
-			return stackFrames!.frameByVA((ulong)addr);
-		}
-
-		private void InitFrameEnumerator() {
-			if(stackFrames != null) return;
-			var tables = session.getEnumTables();
-			foreach(IDiaTable table in tables) {
-				stackFrames = table as IDiaEnumFrameData;//BUG: Should be IDiaEnumFrameData
-				if(stackFrames != null) return;
+			foreach(var pdb in pdbEntries) {
+				var success=pdb.session.addressForVA((ulong)addr, out pISect, out pOffset);
 			}
-			throw new Exception("Failed to locate the IDiaEnumFrameData interface!");
+			throw new KeyNotFoundException();
+		}
+
+		private class PDBEntry {
+
+			public readonly IDiaDataSource source;
+			public readonly IDiaSession session;
+			private IDiaEnumFrameData? stackFrames;
+
+			public PDBEntry(string pdbPath) {
+				source = DiaLoader.CreateDiaSource();
+				source.loadDataFromPdb(pdbPath);
+				source.openSession(out session);
+			}
+
+			public IntPtr LoadAddress {
+				set => session.loadAddress = (ulong)value;
+				get => (IntPtr)session.loadAddress;
+			}
+
+			public IDiaFrameData FrameDataForVirtualAddress(IntPtr addr) {
+				InitFrameEnumerator();
+				return stackFrames!.frameByVA((ulong)addr);
+			}
+
+			private void InitFrameEnumerator() {
+				if(stackFrames != null) return;
+				var tables = session.getEnumTables();
+				foreach(IDiaTable table in tables) {
+					stackFrames = table as IDiaEnumFrameData;//BUG: Should be IDiaEnumFrameData
+					if(stackFrames != null) return;
+				}
+				throw new Exception("Failed to locate the IDiaEnumFrameData interface!");
+			}
 		}
 	}
 }
