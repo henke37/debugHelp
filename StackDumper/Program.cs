@@ -19,9 +19,16 @@ namespace StackDumper {
 		private ProcessMemoryAccessor memoryReader;
 		private StackWalker walker;
 
-		static void Main(string[] args) {
-			var p=new Program(args);
-			p.DumpStacks();
+		static int Main(string[] args) {
+			try { 
+				var p = new Program(args);
+				p.DumpStacks();
+			} catch(ProcessNotFoundException) {
+				Console.WriteLine("Target process not running.");
+				return 1;
+			}
+
+			return 0;
 		}
 
 		private void DumpStacks() {
@@ -55,6 +62,10 @@ namespace StackDumper {
 
 			using(var snap = new Toolhelp32Snapshot(Toolhelp32SnapshotFlags.Process)) {
 				var procEntry = snap.GetProcesses().FirstOrDefault(p => p.Executable == executableName);
+
+				if(procEntry is null) {
+					throw new ProcessNotFoundException();
+				}
 				
 				process = procEntry.Open(ProcessAccessRights.VMOperation | ProcessAccessRights.VMRead | ProcessAccessRights.Synchronize | ProcessAccessRights.QueryInformation);
 			}
