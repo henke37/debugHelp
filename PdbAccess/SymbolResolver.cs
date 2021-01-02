@@ -115,7 +115,7 @@ namespace Henke37.DebugHelp.PdbAccess {
 				if(stackFrames != null) return;
 				var tables = session.getEnumTables();
 				foreach(IDiaTable table in tables) {
-					stackFrames = table as IDiaEnumFrameData;//BUG: Should be IDiaEnumFrameData
+					stackFrames = table as IDiaEnumFrameData;
 					if(stackFrames != null) return;
 				}
 				throw new Exception("Failed to locate the IDiaEnumFrameData interface!");
