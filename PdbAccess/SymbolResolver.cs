@@ -7,6 +7,8 @@ namespace Henke37.DebugHelp.PdbAccess {
 
 		private readonly List<PDBEntry> pdbEntries;
 
+		private const int S_FALSE = 1;
+
 		public SymbolResolver() {
 			pdbEntries = new List<PDBEntry>();
 		}
@@ -89,6 +91,15 @@ namespace Henke37.DebugHelp.PdbAccess {
 			throw new KeyNotFoundException();
 		}
 
+		public int FrameDataForVirtualAddress(IntPtr addr, out IDiaFrameData? frame) {
+			foreach(var pdb in pdbEntries) {
+				var success = pdb.FrameDataForVirtualAddress(addr, out frame);
+			}
+
+			frame = null;
+			return S_FALSE;
+		}
+
 		private class PDBEntry {
 
 			public readonly IDiaDataSource source;
@@ -106,9 +117,9 @@ namespace Henke37.DebugHelp.PdbAccess {
 				get => (IntPtr)session.loadAddress;
 			}
 
-			public IDiaFrameData FrameDataForVirtualAddress(IntPtr addr) {
+			public int FrameDataForVirtualAddress(IntPtr addr, out IDiaFrameData frame) {
 				InitFrameEnumerator();
-				return stackFrames!.frameByVA((ulong)addr);
+				return stackFrames!.frameByVA((ulong)addr, out frame);
 			}
 
 			private void InitFrameEnumerator() {

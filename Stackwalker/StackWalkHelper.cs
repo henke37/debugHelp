@@ -45,11 +45,8 @@ namespace Stackwalker {
 		}
 
 		int IDiaStackWalkHelper.frameForVA(ulong va, out IDiaFrameData ppFrame) {
-			ppFrame = Resolver.FrameDataForVirtualAddress((IntPtr)va);
-			if(ppFrame == null) {
-				return S_FALSE;
-			}
-			return S_OK;
+			var success = Resolver.FrameDataForVirtualAddress((IntPtr)va, out ppFrame);
+			return success;
 		}
 
 		int IDiaStackWalkHelper.symbolForVA(ulong va, out IDiaSymbol? ppSymbol) {
