@@ -25,19 +25,11 @@ namespace Henke37.DebugHelp.PdbAccess {
 		}
 
 		public IDiaSymbol FindGlobal(string symbolName) {
-			foreach(var pdb in pdbEntries) {
-				var result = pdb.session.findChildren(pdb.session.globalScope, SymTagEnum.Data, symbolName, NameSearchOptions.CaseSensitive);
-				if(result.count>0) return result.Item(0);
-			}
-			throw new KeyNotFoundException();
+			return FindSymbol(SymTagEnum.Data, symbolName);
 		}
 
 		public IDiaSymbol FindClass(string className) {
-			foreach(var pdb in pdbEntries) {
-				var result = pdb.session.findChildren(pdb.session.globalScope, SymTagEnum.UDT, className, NameSearchOptions.CaseSensitive);
-				if(result.count > 0) return result.Item(0);
-			}
-			throw new KeyNotFoundException();
+			return FindSymbol(SymTagEnum.UDT, className);
 		}
 
 		public IDiaSymbol FindNestedClass(IDiaSymbol outerClass, string className) {
@@ -46,11 +38,7 @@ namespace Henke37.DebugHelp.PdbAccess {
 		}
 
 		public IDiaSymbol FindTypeDef(string typeName) {
-			foreach(var pdb in pdbEntries) {
-				var result = pdb.session.findChildren(pdb.session.globalScope, SymTagEnum.Typedef, typeName, NameSearchOptions.CaseSensitive);
-				if(result.count > 0) return result.Item(0);
-			}
-			throw new KeyNotFoundException();
+			return FindSymbol(SymTagEnum.Typedef, typeName);
 		}
 
 		public IDiaSymbol FindField(IDiaSymbol classSymb, string fieldName) {
@@ -74,6 +62,14 @@ namespace Henke37.DebugHelp.PdbAccess {
 		public IDiaSymbol GetBaseClass(IDiaSymbol thisClass) {
 			var result = thisClass.findChildren(SymTagEnum.BaseClass, null, NameSearchOptions.None);
 			return result.Item(0);
+		}
+
+		private IDiaSymbol FindSymbol(SymTagEnum symTag, string symbolName) {
+			foreach(var pdb in pdbEntries) {
+				var result = pdb.session.findChildren(pdb.session.globalScope, symTag, symbolName, NameSearchOptions.CaseSensitive);
+				if(result.count > 0) return result.Item(0);
+			}
+			throw new KeyNotFoundException();
 		}
 
 		public IDiaSymbol FindFunctionAtAddr(IntPtr addr) {
