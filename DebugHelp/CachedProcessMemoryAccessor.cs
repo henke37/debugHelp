@@ -21,8 +21,12 @@ namespace Henke37.DebugHelp {
 			pageCache.Clear();
 		}
 
-		public void ClearCache(IntPtr pageAddr) {
-			pageCache.Remove(pageAddr);
+		public void ClearCache(IntPtr startAddr, uint size) {
+			var pageAddr = BasePageAddress(startAddr, out _);
+			var endPageAddr = BasePageAddress(startAddr + (int)size + pageSize - 1, out _);
+			for(; pageAddr != endPageAddr; pageAddr += pageSize) {
+				pageCache.Remove(pageAddr);
+			}
 		}
 
 		private IntPtr BasePageAddress(IntPtr address, out int offset) {
@@ -50,11 +54,7 @@ namespace Henke37.DebugHelp {
 		}
 
 		public override void WriteBytes(byte[] srcBuff, IntPtr dstAddr, uint size) {
-			var pageAddr = BasePageAddress(dstAddr, out _);
-			var endPageAddr = BasePageAddress(dstAddr + (int)size, out _);
-			for(;pageAddr!=endPageAddr;pageAddr+=pageSize) {
-				ClearCache(pageAddr);
-			}
+			ClearCache(dstAddr, size);
 
 			realAccessor.WriteBytes(srcBuff, dstAddr, size);
 		}
