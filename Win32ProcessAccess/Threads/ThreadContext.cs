@@ -142,6 +142,7 @@ namespace Henke37.Win32.Threads {
 
 #if x64
 	public class ThreadContext64 : ThreadContext {
+
 		internal void ReadFromHandle(SafeThreadHandle handle) {
 			throw new NotImplementedException();
 		}
@@ -151,6 +152,101 @@ namespace Henke37.Win32.Threads {
 		}
 
 		internal unsafe struct Native {
+
+			[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+			internal static unsafe extern bool GetThreadContext(SafeThreadHandle handle, Native* ctx);
+
+			[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+			internal static unsafe extern bool SetThreadContext(SafeThreadHandle handle, Native* ctx);
+		}
+	}
+#endif
+
+
+#if arm64
+	public class ThreadContextArm64 : ThreadContext {
+
+		public UInt32 ContextFlags;
+		public UInt32 Cpsr;
+		public UInt64 X0;
+		public UInt64 X1;
+		public UInt64 X2;
+		public UInt64 X3;
+		public UInt64 X4;
+		public UInt64 X5;
+		public UInt64 X6;
+		public UInt64 X7;
+		public UInt64 X8;
+		public UInt64 X9;
+		public UInt64 X10;
+		public UInt64 X11;
+		public UInt64 X12;
+		public UInt64 X13;
+		public UInt64 X14;
+		public UInt64 X15;
+		public UInt64 X16;
+		public UInt64 X17;
+		public UInt64 X18;
+		public UInt64 X19;
+		public UInt64 X20;
+		public UInt64 X21;
+		public UInt64 X22;
+		public UInt64 X23;
+		public UInt64 X24;
+		public UInt64 X25;
+		public UInt64 X26;
+		public UInt64 X27;
+		public UInt64 X28;
+		public UInt64 Fp;
+		public UInt64 Lr;
+		public UInt64 Sp;
+		public UInt64 Pc;
+
+		internal void ReadFromHandle(SafeThreadHandle handle) {
+			throw new NotImplementedException();
+		}
+
+		internal void WriteToHandle(SafeThreadHandle handle) {
+			throw new NotImplementedException();
+		}
+
+		internal unsafe struct Native {
+			UInt32 ContextFlags;
+			UInt32 Cpsr;
+			UInt64 X0;
+			UInt64 X1;
+			UInt64 X2;
+			UInt64 X3;
+			UInt64 X4;
+			UInt64 X5;
+			UInt64 X6;
+			UInt64 X7;
+			UInt64 X8;
+			UInt64 X9;
+			UInt64 X10;
+			UInt64 X11;
+			UInt64 X12;
+			UInt64 X13;
+			UInt64 X14;
+			UInt64 X15;
+			UInt64 X16;
+			UInt64 X17;
+			UInt64 X18;
+			UInt64 X19;
+			UInt64 X20;
+			UInt64 X21;
+			UInt64 X22;
+			UInt64 X23;
+			UInt64 X24;
+			UInt64 X25;
+			UInt64 X26;
+			UInt64 X27;
+			UInt64 X28;
+			UInt64 Fp;
+			UInt64 Lr;
+			UInt64 Sp;
+			UInt64 Pc;
+
 			[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
 			internal static unsafe extern bool GetThreadContext(SafeThreadHandle handle, Native* ctx);
 
