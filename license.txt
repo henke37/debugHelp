@@ -9,12 +9,15 @@ The projects (as indicated by the folder names) have separate licenses:
 * Win32WaitChain: MIT License
 * Win32DeviceEnum: MIT License
 * Win32BatteryAccess: MIT License
+* Win32LasUnloadedModues: MIT License
 * StackWalker: MIT License
 
 * BatteryTest: Public domain
 * CdControl: Public domain
 * ModuleVsFileMapping: Public domain
 * StackDumper: Public domain
+* TokenTest: Public domain
+* UnloadedModuleTest: Public domain
 
 
 Find the full license texts at the following urls:
