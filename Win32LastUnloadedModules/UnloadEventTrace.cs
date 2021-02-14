@@ -25,7 +25,11 @@ namespace Henke37.Win32.LastUnloadedModules {
 			UInt32 TimeDateStamp; // Time and date of image
 			UInt32 CheckSum;      // Image checksum
 			fixed char ImageName[32]; // Image name
+#if x86
 			fixed byte alignment[8];
+#elif x64
+			fixed byte alignment[12];
+#endif
 
 			public UnloadEventTrace AsManaged() {
 				fixed (char *imgName=this.ImageName) {
