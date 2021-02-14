@@ -84,14 +84,14 @@ namespace Henke37.DebugHelp {
 
 		public Int64 ReadInt64(IntPtr addr) {
 			ReadBytes(addr, 8, scratchBuff);
-			return scratchBuff[0] | (scratchBuff[1] << 8) | (scratchBuff[2] << 16) | (scratchBuff[3] << 24) |
-				(scratchBuff[4] << 32) | (scratchBuff[5] << 40) | (scratchBuff[6] << 48) | (scratchBuff[7] << 56);
+			return ((Int64)scratchBuff[0]) | ((Int64)scratchBuff[1] << 8) | ((Int64)scratchBuff[2] << 16) | ((Int64)scratchBuff[3] << 24) |
+				((Int64)scratchBuff[4] << 32) | ((Int64)scratchBuff[5] << 40) | ((Int64)scratchBuff[6] << 48) | ((Int64)scratchBuff[7] << 56);
 		}
 
 		public UInt64 ReadUInt64(IntPtr addr) {
 			ReadBytes(addr, 8, scratchBuff);
-			return (UInt64)(scratchBuff[0] | (scratchBuff[1] << 8) | (scratchBuff[2] << 16) | (scratchBuff[3] << 24) |
-				(scratchBuff[4] << 32) | (scratchBuff[5] << 40) | (scratchBuff[6] << 48) | (scratchBuff[7] << 56));
+			return (UInt64)(((UInt64)scratchBuff[0]) | ((UInt64)scratchBuff[1] << 8) | ((UInt64)scratchBuff[2] << 16) | ((UInt64)scratchBuff[3] << 24) |
+				((UInt64)scratchBuff[4] << 32) | ((UInt64)scratchBuff[5] << 40) | ((UInt64)scratchBuff[6] << 48) | ((UInt64)scratchBuff[7] << 56));
 		}
 
 		public int ReadInt32(IntPtr addr) {
