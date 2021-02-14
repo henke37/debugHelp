@@ -7,8 +7,13 @@ using Henke37.Win32.Threads;
 
 namespace Stackwalker {
 	internal class StackWalkHelper : IDiaStackWalkHelper {
-
-		private ThreadContext32 Context;
+#if x86
+	private ThreadContext32 Context;
+#elif x64
+	private ThreadContext64 Context;
+#else
+#error "Unknown thread context type!"
+#endif
 		private NativeThread Thread;
 		private ProcessMemoryAccessor MemoryAccessor;
 		private SymbolResolver Resolver;

@@ -193,9 +193,11 @@ namespace Henke37.Win32.Threads {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool TerminateThread(SafeThreadHandle handle, UInt32 exitCode);
 
+#if x86
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetThreadSelectorEntry(SafeThreadHandle handle, UInt32 selector, out SelectorEntry.Native entry);
+#endif
 
 		[DllImport("Advapi32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
