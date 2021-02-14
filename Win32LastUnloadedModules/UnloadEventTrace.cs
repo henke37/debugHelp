@@ -14,8 +14,6 @@ namespace Henke37.Win32.LastUnloadedModules {
 		internal unsafe struct Native {
 #if x86
 			Int32 BaseAddress;   // Base address of dll
-			fixed byte padding[4];
-			fixed byte padding2[4];
 			Int32 SizeOfImage;  // Size of image
 #elif x64
 			Int64 BaseAddress;   // Base address of dll
@@ -27,6 +25,7 @@ namespace Henke37.Win32.LastUnloadedModules {
 			UInt32 TimeDateStamp; // Time and date of image
 			UInt32 CheckSum;      // Image checksum
 			fixed char ImageName[32]; // Image name
+			fixed byte alignment[8];
 
 			public UnloadEventTrace AsManaged() {
 				fixed (char *imgName=this.ImageName) {
