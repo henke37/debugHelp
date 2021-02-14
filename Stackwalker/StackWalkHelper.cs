@@ -91,6 +91,7 @@ namespace Stackwalker {
 
 		int IDiaStackWalkHelper.registerValue_get(CV_HREG_e Index, out ulong retVal) {
 			switch(Index) {
+#if x86
 				case CV_HREG_e.CV_REG_EAX: retVal = Context.Eax; return S_OK;
 				case CV_HREG_e.CV_REG_ECX: retVal = Context.Ecx; return S_OK;
 				case CV_HREG_e.CV_REG_EDX: retVal = Context.Edx; return S_OK;
@@ -115,6 +116,7 @@ namespace Stackwalker {
 				case CV_HREG_e.CV_REG_DI: retVal = 0x0000FFFF & Context.Edi; return S_OK;
 				case CV_HREG_e.CV_REG_SP: retVal = 0x0000FFFF & Context.Esp; return S_OK;
 				case CV_HREG_e.CV_REG_BP: retVal = 0x0000FFFF & Context.Ebp; return S_OK;
+#endif
 				default:
 					retVal = 0;
 					return E_NOTIMPL;
