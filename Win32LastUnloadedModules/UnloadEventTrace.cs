@@ -40,5 +40,9 @@ namespace Henke37.Win32.LastUnloadedModules {
 				}
 			}
 		}
+
+		public override String ToString() {
+			return $"{ImageName} 0x{BaseAddress:x}";
+		}
 	}
 }
