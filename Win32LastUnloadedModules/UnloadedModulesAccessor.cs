@@ -27,7 +27,8 @@ namespace Henke37.Win32.LastUnloadedModules {
 
 		public UnloadEventTrace[] ReadUnloadedModules() {
 			var count = processMem.ReadUInt32(ElementCountPtr);
-			var nArr = processMem.ReadStructArr<UnloadEventTrace.Native>(EventTracePtr, count);
+			var arrPtr = processMem.ReadIntPtr(EventTracePtr);
+			var nArr = processMem.ReadStructArr<UnloadEventTrace.Native>(arrPtr, count);
 			var oArr = new UnloadEventTrace[count];
 
 			for(var i=0;i<count;++i) {
