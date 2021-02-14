@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<ProjectGuid>{C168ADFD-7A3B-49AF-8D11-2F6D1BE39348}</ProjectGuid>
+		<OutputType>Library</OutputType>
+		<RootNamespace>Henke37.Win32.LastUnloadedModules</RootNamespace>
+		<AssemblyName>Henke37.Win32.LastUnloadedModules</AssemblyName>
+		<TargetFramework>net461</TargetFramework>
+		<FileAlignment>512</FileAlignment>
+		<Deterministic>true</Deterministic>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageId>Henke37.Win32.LastUnloadedModules</PackageId>
+		<Authors>Henke37</Authors>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Description>Support for reading recently unloaded modules from a process.</Description>
+		<Version>1.0.0</Version>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>RtlGetUnloadEventTraceEx;RtlGetUnloadEventTrace</PackageTags>
+		<Platforms>x86;x64</Platforms>
+		<LangVersion>8.0</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>TRACE;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>TRACE;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="PInvoke.Kernel32" Version="0.5.184" />
+    <PackageReference Include="PInvoke.Windows.Core" Version="0.5.184" />
+    <PackageReference Include="System.Security.Principal" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DebugHelp\DebugHelp.csproj" />
+  </ItemGroup>
+</Project>
