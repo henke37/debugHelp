@@ -12,6 +12,7 @@ namespace Henke37.Win32.Tokens {
 			SourceName = native.GetSourceName();
 		}
 
+#pragma warning disable CS0649
 		internal unsafe struct Native {
 			public fixed sbyte SourceNameBuff[8];
 			public UInt64 SourceIdentifier;
@@ -23,5 +24,6 @@ namespace Henke37.Win32.Tokens {
 			}
 
 		}
+#pragma warning restore CS0649
 	}
 }

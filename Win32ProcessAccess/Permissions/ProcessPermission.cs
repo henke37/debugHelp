@@ -2,6 +2,7 @@
 using System.Security;
 using System.Security.Permissions;
 
+#pragma warning disable CS8603
 
 #if NETFRAMEWORK
 
