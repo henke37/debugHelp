@@ -6,7 +6,6 @@ namespace Henke37.Win32.Tokens {
 		public string SourceName;
 		UInt64 SourceIdentifier;
 
-		public TokenSource() { }
 		internal TokenSource(Native native) {
 			SourceIdentifier = native.SourceIdentifier;
 			SourceName = native.GetSourceName();
