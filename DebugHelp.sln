@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobTest", "JobTest\JobTest.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenTest", "TokenTest\TokenTest.csproj", "{B89535A3-59C3-44EF-8A66-EEDDCA968284}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32LastUnloadedModules", "Win32LastUnloadedModules\Win32LastUnloadedModules.csproj", "{C168ADFD-7A3B-49AF-8D11-2F6D1BE39348}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32LastUnloadedModules", "Win32LastUnloadedModules\Win32LastUnloadedModules.csproj", "{C168ADFD-7A3B-49AF-8D11-2F6D1BE39348}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnloadedModuleTest", "UnloadedModuleTest\UnloadedModuleTest.csproj", "{764CEA15-0A27-4A93-BAD6-F89C2B450B9C}"
 EndProject
@@ -166,10 +166,9 @@ Global
 		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Debug|x86.Build.0 = Debug|x86
 		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|x64.ActiveCfg = Release|Any CPU
-		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|x64.Build.0 = Release|Any CPU
-		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|x86.ActiveCfg = Release|Any CPU
-		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|x86.Build.0 = Release|Any CPU
+		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|x64.ActiveCfg = Release|x86
+		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|x86.ActiveCfg = Release|x86
+		{FAEC716F-5BA1-460E-B907-02B9E2579772}.Release|x86.Build.0 = Release|x86
 		{B26AD97D-E148-411E-9365-99BC68403B7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B26AD97D-E148-411E-9365-99BC68403B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B26AD97D-E148-411E-9365-99BC68403B7E}.Debug|x64.ActiveCfg = Debug|Any CPU
