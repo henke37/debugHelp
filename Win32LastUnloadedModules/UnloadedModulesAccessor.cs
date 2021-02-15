@@ -25,7 +25,7 @@ namespace Henke37.Win32.LastUnloadedModules {
 			CheckStructSize();
 		}
 
-		public UnloadEventTrace[] ReadUnloadedModules() {
+		public UnloadEventTrace[]? ReadUnloadedModules() {
 			var count = processMem.ReadUInt32(ElementCountPtr);
 			var arrPtr = processMem.ReadIntPtr(EventTracePtr);
 

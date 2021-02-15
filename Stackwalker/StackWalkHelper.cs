@@ -49,7 +49,7 @@ namespace Stackwalker {
 			return E_NOTIMPL;
 		}
 
-		int IDiaStackWalkHelper.frameForVA(ulong va, out IDiaFrameData ppFrame) {
+		int IDiaStackWalkHelper.frameForVA(ulong va, out IDiaFrameData? ppFrame) {
 			var success = Resolver.FrameDataForVirtualAddress((IntPtr)va, out ppFrame);
 			return success;
 		}
