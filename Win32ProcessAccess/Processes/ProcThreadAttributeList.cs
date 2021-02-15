@@ -43,6 +43,7 @@ namespace Henke37.Win32.Processes {
 			if(!success) throw new Win32Exception();
 		}
 
+#pragma warning disable CS0169
 		internal struct Native {
 			UInt32 dwFlags;
 			UInt32 Size;
@@ -50,6 +51,7 @@ namespace Henke37.Win32.Processes {
 			UInt32 Reserved;
 			IntPtr Unknown;
 		}
+#pragma warning restore CS0169
 
 		[DllImport("Kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
