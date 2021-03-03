@@ -6,6 +6,8 @@ namespace Henke37.Win32.Restart {
 		SemTimeout = 121,
 		WriteFault = 29,
 		OutOfMemory = 14,
-		InvalidHandle = 6
+		InvalidHandle = 6,
+		BadArguments = 160,
+		FileNotFound
 	}
 }

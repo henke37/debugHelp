@@ -21,6 +21,21 @@ namespace Henke37.Win32.Restart {
 
 		private RestartManager(UIntPtr handle) { this.handle = handle; }
 
+		public void CancelCurrentTask() {
+			var result = RmCancelCurrentTask(handle);
+			CheckResult(result);
+		}
+
+		public void RegisterResources(String[]? fileNames, String[]? serviceNames) {
+			var result = RmRegisterResources(
+				handle,
+				(UInt32)(fileNames is null?0:fileNames.Length), fileNames,
+				0,null,
+				(UInt32)(serviceNames is null ? 0 : serviceNames.Length), serviceNames
+			);
+			CheckResult(result);
+		}
+
 		public static RestartManager JoinSession(string sessionKey) {
 			var result = RmJoinSession(out var handle, sessionKey);
 
@@ -40,6 +55,16 @@ namespace Henke37.Win32.Restart {
 
 		[DllImport("Rstrtmgr.dll", ExactSpelling = true, SetLastError = true)]
 		private static extern RMResult RmEndSession(UIntPtr handle);
+
+		[DllImport("Rstrtmgr.dll", ExactSpelling = true, SetLastError = true)]
+		private static extern RMResult RmCancelCurrentTask(UIntPtr handle);
+
+		[DllImport("Rstrtmgr.dll", ExactSpelling = true, SetLastError = true)]
+		private static extern RMResult RmRegisterResources(UIntPtr handle,
+			UInt32 nFiles, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] String []?fileNames,
+			UInt32 nApplications, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct)] RMUniqueProcess.Native []?applications,
+			UInt32 nServices, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] String []?serviceNames
+			);
 
 		protected virtual void Dispose(bool disposing) {
 			if(!disposedValue) {
