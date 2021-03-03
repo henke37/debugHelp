@@ -12,8 +12,8 @@ namespace Henke37.Win32.Restart {
 
 		internal unsafe struct Native {
 			UniqueProcess.Native Process;
-			fixed char ApplicationName[256];
-			fixed char ServiceShortName[64];
+			fixed sbyte ApplicationName[256*2];
+			fixed sbyte ServiceShortName[64*2];
 			AppType ApplicationType;
 			AppStatus AppStatus;
 			UInt32 TSSessionId;
@@ -21,11 +21,11 @@ namespace Henke37.Win32.Restart {
 
 			internal ProcessInfo AsNative() {
 				string appNameN, svcNameN;
-				fixed(char* appName=this.ApplicationName) {
-					appNameN = new string(appName);
+				fixed(sbyte* appName=this.ApplicationName) {
+					appNameN = new string((char*)appName);
 				}
-				fixed(char* svcName = this.ServiceShortName) {
-					svcNameN = new string(svcName);
+				fixed(sbyte* svcName = this.ServiceShortName) {
+					svcNameN = new string((char*)svcName);
 				}
 				return new ProcessInfo() {
 					Process = Process.AsNative(),

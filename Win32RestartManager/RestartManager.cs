@@ -89,7 +89,7 @@ namespace Henke37.Win32.Restart {
 		[DllImport("Rstrtmgr.dll", ExactSpelling = true, SetLastError = true)]
 		private static extern Result RmGetList(UIntPtr handle,
 			ref UInt32 nProcInfoNeeded, ref UInt32 nProcInfo,
-			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct)] ProcessInfo.Native[] affectedApps,
+			[In, Out] [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct)] ProcessInfo.Native[] affectedApps,
 			out RebootReason reason
 			);
 
