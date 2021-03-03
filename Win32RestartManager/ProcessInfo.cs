@@ -11,6 +11,7 @@ namespace Henke37.Win32.Restart {
 		public bool Restartable;
 
 		internal unsafe struct Native {
+#pragma warning disable CS0649
 			UniqueProcess.Native Process;
 			fixed sbyte ApplicationName[256*2];
 			fixed sbyte ServiceShortName[64*2];
@@ -18,6 +19,7 @@ namespace Henke37.Win32.Restart {
 			AppStatus AppStatus;
 			UInt32 TSSessionId;
 			UInt32 Restartable;
+#pragma warning restore CS0649
 
 			internal ProcessInfo AsNative() {
 				string appNameN, svcNameN;

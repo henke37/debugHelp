@@ -7,8 +7,10 @@ namespace Henke37.Win32.Restart {
 		public DateTime StartTime;
 
 		internal struct Native {
+#pragma warning disable CS0649
 			UInt32 processId;
 			FILETIME startTime;
+#pragma warning restore CS0649
 
 			public UniqueProcess AsNative() {
 				return new UniqueProcess() {
