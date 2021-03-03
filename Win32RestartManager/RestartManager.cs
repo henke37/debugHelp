@@ -36,6 +36,26 @@ namespace Henke37.Win32.Restart {
 			CheckResult(result);
 		}
 
+		public ProcessInfo[] GetList(out RebootReason reason) {
+			UInt32 needed=10;
+			UInt32 size = needed;
+			ProcessInfo.Native[] narr;
+			for(; ;) {
+				size = needed;
+				narr = new ProcessInfo.Native[size];
+				var result = RmGetList(handle, ref needed, ref size, narr, out reason);
+				if(result == Result.MoreData) continue;
+				CheckResult(result);
+				break;
+			}
+
+			ProcessInfo[] marr = new ProcessInfo[needed];
+			for(var i=0;i<needed;++i) {
+				marr[i] = narr[i].AsNative();
+			}
+			return marr;
+		}
+
 		public static RestartManager JoinSession(string sessionKey) {
 			var result = RmJoinSession(out var handle, sessionKey);
 
@@ -43,27 +63,34 @@ namespace Henke37.Win32.Restart {
 			return new RestartManager(handle);
 		}
 
-		private static void CheckResult(RMResult result) {
-			if(result != RMResult.Success) throw new Exception();
+		private static void CheckResult(Result result) {
+			if(result != Result.Success) throw new Exception();
 		}
 
 		[DllImport("Rstrtmgr.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
-		private static extern RMResult RmStartSession(out UIntPtr handle, UInt32 flags, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder sessionKey);
+		private static extern Result RmStartSession(out UIntPtr handle, UInt32 flags, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder sessionKey);
 
 		[DllImport("Rstrtmgr.dll", ExactSpelling = true, SetLastError = true)]
-		private static extern RMResult RmJoinSession(out UIntPtr handle, [MarshalAs(UnmanagedType.LPWStr)] string sessionKey);
+		private static extern Result RmJoinSession(out UIntPtr handle, [MarshalAs(UnmanagedType.LPWStr)] string sessionKey);
 
 		[DllImport("Rstrtmgr.dll", ExactSpelling = true, SetLastError = true)]
-		private static extern RMResult RmEndSession(UIntPtr handle);
+		private static extern Result RmEndSession(UIntPtr handle);
 
 		[DllImport("Rstrtmgr.dll", ExactSpelling = true, SetLastError = true)]
-		private static extern RMResult RmCancelCurrentTask(UIntPtr handle);
+		private static extern Result RmCancelCurrentTask(UIntPtr handle);
 
 		[DllImport("Rstrtmgr.dll", ExactSpelling = true, SetLastError = true)]
-		private static extern RMResult RmRegisterResources(UIntPtr handle,
+		private static extern Result RmRegisterResources(UIntPtr handle,
 			UInt32 nFiles, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] String []?fileNames,
-			UInt32 nApplications, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct)] RMUniqueProcess.Native []?applications,
+			UInt32 nApplications, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct)] UniqueProcess.Native []?applications,
 			UInt32 nServices, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] String []?serviceNames
+			);
+
+		[DllImport("Rstrtmgr.dll", ExactSpelling = true, SetLastError = true)]
+		private static extern Result RmGetList(UIntPtr handle,
+			ref UInt32 nProcInfoNeeded, ref UInt32 nProcInfo,
+			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStruct)] ProcessInfo.Native[] affectedApps,
+			out RebootReason reason
 			);
 
 		protected virtual void Dispose(bool disposing) {
