@@ -2,7 +2,7 @@
 
 namespace Henke37.Win32.Restart {
 	[Flags]
-	internal enum AppStatus : UInt32 {
+	public enum AppStatus : UInt32 {
 		Unknown = 0,
 		Running = 0x1,
 		Stopped = 0x2,

@@ -2,13 +2,13 @@
 
 namespace Henke37.Win32.Restart {
 	public class ProcessInfo {
-		UniqueProcess Process;
-		string ApplicationName;
-		string ServiceShortName;
-		AppType ApplicationType;
-		AppStatus AppStatus;
-		UInt32 TSSessionId;
-		bool Restartable;
+		public UniqueProcess Process;
+		public string ApplicationName;
+		public string ServiceShortName;
+		public AppType ApplicationType;
+		public AppStatus AppStatus;
+		public UInt32 TSSessionId;
+		public bool Restartable;
 
 		internal unsafe struct Native {
 			UniqueProcess.Native Process;

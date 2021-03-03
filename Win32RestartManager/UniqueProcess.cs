@@ -3,8 +3,8 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace Henke37.Win32.Restart {
 	public class UniqueProcess {
-		UInt32 processId;
-		DateTime startTime;
+		public UInt32 ProcessId;
+		public DateTime StartTime;
 
 		internal struct Native {
 			UInt32 processId;
@@ -12,8 +12,8 @@ namespace Henke37.Win32.Restart {
 
 			public UniqueProcess AsNative() {
 				return new UniqueProcess() {
-					processId = processId,
-					startTime = DateTime.FromFileTimeUtc(
+					ProcessId = processId,
+					StartTime = DateTime.FromFileTime(
 						(((long)startTime.dwHighDateTime) << 32) | ((uint)startTime.dwLowDateTime)
 						)
 				};
