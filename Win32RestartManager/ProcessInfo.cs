@@ -38,5 +38,9 @@ namespace Henke37.Win32.Restart {
 				};
 			}
 		}
+
+		public override string ToString() {
+			return $"{Process.ProcessId} {ApplicationName}";
+		}
 	}
 }

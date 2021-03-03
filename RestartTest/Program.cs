@@ -7,7 +7,7 @@ namespace RestartTest {
 				string[] fileNames = args;
 				mng.RegisterResources(fileNames, null);
 
-				mng.GetList(out RebootReason reason);
+				var list = mng.GetList(out RebootReason reason);
 			}
 		}
 	}
