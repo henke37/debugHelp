@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<ProjectGuid>07c6e182-768d-4801-9fdd-199e5e328e27</ProjectGuid>
+		<OutputType>Library</OutputType>
+		<RootNamespace>Henke37.Win32.Restart</RootNamespace>
+		<AssemblyName>Win32RestartManager</AssemblyName>
+		<TargetFramework>net461</TargetFramework>
+		<FileAlignment>512</FileAlignment>
+		<Deterministic>true</Deterministic>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageId>Henke37.Win32.Restart</PackageId>
+		<Authors>Henke37</Authors>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Description>Support for accessing the restart manager.</Description>
+		<Version>1.0.0</Version>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>RmStartSession; RmGetList; RmRegisterResources</PackageTags>
+		<Platforms>x64;x86</Platforms>
+		<LangVersion>8.0</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>TRACE;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>TRACE;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="PInvoke.Kernel32" Version="0.5.184" />
+    <PackageReference Include="PInvoke.Windows.Core" Version="0.5.184" />
+    <PackageReference Include="System.Security.Principal" Version="4.3.0" />
+  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DebugHelp\DebugHelp.csproj">
+			<Project>{f95563d3-569b-4d59-bd8b-c9e69cd62fb7}</Project>
+			<Name>DebugHelp</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\Win32Base\Win32Base.csproj" />
+	</ItemGroup>
+</Project>
