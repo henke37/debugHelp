@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.Restart {
 	public class ProcessInfo {
@@ -10,6 +11,7 @@ namespace Henke37.Win32.Restart {
 		public UInt32 TSSessionId;
 		public bool Restartable;
 
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal unsafe struct Native {
 #pragma warning disable CS0649
 			UniqueProcess.Native Process;
