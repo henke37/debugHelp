@@ -272,9 +272,9 @@ namespace Henke37.Win32.Processes {
 			return blocks;
 		}
 #endif
-		public IList<MemoryBasicInformation> QueryMemoryRangeInformation(UIntPtr baseAddress, int size) {
+		public IList<MemoryBasicInformation> QueryMemoryRangeInformation(IntPtr baseAddress, int size) {
 			var ret = new List<MemoryBasicInformation>();
-			UIntPtr endAdd = baseAddress + size;
+			IntPtr endAdd = baseAddress + size;
 			for(; ; ) {
 				MemoryBasicInformation.Native native;
 				var result = VirtualQueryEx(handle, baseAddress, out native, (uint)Marshal.SizeOf<MemoryBasicInformation.Native>());
@@ -601,7 +601,7 @@ namespace Henke37.Win32.Processes {
 		static extern bool UnmapViewOfFile2(SafeProcessHandle handle, IntPtr baseAddress, UInt32 flags);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
-		static extern uint VirtualQueryEx(SafeProcessHandle handle, UIntPtr baseAddress, out MemoryBasicInformation.Native information, UInt32 dwLength);
+		static extern uint VirtualQueryEx(SafeProcessHandle handle, IntPtr baseAddress, out MemoryBasicInformation.Native information, UInt32 dwLength);
 
 		[DllImport("Psapi.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 		internal static unsafe extern int GetMappedFileNameW(SafeProcessHandle handle, IntPtr pv, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder filename, uint filenameBufferSize);

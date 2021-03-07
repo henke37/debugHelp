@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Henke37.DebugHelp {
 	public class CachedProcessMemoryAccessor : ProcessMemoryAccessor {
@@ -10,7 +7,7 @@ namespace Henke37.DebugHelp {
 		private Dictionary<IntPtr, byte[]> pageCache;
 		private ProcessMemoryAccessor realAccessor;
 
-		private const int pageSize = 4096;
+		protected const int pageSize = 4096;
 
 		public CachedProcessMemoryAccessor(ProcessMemoryAccessor realAccessor) {
 			this.realAccessor = realAccessor ?? throw new ArgumentNullException(nameof(realAccessor));
@@ -40,7 +37,7 @@ namespace Henke37.DebugHelp {
 				byte[] readPage;
 				if(!pageCache.TryGetValue(pageAddr, out readPage)) {
 					readPage=realAccessor.ReadBytes(pageAddr, pageSize);
-					pageCache[pageAddr] = readPage;
+					AddPageToCache(pageAddr, readPage);
 				}
 
 				int remainingBytes = (int)size - copiedData;
@@ -51,6 +48,10 @@ namespace Henke37.DebugHelp {
 				pageAddr += pageSize;
 				copiedData += copySize;
 			}
+		}
+
+		protected virtual void AddPageToCache(IntPtr pageAddr, byte[] pageData) {
+			pageCache[pageAddr] = pageData;
 		}
 
 		public override void WriteBytes(byte[] srcBuff, IntPtr dstAddr, uint size) {
