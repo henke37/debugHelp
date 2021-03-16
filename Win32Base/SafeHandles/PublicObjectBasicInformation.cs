@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Henke37.Win32.Base;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.SafeHandles {
+	[Undocumented]
 	public class PublicObjectBasicInformation {
 		public UInt32 Attributes;
 		public UInt32 GrantedAccess;
 		public UInt32 HandleCount;
 		public UInt32 PointerCount;
 
+		[Undocumented]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal unsafe struct Native {
 			UInt32 Attributes;

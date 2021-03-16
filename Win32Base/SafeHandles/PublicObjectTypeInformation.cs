@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Henke37.Win32.Base;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.SafeHandles {
+	[Undocumented]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	internal unsafe struct PublicObjectTypeInformation {
 		UNICODE_STRING _TypeName;

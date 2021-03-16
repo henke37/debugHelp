@@ -357,6 +357,7 @@ namespace Henke37.Win32.Processes {
 			if(!success) throw new Win32Exception();
 		}
 
+		[Undocumented]
 		public IntPtr PebBaseAddress {
 			get {
 				ProcessBasicInformation info = new ProcessBasicInformation();

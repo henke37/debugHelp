@@ -1,9 +1,11 @@
 ﻿using Henke37.DebugHelp;
+using Henke37.Win32.Base;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.LastUnloadedModules {
+	[Undocumented]
 	public class UnloadedModulesAccessor {
 
 		private static IntPtr ElementSizePtr;

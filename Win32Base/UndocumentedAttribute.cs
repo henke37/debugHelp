@@ -6,7 +6,7 @@ namespace Henke37.Win32.Base {
 	 * 
 	 * Actualy policy may be everything between "public secret that will never change" to "has changed in every build".
 	 * */
-	[AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Struct, Inherited = true, AllowMultiple = false)]
-	sealed class UndocumentedAttribute : Attribute {
+	[AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Struct | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+	sealed public class UndocumentedAttribute : Attribute {
 	}
 }

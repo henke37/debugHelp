@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿using Henke37.Win32.Base;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -61,6 +62,7 @@ namespace Henke37.Win32.SafeHandles {
 			}
 		}
 
+		[Undocumented]
 		public string ObjectTypeName {
 			[SecuritySafeCritical]
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -72,6 +74,7 @@ namespace Henke37.Win32.SafeHandles {
 			}
 		}
 
+		[Undocumented]
 		public PublicObjectBasicInformation ObjectInformation {
 			[SecuritySafeCritical]
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -83,6 +86,7 @@ namespace Henke37.Win32.SafeHandles {
 			}
 		}
 
+		[Undocumented]
 		internal unsafe T QueryObjectInformation<T>(ObjectInformationClass infoClass, ref T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				PInvoke.NTSTATUS status = NtQueryObject(handle, infoClass, buffP, (uint)sizeof(T), out _);
