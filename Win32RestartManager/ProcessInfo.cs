@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Henke37.Win32.Processes;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.Restart {
@@ -10,6 +11,10 @@ namespace Henke37.Win32.Restart {
 		public AppStatus AppStatus;
 		public UInt32 TSSessionId;
 		public bool Restartable;
+
+		public NativeProcess OpenProcess(AccessRights.ProcessAccessRights accessRights = AccessRights.ProcessAccessRights.All, bool inhertiable = false) {
+			return NativeProcess.Open(Process.ProcessId, accessRights, inhertiable);
+		}
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal unsafe struct Native {

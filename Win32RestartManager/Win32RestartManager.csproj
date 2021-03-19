@@ -47,5 +47,6 @@
 			<Name>DebugHelp</Name>
 		</ProjectReference>
 		<ProjectReference Include="..\Win32Base\Win32Base.csproj" />
+		<ProjectReference Include="..\Win32ProcessAccess\Win32ProcessAccess.csproj" />
 	</ItemGroup>
 </Project>
