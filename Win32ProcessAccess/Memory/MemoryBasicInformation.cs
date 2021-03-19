@@ -43,7 +43,11 @@ namespace Henke37.Win32.Memory {
 		}
 
 		public override string ToString() {
-			return $"{BaseAddress} - {BaseAddress+(int)RegionSize} {State} {Protect} {Type}";
+#if x86
+			return $"0x{(uint)BaseAddress,8:X8} - 0x{(uint)BaseAddress+(uint)RegionSize,8:X8} {State} {Protect} {Type}";
+#elif x64
+			return $"0x{(uint)BaseAddress,16:X16} - 0x{(uint)BaseAddress+(uint)RegionSize,16:X16} {State} {Protect} {Type}";
+#endif
 		}
 	}
 }

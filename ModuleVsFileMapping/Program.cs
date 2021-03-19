@@ -50,7 +50,7 @@ namespace ModuleVsFileMapping {
 				if(range.Type != MemoryBackingType.Private) {
 					string backingFile = process.GetMappedFileName(range.BaseAddress);
 					backingFile=nameConverter.NativeNameToDosName(backingFile).ToLowerInvariant();
-					Console.WriteLine("{0,8:X} {1} {2}", (int)range.BaseAddress, range.Protect.ToString(), backingFile);
+					Console.WriteLine("{0,8:X8} {1} {2}", (int)range.BaseAddress, range.Protect.ToString(), backingFile);
 					if(!modules.ContainsKey(backingFile) && !modules.ContainsKey(Wow64Map(backingFile))) {
 
 						Console.WriteLine("Unlisted!");
