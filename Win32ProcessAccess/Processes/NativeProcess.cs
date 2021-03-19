@@ -281,7 +281,7 @@ namespace Henke37.Win32.Processes {
 				if(result == 0) throw new Win32Exception();
 				ret.Add(native.AsManaged());
 				baseAddress += (int)native.RegionSize;
-				if((long)baseAddress >= (long)endAdd) break;
+				if((ulong)baseAddress >= (ulong)endAdd) break;
 			}
 			return ret;
 		}
