@@ -41,5 +41,9 @@ namespace Henke37.Win32.Memory {
 				};
 			}
 		}
+
+		public override string ToString() {
+			return $"{BaseAddress} - {BaseAddress+(int)RegionSize} {State} {Protect} {Type}";
+		}
 	}
 }
