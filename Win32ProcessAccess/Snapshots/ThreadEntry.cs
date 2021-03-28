@@ -33,5 +33,10 @@ namespace Henke37.Win32.Snapshots {
 		public override string ToString() {
 			return $"{ThreadId}";
 		}
+
+		public void Deconstruct(out UInt32 ThreadId, out UInt32 ProcessId) {
+			ThreadId = this.ThreadId;
+			ProcessId = this.ProcessId;
+		}
 	}
 }

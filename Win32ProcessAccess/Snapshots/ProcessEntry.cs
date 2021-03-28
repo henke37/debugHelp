@@ -45,5 +45,25 @@ namespace Henke37.Win32.Snapshots {
 		public override string ToString() {
 			return $"{ProcessId}: \"{Executable}\"";
 		}
+
+		public void Deconstruct(
+			out UInt32 ProcessId,
+			out UInt32 ThreadCount,
+			out UInt32 ParentProcessId,
+			out string Executable
+		) {
+			ProcessId = this.ProcessId;
+			ThreadCount = this.ThreadCount;
+			ParentProcessId = this.ParentProcessId;
+			Executable = this.Executable;
+		}
+
+		public void Deconstruct(
+			out UInt32 ProcessId,
+			out string Executable
+		) {
+			ProcessId = this.ProcessId;
+			Executable = this.Executable;
+		}
 	}
 }

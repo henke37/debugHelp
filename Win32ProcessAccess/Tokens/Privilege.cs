@@ -100,6 +100,11 @@ namespace Henke37.Win32.Tokens {
 
 		public string PrivilegeName => Privilege.LookupPrivilegeName(LUID);
 		public string DisplayName => Privilege.LookUpPrivilegeDisplayName(PrivilegeName);
+
+		public void Deconstruct(out UInt64 LUID, out PrivilegeAttributes Attributes) {
+			LUID = this.LUID;
+			Attributes = this.Attributes;
+		}
 	}
 
 	[StructLayout(LayoutKind.Sequential)]

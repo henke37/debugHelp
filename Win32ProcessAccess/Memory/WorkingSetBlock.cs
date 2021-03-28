@@ -49,5 +49,10 @@ namespace Henke37.Win32.Memory {
 			sb.AppendFormat(" 0x{0:x}", VirtualPage);
 			return sb.ToString();
 		}
+
+		public void Deconstruct(out IntPtr VirtualPage, out WorkingSetBlockPageProtectionFlags Protection) {
+			VirtualPage = this.VirtualPage;
+			Protection = this.Protection;
+		}
 	}
 }
