@@ -108,6 +108,12 @@ namespace Henke37.Win32.CdAccess {
 		public override string ToString() {
 			return $"{Minutes:D2}:{Seconds:D2}:{Frames:D2}";
 		}
+
+		public void Deconstruct(out byte Minutes, out byte Seconds, byte Frames) {
+			Minutes = this.Minutes;
+			Seconds = this.Seconds;
+			Frames = this.Frames;
+		}
 	}
 	
 }
