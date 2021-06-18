@@ -197,6 +197,16 @@ namespace Henke37.Win32.Tokens {
 		}
 		#endregion
 
+		public NativeToken Duplicate(ImpersonationLevel impersonation) {
+			var success = DuplicateToken(tokenHandle, impersonation, out var newToken);
+			if(!success) throw new Win32Exception();
+			return new NativeToken(newToken);
+		}
+
+		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool DuplicateToken(SafeTokenHandle currentToken, ImpersonationLevel impersonation, out SafeTokenHandle newToken);
+
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern unsafe PInvoke.NTSTATUS NtCompareTokens(SafeTokenHandle handle1, SafeTokenHandle handle2, [MarshalAs(UnmanagedType.Bool)] out bool equal);
 
