@@ -138,6 +138,24 @@ namespace Henke37.Win32.Threads {
 			return native.AsManaged();
 		}
 #endif
+
+		public ThreadPriority ThreadPriority {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get {
+				var success = GetThreadPriority(handle, out var priority);
+				if(!success) throw new Win32Exception();
+				return (ThreadPriority)priority;
+			}
+
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			set {
+				var success = SetThreadPriority(handle, (int)value);
+				if(!success) throw new Win32Exception();
+			}
+		}
+
 		public bool DynamicPriorityBoosts {
 			[SecuritySafeCritical]
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -196,6 +214,14 @@ namespace Henke37.Win32.Threads {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool GetExitCodeThread(SafeThreadHandle handle, UInt32* exitCode);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool GetThreadPriority(SafeThreadHandle handle, out Int32 priority);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool SetThreadPriority(SafeThreadHandle handle, Int32 priority);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
