@@ -4,6 +4,7 @@ using Henke37.Win32.Tokens;
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
@@ -139,13 +140,13 @@ namespace Henke37.Win32.Threads {
 		}
 #endif
 
-		public ThreadPriority ThreadPriority {
+		public ThreadPriorityLevel ThreadPriority {
 			[SecuritySafeCritical]
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				var success = GetThreadPriority(handle, out var priority);
 				if(!success) throw new Win32Exception();
-				return (ThreadPriority)priority;
+				return (ThreadPriorityLevel)priority;
 			}
 
 			[SecuritySafeCritical]
