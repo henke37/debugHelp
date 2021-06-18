@@ -138,6 +138,23 @@ namespace Henke37.Win32.Threads {
 			return native.AsManaged();
 		}
 #endif
+		public bool DynamicPriorityBoosts {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get {
+				var success = GetThreadPriorityBoost(handle, out var disableBoosts);
+				if(!success) throw new Win32Exception();
+				return !disableBoosts;
+			}
+
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			set {
+				bool disableBoost = !value;
+				var success = SetThreadPriorityBoost(handle, disableBoost);
+				if(!success) throw new Win32Exception();
+			}
+		}
 
 		public NativeToken OpenToken(TokenAccessLevels accessLevels, bool ignoreImpersonation = false) {
 			bool success = OpenThreadToken(handle, (uint)accessLevels, ignoreImpersonation, out SafeTokenHandle tokenHandle);
@@ -180,6 +197,13 @@ namespace Henke37.Win32.Threads {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool GetExitCodeThread(SafeThreadHandle handle, UInt32* exitCode);
 
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool GetThreadPriorityBoost(SafeThreadHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool SetThreadPriorityBoost(SafeThreadHandle handle, [MarshalAs(UnmanagedType.Bool)] bool pDisablePriorityBoost);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = false)]
 		internal static extern unsafe UInt32 GetThreadDescription(SafeThreadHandle handle, Char** exitCode);
