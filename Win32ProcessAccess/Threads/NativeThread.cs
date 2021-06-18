@@ -175,6 +175,16 @@ namespace Henke37.Win32.Threads {
 			}
 		}
 
+		public bool IOPending {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get {
+				var success = GetThreadIOPendingFlag(handle, out var flag);
+				if(!success) throw new Win32Exception();
+				return flag;
+			}
+		}
+
 		public NativeToken OpenToken(TokenAccessLevels accessLevels, bool ignoreImpersonation = false) {
 			bool success = OpenThreadToken(handle, (uint)accessLevels, ignoreImpersonation, out SafeTokenHandle tokenHandle);
 			if(!success) throw new Win32Exception();
@@ -231,6 +241,10 @@ namespace Henke37.Win32.Threads {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool SetThreadPriorityBoost(SafeThreadHandle handle, [MarshalAs(UnmanagedType.Bool)] bool pDisablePriorityBoost);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool GetThreadIOPendingFlag(SafeThreadHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = false)]
 		internal static extern unsafe UInt32 GetThreadDescription(SafeThreadHandle handle, Char** exitCode);
