@@ -179,6 +179,14 @@ namespace Henke37.Win32.Processes {
 				if(!success) throw new Win32Exception();
 				return !disableBoosts;
 			}
+
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			set {
+				bool disableBoost = !value;
+				var success = SetProcessPriorityBoost(handle, disableBoost);
+				if(!success) throw new Win32Exception();
+			}
 		}
 
 		public bool IsWow64Process {
@@ -505,6 +513,10 @@ namespace Henke37.Win32.Processes {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetProcessPriorityBoost(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool SetProcessPriorityBoost(SafeProcessHandle handle, [MarshalAs(UnmanagedType.Bool)] bool pDisablePriorityBoost);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "IsWow64Process")]
 		[return: MarshalAs(UnmanagedType.Bool)]
