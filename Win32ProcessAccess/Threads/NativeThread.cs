@@ -1,4 +1,5 @@
 ﻿using Henke37.Win32.AccessRights;
+using Henke37.Win32.Processes;
 using Henke37.Win32.SafeHandles;
 using Henke37.Win32.Tokens;
 
@@ -185,6 +186,14 @@ namespace Henke37.Win32.Threads {
 			}
 		}
 
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		public ProcessTimes GetThreadTimes() {
+			var success = GetThreadTimesNative(handle, out var creationTime, out var exitTime, out var kernelTime, out var userTime);
+			if(!success) throw new Win32Exception();
+			return new ProcessTimes(creationTime, exitTime, kernelTime, userTime);
+		}
+
 		public NativeToken OpenToken(TokenAccessLevels accessLevels, bool ignoreImpersonation = false) {
 			bool success = OpenThreadToken(handle, (uint)accessLevels, ignoreImpersonation, out SafeTokenHandle tokenHandle);
 			if(!success) throw new Win32Exception();
@@ -245,6 +254,15 @@ namespace Henke37.Win32.Threads {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetThreadIOPendingFlag(SafeThreadHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+
+		[DllImport("kernel32.dll", SetLastError = true, EntryPoint = "GetThreadTimes")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetThreadTimesNative(SafeThreadHandle hProcess,
+			out System.Runtime.InteropServices.ComTypes.FILETIME lpCreationTime,
+			out System.Runtime.InteropServices.ComTypes.FILETIME lpExitTime,
+			out System.Runtime.InteropServices.ComTypes.FILETIME lpKernelTime,
+			out System.Runtime.InteropServices.ComTypes.FILETIME lpUserTime
+		);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = false)]
 		internal static extern unsafe UInt32 GetThreadDescription(SafeThreadHandle handle, Char** exitCode);
