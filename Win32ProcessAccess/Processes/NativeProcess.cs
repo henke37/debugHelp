@@ -189,6 +189,23 @@ namespace Henke37.Win32.Processes {
 			}
 		}
 
+		public ProcessPriorityClass PriorityClass {
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get {
+				var success = GetPriorityClass(handle, out var priority);
+				if(!success) throw new Win32Exception();
+				return (ProcessPriorityClass)priority;
+			}
+
+			[SecuritySafeCritical]
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			set {
+				var success = SetPriorityClass(handle, (int)value);
+				if(!success) throw new Win32Exception();
+			}
+		}
+
 		public bool IsWow64Process {
 			[SecuritySafeCritical]
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -509,6 +526,14 @@ namespace Henke37.Win32.Processes {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetProcessHandleCount(SafeProcessHandle handle, out UInt32 exitCode);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool GetPriorityClass(SafeProcessHandle handle, out Int32 priority);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool SetPriorityClass(SafeProcessHandle handle, Int32 priority);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
