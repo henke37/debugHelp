@@ -239,12 +239,7 @@ namespace Henke37.Win32.Processes {
 		public ProcessTimes GetProcessTimes() {
 			var success = GetProcessTimesNative(handle, out var creationTime, out var exitTime, out var kernelTime, out var userTime);
 			if(!success) throw new Win32Exception();
-			return new ProcessTimes() {
-				CreationTime = FiletimeToDateTime(creationTime),
-				ExitTime = FiletimeToDateTime(exitTime),
-				KernelTime = FiletimeToTimeSpan(kernelTime),
-				UserTime = FiletimeToTimeSpan(userTime)
-			};
+			return new ProcessTimes(creationTime,exitTime,kernelTime,userTime);
 		}
 
 		public UInt64 ProcessorAffinityMask {
@@ -563,18 +558,6 @@ namespace Henke37.Win32.Processes {
 			out System.Runtime.InteropServices.ComTypes.FILETIME lpKernelTime,
 			out System.Runtime.InteropServices.ComTypes.FILETIME lpUserTime
 		);
-
-		public static DateTime FiletimeToDateTime(System.Runtime.InteropServices.ComTypes.FILETIME fileTime) {
-			//NB! uint conversion must be done on both fields before ulong conversion
-			ulong hFT2 = unchecked((((ulong)(uint)fileTime.dwHighDateTime) << 32) | (uint)fileTime.dwLowDateTime);
-			return DateTime.FromFileTimeUtc((long)hFT2);
-		}
-
-		public static TimeSpan FiletimeToTimeSpan(System.Runtime.InteropServices.ComTypes.FILETIME fileTime) {
-			//NB! uint conversion must be done on both fields before ulong conversion
-			ulong hFT2 = unchecked((((ulong)(uint)fileTime.dwHighDateTime) << 32) | (uint)fileTime.dwLowDateTime);
-			return TimeSpan.FromTicks((long)hFT2);
-		}
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		static extern bool GetProcessAffinityMask(SafeProcessHandle hProcess,
