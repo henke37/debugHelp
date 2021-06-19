@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
+using System.Security.Principal;
 
 namespace Henke37.Win32.Tokens {
 #if NETFRAMEWORK
@@ -14,6 +16,13 @@ namespace Henke37.Win32.Tokens {
 
 		internal NativeToken(SafeTokenHandle tokenHandle) {
 			this.tokenHandle = tokenHandle;
+		}
+
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
+		public NativeToken Reopen(TokenAccessLevels rights = TokenAccessLevels.AllAccess, bool inheritable = false) {
+			var rawHandle = SafeKernelObjHandle.DuplicateHandleLocal(tokenHandle.DangerousGetHandle(), (uint)rights, inheritable, SafeKernelObjHandle.DuplicateOptions.None);
+			return new NativeToken(new SafeTokenHandle(rawHandle));
 		}
 
 		public void Dispose() => tokenHandle.Dispose();

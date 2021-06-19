@@ -6,6 +6,7 @@ using Henke37.Win32.Tokens;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
@@ -29,6 +30,13 @@ namespace Henke37.Win32.Threads {
 
 		internal NativeThread(SafeThreadHandle handle) {
 			this.handle = handle;
+		}
+
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
+		public NativeThread Reopen(ThreadAcccessRights rights = ThreadAcccessRights.All, bool inheritable = false) {
+			var rawHandle = SafeKernelObjHandle.DuplicateHandleLocal(handle.DangerousGetHandle(), (uint)rights, inheritable, SafeKernelObjHandle.DuplicateOptions.None);
+			return new NativeThread(new SafeThreadHandle(rawHandle));
 		}
 
 		public void Dispose() => handle.Dispose();

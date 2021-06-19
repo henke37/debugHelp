@@ -115,6 +115,13 @@ namespace Henke37.Win32.Processes {
 			return new NativeProcess(handle);
 		}
 
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
+		public NativeProcess Reopen(ProcessAccessRights rights = ProcessAccessRights.All, bool inheritable = false) {
+			var rawHandle=SafeKernelObjHandle.DuplicateHandleLocal(handle.DangerousGetHandle(), (uint)rights, inheritable, SafeKernelObjHandle.DuplicateOptions.None);
+			return new NativeProcess(new SafeProcessHandle(rawHandle));
+		}
+
 		private static NativeProcess? CachedCurrent;
 		public static NativeProcess Current {
 			get {
