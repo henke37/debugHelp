@@ -12,6 +12,7 @@ using System.Security;
 using System.Security.Permissions;
 
 using System.Security.Principal;
+using System.Threading;
 
 namespace Henke37.Win32.Threads {
 
@@ -39,8 +40,11 @@ namespace Henke37.Win32.Threads {
 			return new NativeThread(new SafeThreadHandle(rawHandle));
 		}
 
-		public void Dispose() => handle.Dispose();
-		public void Close() => handle.Close();
+		public void Dispose() => Close();
+		public void Close() {
+			UnregisterExitedWait();
+			handle.Close();
+		}
 
 		public UInt32 ThreadId {
 
@@ -200,6 +204,45 @@ namespace Henke37.Win32.Threads {
 			var success = GetThreadTimesNative(handle, out var creationTime, out var exitTime, out var kernelTime, out var userTime);
 			if(!success) throw new Win32Exception();
 			return new ProcessTimes(creationTime, exitTime, kernelTime, userTime);
+		}
+
+		private Action<NativeThread>? exitedListeners;
+		private WaitHandle? exitedWaitHandle;
+		private RegisteredWaitHandle? exitWaitRegistered;
+
+		public event Action<NativeThread> Exited {
+			add {
+				if(exitedWaitHandle == null) {
+					exitedWaitHandle = handle.MakeWaitHandle();
+					exitedListeners = new Action<NativeThread>(value);
+					exitWaitRegistered = ThreadPool.RegisterWaitForSingleObject(exitedWaitHandle, exitedCallback, null, -1, true);
+				} else {
+					exitedListeners += value;
+				}
+			}
+			remove {
+				exitedListeners -= value;
+
+				if(exitedListeners!.GetInvocationList().Length == 0) {
+					UnregisterExitedWait();
+				}
+			}
+		}
+
+		private void UnregisterExitedWait() {
+			if(exitWaitRegistered == null) return;
+
+			exitWaitRegistered!.Unregister(exitedWaitHandle);
+			exitWaitRegistered = null;
+
+			exitedWaitHandle!.Dispose();
+			exitedWaitHandle = null;
+
+			exitedListeners = null;
+		}
+
+		private void exitedCallback(object state, bool timedOut) {
+			exitedListeners!.Invoke(this);
 		}
 
 		public NativeToken OpenToken(TokenAccessLevels accessLevels, bool ignoreImpersonation = false) {

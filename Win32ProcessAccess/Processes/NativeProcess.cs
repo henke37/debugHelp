@@ -17,6 +17,7 @@ using Henke37.Win32.Tokens;
 using Henke37.Win32.Snapshots;
 using Henke37.Win32.Threads;
 using Henke37.Win32.Base;
+using System.Threading;
 
 namespace Henke37.Win32.Processes {
 #if NETFRAMEWORK
@@ -131,8 +132,11 @@ namespace Henke37.Win32.Processes {
 			}
 		}
 
-		public void Dispose() => handle.Dispose();
-		public void Close() => handle.Close();
+		public void Dispose() => Close();
+		public void Close() {
+			UnregisterExitedWait();
+			handle.Close();
+		}
 
 		public UInt32 ProcessId {
 			[SecuritySafeCritical]
@@ -489,6 +493,45 @@ namespace Henke37.Win32.Processes {
 		public void Terminate(UInt32 exitCode) {
 			bool success = TerminateProcess(handle, exitCode);
 			if(!success) throw new Win32Exception();
+		}
+
+		private Action<NativeProcess>? exitedListeners;
+		private WaitHandle? exitedWaitHandle;
+		private RegisteredWaitHandle? exitWaitRegistered;
+
+		public event Action<NativeProcess> Exited {
+			add {
+				if(exitedWaitHandle==null) {
+					exitedWaitHandle = Handle.MakeWaitHandle();
+					exitedListeners = new Action<NativeProcess>(value);
+					exitWaitRegistered=ThreadPool.RegisterWaitForSingleObject(exitedWaitHandle, exitedCallback, null, -1, true);
+				} else {
+					exitedListeners += value;
+				}
+			}
+			remove {
+				exitedListeners -= value;
+
+				if(exitedListeners!.GetInvocationList().Length==0) {
+					UnregisterExitedWait();
+				}
+			}
+		}
+
+		private void UnregisterExitedWait() {
+			if(exitWaitRegistered == null) return;
+
+			exitWaitRegistered!.Unregister(exitedWaitHandle);
+			exitWaitRegistered = null;
+
+			exitedWaitHandle!.Dispose();
+			exitedWaitHandle = null;
+
+			exitedListeners = null;
+		}
+
+		private void exitedCallback(object state, bool timedOut) {
+			exitedListeners!.Invoke(this);
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]

@@ -7,6 +7,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
+using System.Threading;
 
 namespace Henke37.Win32.SafeHandles {
 	public abstract class SafeKernelObjHandle : SafeHandleZeroOrMinusOneIsInvalid {
@@ -103,6 +104,11 @@ namespace Henke37.Win32.SafeHandles {
 
 			if(!success) throw new Win32Exception();
 			return newHandle;
+		}
+
+		[SecuritySafeCritical]
+		public WaitHandle MakeWaitHandle() {
+			return new KernelObjWaitHandle(this);
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
