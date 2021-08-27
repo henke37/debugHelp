@@ -538,10 +538,10 @@ namespace Henke37.Win32.Processes {
 		internal static extern SafeProcessHandle OpenProcess(UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool inheritable, UInt32 processId);
 
 		public static NativeProcess FromProcess(Process stdProcess) {
-			return new NativeProcess(SafeProcessHandle.DuplicateFrom(stdProcess.Handle));
+			return new NativeProcess(SafeProcessHandle.DuplicateFrom(stdProcess.SafeHandle));
 		}
 		public static NativeProcess FromProcess(Process stdProcess, ProcessAccessRights accessRights) {
-			return new NativeProcess(SafeProcessHandle.DuplicateFrom(stdProcess.Handle, (uint)accessRights));
+			return new NativeProcess(SafeProcessHandle.DuplicateFrom(stdProcess.SafeHandle, (uint)accessRights));
 		}
 
 		public SafeProcessHandle Handle => handle;
