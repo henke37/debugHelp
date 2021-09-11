@@ -4,17 +4,21 @@ The projects (as indicated by the folder names) have separate licenses:
 * GDBClient: GNU Affero General Public License v3.0 or later
 * MSVCRTTI: GNU Affero General Public License v3.0 or later
 * PdbAcces: MIT License
-* Win32Base: MIT License
-* Win32ProcessAccess: MIT License
-* Win32WaitChain: MIT License
-* Win32DeviceEnum: MIT License
-* Win32BatteryAccess: MIT License
-* Win32LasUnloadedModues: MIT License
 * StackWalker: MIT License
+* Win32Base: MIT License
+* Win32BatteryAccess: MIT License
+* Win32CdAccess: MIT License
+* Win32DeviceEnum: MIT License
+* Win32LastUnloadedModues: MIT License
+* Win32ProcessAccess: MIT License
+* Win32RestartManager: MIT License
+* Win32WaitChain: MIT License
 
 * BatteryTest: Public domain
 * CdControl: Public domain
+* JobTest: Public domain
 * ModuleVsFileMapping: Public domain
+* RestartTest: Public domain
 * StackDumper: Public domain
 * TokenTest: Public domain
 * UnloadedModuleTest: Public domain
