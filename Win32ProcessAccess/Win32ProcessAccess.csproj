@@ -31,8 +31,8 @@
     <DefineConstants>TRACE;x64</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <DefineConstants>TRACE;x64</DefineConstants>
-    <PlatformTarget>x64</PlatformTarget>
+    <DefineConstants>TRACE;x86</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <DefineConstants>TRACE;x86</DefineConstants>
