@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.Threads {
-#if x86
 	public class SelectorEntry {
 		public IntPtr Base;
 		internal uint Limit;
@@ -53,5 +52,4 @@ namespace Henke37.Win32.Threads {
 			Ring3=3
 		}
 	}
-#endif
 }

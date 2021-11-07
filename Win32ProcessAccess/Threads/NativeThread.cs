@@ -152,6 +152,14 @@ namespace Henke37.Win32.Threads {
 			return native.AsManaged();
 		}
 #endif
+#if x64
+[SecuritySafeCritical]
+		public SelectorEntry GetWow64Selector(UInt32 selector) {
+			bool success = Wow64GetThreadSelectorEntry(handle, selector, out var native);
+			if(!success) throw new Win32Exception();
+			return native.AsManaged();
+		}
+#endif
 
 		public ThreadPriorityLevel ThreadPriority {
 			[SecuritySafeCritical]
@@ -331,6 +339,11 @@ namespace Henke37.Win32.Threads {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetThreadSelectorEntry(SafeThreadHandle handle, UInt32 selector, out SelectorEntry.Native entry);
+#endif
+#if x64
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool Wow64GetThreadSelectorEntry(SafeThreadHandle handle, UInt32 selector, out SelectorEntry.Native entry);
 #endif
 
 		[DllImport("Advapi32.dll", SetLastError = true)]
