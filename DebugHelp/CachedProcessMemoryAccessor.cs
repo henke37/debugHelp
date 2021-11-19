@@ -41,7 +41,8 @@ namespace Henke37.DebugHelp {
 				}
 
 				int remainingBytes = (int)size - copiedData;
-				int copySize = remainingBytes > pageSize ? pageSize : remainingBytes;
+				int bytesLeftInPage = pageSize - offset;
+				int copySize = remainingBytes > bytesLeftInPage ? bytesLeftInPage : remainingBytes;
 				Array.Copy(readPage, offset, buff, copiedData, copySize);
 
 				offset = 0;
