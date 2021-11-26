@@ -14,6 +14,8 @@ namespace Henke37.Win32.Tokens {
 	public class NativeToken : IDisposable, IEquatable<NativeToken> {
 		private SafeTokenHandle tokenHandle;
 
+		private const int ERROR_NOT_ALL_ASSIGNED = 1300;
+
 		internal NativeToken(SafeTokenHandle tokenHandle) {
 			this.tokenHandle = tokenHandle;
 		}
@@ -62,10 +64,15 @@ namespace Henke37.Win32.Tokens {
 			TokenPrivilege outBuff = new TokenPrivilege();
 			void* outBuffP = (void*)&outBuff;
 
-			uint size= (uint)sizeof(TokenPrivilege);
+			uint size = (uint)sizeof(TokenPrivilege);
 
-			bool success=AdjustTokenPrivileges(tokenHandle, false, inBuffP, size, outBuffP, out _);
+			bool success = AdjustTokenPrivileges(tokenHandle, false, inBuffP, size, outBuffP, out _);
 			if(!success) throw new Win32Exception();
+			int err = Marshal.GetLastWin32Error();
+
+			if(err == ERROR_NOT_ALL_ASSIGNED) {
+				throw new Win32Exception(err);
+			}
 
 			oldState = outBuff.Privilege.Attributes;
 		}
