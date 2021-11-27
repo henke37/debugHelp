@@ -116,6 +116,9 @@ namespace Henke37.Win32.Processes {
 			return new NativeProcess(handle);
 		}
 
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
 		public NativeProcess Reopen(ProcessAccessRights rights = ProcessAccessRights.All, bool inheritable = false) {

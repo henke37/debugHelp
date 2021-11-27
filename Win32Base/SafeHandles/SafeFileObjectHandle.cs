@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System;
+using System.Security.Permissions;
 
 namespace Henke37.Win32.SafeHandles {
 	internal class SafeFileObjectHandle : SafeKernelObjHandle, IEquatable<SafeFileObjectHandle>, IEquatable<SafeFileHandle> {
@@ -9,6 +10,10 @@ namespace Henke37.Win32.SafeHandles {
 		}
 		private SafeFileObjectHandle() : base(true) {
 		}
+
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		internal SafeFileObjectHandle(SafeFileHandle oldHandle) : base(true) {
 			handle = DuplicateHandleLocal(oldHandle.DangerousGetHandle(), 0, false, DuplicateOptions.SameAccess);
 		}

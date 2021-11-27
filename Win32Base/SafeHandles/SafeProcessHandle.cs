@@ -18,16 +18,28 @@ namespace Henke37.Win32.SafeHandles {
 		internal SafeProcessHandle(IntPtr handle, bool ownsHandle = true) : base(handle,ownsHandle) {
 		}
 
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		internal static SafeProcessHandle DuplicateFrom(IntPtr handle) {
 			return new SafeProcessHandle(DuplicateHandleLocal(handle, 0, false, DuplicateOptions.SameAccess), true);
 		}
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		internal static SafeProcessHandle DuplicateFrom(IntPtr handle, uint accessRights) {
 			return new SafeProcessHandle(DuplicateHandleLocal(handle, accessRights, false, DuplicateOptions.None), true);
 		}
 
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		public static SafeProcessHandle DuplicateFrom(Microsoft.Win32.SafeHandles.SafeProcessHandle safeHandle) {
 			return new SafeProcessHandle(DuplicateHandleLocal(safeHandle.DangerousGetHandle(), 0, false, DuplicateOptions.SameAccess), true);
 		}
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		public static SafeProcessHandle DuplicateFrom(Microsoft.Win32.SafeHandles.SafeProcessHandle safeHandle, uint accessRights) {
 			return new SafeProcessHandle(DuplicateHandleLocal(safeHandle.DangerousGetHandle(), accessRights, false, DuplicateOptions.None), true);
 		}

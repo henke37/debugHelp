@@ -20,6 +20,9 @@ namespace Henke37.Win32.Tokens {
 			this.tokenHandle = tokenHandle;
 		}
 
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
 		public NativeToken Reopen(TokenAccessLevels rights = TokenAccessLevels.AllAccess, bool inheritable = false) {

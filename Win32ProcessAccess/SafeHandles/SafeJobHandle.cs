@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Permissions;
 
 namespace Henke37.Win32.SafeHandles {
 	class SafeJobHandle : SafeKernelObjHandle, IEquatable<SafeJobHandle> {
@@ -8,9 +9,15 @@ namespace Henke37.Win32.SafeHandles {
 		internal SafeJobHandle(IntPtr handle, bool ownsHandle = true) : base(handle, ownsHandle) {
 		}
 
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		internal static SafeJobHandle DuplicateFrom(IntPtr handle) {
 			return new SafeJobHandle(DuplicateHandleLocal(handle, 0, false, DuplicateOptions.SameAccess), true);
 		}
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		internal static SafeJobHandle DuplicateFrom(IntPtr handle, uint accessRights) {
 			return new SafeJobHandle(DuplicateHandleLocal(handle, accessRights, false, DuplicateOptions.None), true);
 		}

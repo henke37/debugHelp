@@ -96,6 +96,9 @@ namespace Henke37.Win32.SafeHandles {
 			}
 		}
 
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		[SecurityCritical]
 		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
 		internal static unsafe IntPtr DuplicateHandleLocal(IntPtr sourceHandle, uint desiredAccess, bool inheritHandle, DuplicateOptions options) {

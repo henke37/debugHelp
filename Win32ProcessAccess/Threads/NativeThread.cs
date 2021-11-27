@@ -33,6 +33,9 @@ namespace Henke37.Win32.Threads {
 			this.handle = handle;
 		}
 
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
 		public NativeThread Reopen(ThreadAcccessRights rights = ThreadAcccessRights.All, bool inheritable = false) {
