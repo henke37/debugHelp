@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Henke37.Win32.Debug {
 	public class Debugger {
@@ -9,14 +10,16 @@ namespace Henke37.Win32.Debug {
 		private static readonly object instanceLock= new object();
 		private static Debugger instance;
 
-		private Debugger() { }
-
 		public static Debugger GetInstance() {
 			lock(instanceLock) {
 				if(instance != null) return instance;
 				return instance = new Debugger();
 			}
 		}
+
+		private Thread eventWaitThread;
+
+		private Debugger() { }
 
 		public void ContinueDebugEvent(UInt32 processId, UInt32 threadId, ContinueStatus status) {
 			bool success = ContinueDebugEventNative(processId, threadId, status);
@@ -41,6 +44,8 @@ namespace Henke37.Win32.Debug {
 		}
 
 		private Action<DebugEvent> debugEventListeners;
+		private const uint INFINITE=0xFFFFFFFF;
+
 		public event Action<DebugEvent> DebugEvent {
 			add {
 				if(debugEventListeners!=null) {
@@ -59,11 +64,17 @@ namespace Henke37.Win32.Debug {
 		}
 
 		private void StartEventListenerThread() {
-			throw new NotImplementedException();
+			eventWaitThread = new Thread(ListenerThread);
+		}
+		private void StopEventListenerThread() {
+			eventWaitThread.Abort();
 		}
 
-		private void StopEventListenerThread() {
-			throw new NotImplementedException();
+		private void ListenerThread() {
+			for(; ; ) {
+				DebugEvent evt = WaitForDebugEvent(INFINITE);
+				debugEventListeners?.Invoke(evt);
+			}
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "ContinueDebugEvent")]
