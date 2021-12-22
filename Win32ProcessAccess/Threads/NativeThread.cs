@@ -281,8 +281,8 @@ namespace Henke37.Win32.Threads {
 		}
 
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public void QueueUserAPC(IntPtr pfnAPC, IntPtr dwData) {
-			bool success = QueueUserAPCNative(pfnAPC, handle, dwData);
+		public void QueueUserAPC(IntPtr pfnAPC, IntPtr dwData, bool special = false) {
+			bool success = QueueUserAPC2Native(pfnAPC, handle, dwData, special?QueueAPC2Flags.Special:QueueAPC2Flags.None);
 			if(!success) throw new Win32Exception();
 		}
 
@@ -353,8 +353,8 @@ namespace Henke37.Win32.Threads {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool OpenThreadToken(SafeThreadHandle procHandle, UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool IgnoreImpersonation, out SafeTokenHandle tokenHandle);
 
-		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "QueueUserAPC")]
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "QueueUserAPC2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		internal static extern bool QueueUserAPCNative(IntPtr pfnAPC, SafeThreadHandle procHandle, IntPtr dwData);
+		internal static extern bool QueueUserAPC2Native(IntPtr pfnAPC, SafeThreadHandle procHandle, IntPtr dwData, QueueAPC2Flags flags);
 	}
 }
