@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Henke37.Win32.Debug.Event;
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 

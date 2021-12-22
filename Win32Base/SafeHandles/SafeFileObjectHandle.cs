@@ -6,7 +6,7 @@ namespace Henke37.Win32.SafeHandles {
 	internal class SafeFileObjectHandle : SafeKernelObjHandle, IEquatable<SafeFileObjectHandle>, IEquatable<SafeFileHandle> {
 		internal static readonly SafeFileObjectHandle InvalidHandle=new SafeFileObjectHandle(InvalidHandleValue,false);
 
-		internal SafeFileObjectHandle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) {
+		internal SafeFileObjectHandle(IntPtr handle, bool ownsHandle = true) : base(handle, ownsHandle) {
 		}
 		private SafeFileObjectHandle() : base(true) {
 		}

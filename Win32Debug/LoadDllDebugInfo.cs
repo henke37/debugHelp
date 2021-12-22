@@ -1,4 +1,13 @@
-﻿namespace Henke37.Win32.Debug {
+﻿using System;
+
+namespace Henke37.Win32.Debug {
 	internal class LoadDllDebugInfo {
+		internal IntPtr fileHandle;
+		internal IntPtr imageBase;
+		internal UInt32 debugInfoOffset;
+		internal UInt32 debugInfoSize;
+		internal IntPtr startAddress;
+		internal IntPtr imageName;
+		internal UInt16 imageNameIsUnicode;
 	}
 }

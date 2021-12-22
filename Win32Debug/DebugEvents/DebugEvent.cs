@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using Henke37.Win32.SafeHandles;
 
-namespace Henke37.Win32.Debug {
+namespace Henke37.Win32.Debug.Event {
 	public abstract class DebugEvent {
 
 		public UInt32 processId;
 		public UInt32 threadId;
+
+		protected DebugEvent(UInt32 processId, UInt32 threadId) {
+			this.processId = processId;
+			this.threadId = threadId;
+		}
 
 		[StructLayout(LayoutKind.Explicit)]
 		internal class Native {
@@ -45,11 +47,22 @@ namespace Henke37.Win32.Debug {
 						throw new NotImplementedException();
 						break;
 					case DebugCode.CreateThread:
-						throw new NotImplementedException();
-						break;
+						return new CreateThreadEvent(
+							processId,
+							threadId,
+							new SafeThreadHandle(createThreadDebugInfo.threadHandle),
+							createThreadDebugInfo.startAddress,
+							createThreadDebugInfo.localBase);
 					case DebugCode.CreateProcess:
-						throw new NotImplementedException();
-						break;
+						return new CreateProcessEvent(processId,
+							threadId,
+							new SafeProcessHandle(createProcessDebugInfo.processHandle),
+							new SafeThreadHandle(createProcessDebugInfo.threadHandle),
+							createProcessDebugInfo.startAddress,
+							createProcessDebugInfo.localBase,
+							new SafeFileObjectHandle(createProcessDebugInfo.fileHandle),
+							createProcessDebugInfo.imageBase
+							);
 					case DebugCode.ExitThread:
 						throw new NotImplementedException();
 						break;
