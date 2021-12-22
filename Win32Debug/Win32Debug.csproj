@@ -45,7 +45,13 @@
     <Compile Include="CreateProcessDebugInfo.cs" />
     <Compile Include="CreateThreadDebugInfo.cs" />
     <Compile Include="DebugCode.cs" />
-    <Compile Include="DebugEvent.cs" />
+    <Compile Include="DebugEvents\CreateProcessEvent.cs" />
+    <Compile Include="DebugEvents\CreateThreadEvent.cs" />
+    <Compile Include="DebugEvents\DebugEvent.cs" />
+    <Compile Include="DebugEvents\ExitProcessEvent.cs" />
+    <Compile Include="DebugEvents\ExitThreadEvent.cs" />
+    <Compile Include="DebugEvents\LoadDllEvent.cs" />
+    <Compile Include="DebugEvents\UnloadDllEvent.cs" />
     <Compile Include="Debugger.cs" />
     <Compile Include="DebugOutputStringInfo.cs" />
     <Compile Include="ExceptionDebugInfo.cs" />
@@ -55,6 +61,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RIPDebugInfo.cs" />
     <Compile Include="UnloadDllDebugInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Win32Base\Win32Base.csproj">
+      <Project>{dd1a28ce-0dc8-4f02-b157-fa92719b1da7}</Project>
+      <Name>Win32Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Win32ProcessAccess\Win32ProcessAccess.csproj">
+      <Project>{e57bafa0-7748-4011-913d-1258e90af6c2}</Project>
+      <Name>Win32ProcessAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

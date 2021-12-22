@@ -45,7 +45,6 @@ namespace Henke37.Win32.Debug.Event {
 				switch(debugCode) {
 					case DebugCode.Exception:
 						throw new NotImplementedException();
-						break;
 					case DebugCode.CreateThread:
 						return new CreateThreadEvent(
 							processId,
@@ -64,17 +63,16 @@ namespace Henke37.Win32.Debug.Event {
 							createProcessDebugInfo.imageBase
 							);
 					case DebugCode.ExitThread:
-						throw new NotImplementedException();
-						break;
+						return new ExitThreadEvent(processId, threadId, exitThreadDebugInfo.ExitCode);
 					case DebugCode.ExitProcess:
-						throw new NotImplementedException();
-						break;
+						return new ExitProcessEvent(processId, threadId, exitProcessDebugInfo.ExitCode);
 					case DebugCode.LoadDll:
-						throw new NotImplementedException();
-						break;
+						return new LoadDllEvent(processId, threadId,
+							new SafeFileObjectHandle(loadDllDebugInfo.fileHandle),
+							loadDllDebugInfo.imageBase
+							);
 					case DebugCode.UnloadDll:
-						throw new NotImplementedException();
-						break;
+						return new UnloadDllEvent(processId, threadId, unloadDllDebugInfo.loadBase);
 					case DebugCode.OutputDebugString:
 						throw new NotImplementedException();
 						break;

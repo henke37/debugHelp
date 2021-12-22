@@ -1,8 +1,12 @@
-﻿using Henke37.Win32.SafeHandles;
+﻿using Henke37.Win32.Processes;
+using Henke37.Win32.SafeHandles;
+using Henke37.Win32.Threads;
+using Microsoft.Win32.SafeHandles;
 using System;
+using SafeProcessHandle = Henke37.Win32.SafeHandles.SafeProcessHandle;
 
 namespace Henke37.Win32.Debug.Event {
-	internal class CreateProcessEvent : DebugEvent {
+	public class CreateProcessEvent : DebugEvent {
 		private SafeProcessHandle safeProcessHandle;
 		private SafeThreadHandle safeThreadHandle;
 		private IntPtr startAddress;
@@ -10,7 +14,11 @@ namespace Henke37.Win32.Debug.Event {
 		private SafeFileObjectHandle safeFileObjectHandle;
 		private IntPtr imageBase;
 
-		public CreateProcessEvent(
+		public NativeProcess Process => new NativeProcess(safeProcessHandle);
+		public NativeThread FirstThread => new NativeThread(safeThreadHandle);
+		public SafeFileHandle FileHandle => safeFileObjectHandle.AsSafeFileHandle();
+
+		internal CreateProcessEvent(
 			uint processId,
 			uint threadId,
 			SafeProcessHandle safeProcessHandle,

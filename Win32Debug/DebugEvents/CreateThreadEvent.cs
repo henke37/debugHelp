@@ -1,13 +1,16 @@
 ﻿using Henke37.Win32.SafeHandles;
+using Henke37.Win32.Threads;
 using System;
 
 namespace Henke37.Win32.Debug.Event {
-	internal class CreateThreadEvent : DebugEvent {
+	public class CreateThreadEvent : DebugEvent {
 		private SafeThreadHandle safeThreadHandle;
-		private IntPtr startAddress;
-		private IntPtr localBase;
+		public IntPtr startAddress;
+		public IntPtr localBase;
 
-		public CreateThreadEvent(uint processId, uint threadId, SafeThreadHandle safeThreadHandle, IntPtr startAddress, IntPtr localBase) : base(processId, threadId) {
+		public NativeThread NativeThread => new NativeThread(safeThreadHandle);
+
+		internal CreateThreadEvent(uint processId, uint threadId, SafeThreadHandle safeThreadHandle, IntPtr startAddress, IntPtr localBase) : base(processId, threadId) {
 			this.safeThreadHandle = safeThreadHandle;
 			this.startAddress = startAddress;
 			this.localBase = localBase;
