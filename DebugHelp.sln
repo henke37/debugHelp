@@ -45,9 +45,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32LastUnloadedModules", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnloadedModuleTest", "UnloadedModuleTest\UnloadedModuleTest.csproj", "{764CEA15-0A27-4A93-BAD6-F89C2B450B9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32RestartManager", "Win32RestartManager\Win32RestartManager.csproj", "{07C6E182-768D-4801-9FDD-199E5E328E27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32RestartManager", "Win32RestartManager\Win32RestartManager.csproj", "{07C6E182-768D-4801-9FDD-199E5E328E27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestartTest", "RestartTest\RestartTest.csproj", "{A1C31960-F751-4B86-9AFA-027716783832}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32Debug", "Win32Debug\Win32Debug.csproj", "{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -298,6 +300,18 @@ Global
 		{A1C31960-F751-4B86-9AFA-027716783832}.Release|x64.Build.0 = Release|Any CPU
 		{A1C31960-F751-4B86-9AFA-027716783832}.Release|x86.ActiveCfg = Release|Any CPU
 		{A1C31960-F751-4B86-9AFA-027716783832}.Release|x86.Build.0 = Release|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Debug|x64.Build.0 = Debug|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Debug|x86.Build.0 = Debug|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Release|x64.ActiveCfg = Release|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Release|x64.Build.0 = Release|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Release|x86.ActiveCfg = Release|Any CPU
+		{CBFD88D4-36E4-40CE-A54B-BFC475E39EB3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
