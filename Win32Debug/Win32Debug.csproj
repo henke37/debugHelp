@@ -51,6 +51,8 @@
     <Compile Include="DebugEvents\ExitProcessEvent.cs" />
     <Compile Include="DebugEvents\ExitThreadEvent.cs" />
     <Compile Include="DebugEvents\LoadDllEvent.cs" />
+    <Compile Include="DebugEvents\OutputDebugStringEvent.cs" />
+    <Compile Include="DebugEvents\RIPEvent.cs" />
     <Compile Include="DebugEvents\UnloadDllEvent.cs" />
     <Compile Include="Debugger.cs" />
     <Compile Include="DebugOutputStringInfo.cs" />

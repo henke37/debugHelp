@@ -2,7 +2,7 @@
 
 namespace Henke37.Win32.Debug {
 	internal class RIPDebugInfo {
-		UInt32 error;
-		UInt32 type;
+		internal UInt32 error;
+		internal UInt32 type;
 	}
 }

@@ -74,11 +74,9 @@ namespace Henke37.Win32.Debug.Event {
 					case DebugCode.UnloadDll:
 						return new UnloadDllEvent(processId, threadId, unloadDllDebugInfo.loadBase);
 					case DebugCode.OutputDebugString:
-						throw new NotImplementedException();
-						break;
+						return new OutputDebugStringEvent(processId, threadId, debugOutputStringInfo.dataAddress, debugOutputStringInfo.isUnicode!=0);
 					case DebugCode.RIP:
-						throw new NotImplementedException();
-						break;
+						return new RIPEvent(processId, threadId, ripDebugInfo.error, ripDebugInfo.type);
 
 				}
 				throw new NotImplementedException();
