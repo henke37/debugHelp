@@ -45,7 +45,10 @@ namespace Henke37.Win32.Debug.Event {
 			internal DebugEvent AsManaged() {
 				switch(debugCode) {
 					case DebugCode.Exception:
-						throw new NotImplementedException();
+						return new ExceptionEvent(processId, threadId,
+							exceptionDebugInfo.exception.AsManaged(),
+							exceptionDebugInfo.firstChance != 0
+							);
 					case DebugCode.CreateThread:
 						return new CreateThreadEvent(
 							processId,
