@@ -42,8 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContinueStatus.cs" />
-    <Compile Include="CreateProcessDebugInfo.cs" />
-    <Compile Include="CreateThreadDebugInfo.cs" />
+    <Compile Include="DebugInfo\CreateProcessDebugInfo.cs" />
+    <Compile Include="DebugInfo\CreateThreadDebugInfo.cs" />
     <Compile Include="DebugCode.cs" />
     <Compile Include="DebugEvents\CreateProcessEvent.cs" />
     <Compile Include="DebugEvents\CreateThreadEvent.cs" />
@@ -55,14 +55,14 @@
     <Compile Include="DebugEvents\RIPEvent.cs" />
     <Compile Include="DebugEvents\UnloadDllEvent.cs" />
     <Compile Include="Debugger.cs" />
-    <Compile Include="DebugOutputStringInfo.cs" />
-    <Compile Include="ExceptionDebugInfo.cs" />
-    <Compile Include="ExitProcessDebugInfo.cs" />
-    <Compile Include="ExitThreadDebugInfo.cs" />
-    <Compile Include="LoadDllDebugInfo.cs" />
+    <Compile Include="DebugInfo\DebugOutputStringInfo.cs" />
+    <Compile Include="DebugInfo\ExceptionDebugInfo.cs" />
+    <Compile Include="DebugInfo\ExitProcessDebugInfo.cs" />
+    <Compile Include="DebugInfo\ExitThreadDebugInfo.cs" />
+    <Compile Include="DebugInfo\LoadDllDebugInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RIPDebugInfo.cs" />
-    <Compile Include="UnloadDllDebugInfo.cs" />
+    <Compile Include="DebugInfo\RIPDebugInfo.cs" />
+    <Compile Include="DebugInfo\UnloadDllDebugInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace Henke37.Win32.Debug {
-	internal class LoadDllDebugInfo {
+namespace Henke37.Win32.Debug.Info {
+	internal struct LoadDllDebugInfo {
 		internal IntPtr fileHandle;
 		internal IntPtr imageBase;
 		internal UInt32 debugInfoOffset;

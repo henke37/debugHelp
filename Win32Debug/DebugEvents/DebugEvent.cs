@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Henke37.Win32.Debug.Info;
 using Henke37.Win32.SafeHandles;
 
 namespace Henke37.Win32.Debug.Event {

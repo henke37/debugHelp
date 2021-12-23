@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace Henke37.Win32.Debug {
-	internal class CreateProcessDebugInfo {
+namespace Henke37.Win32.Debug.Info {
+	internal struct CreateProcessDebugInfo {
 		internal IntPtr fileHandle;
 		internal IntPtr processHandle;
 		internal IntPtr threadHandle;
