@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -149,6 +150,17 @@ namespace Henke37.Win32.CdAccess {
 				ReadMode = readMode
 			};
 			RawRead(info, buffer);
+		}
+
+		public bool DiskIsReadOnly {
+			get {
+				try {
+					file.DeviceControl(DeviceIoControlCode.DiskIsWriteable);
+					return false;
+				} catch (Win32Exception ex) when (ex.NativeErrorCode==19) {
+					return true;
+				}
+			}
 		}
 
 		private void RawRead(RawReadInfo info, byte[] buffer) {
