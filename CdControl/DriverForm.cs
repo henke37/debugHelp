@@ -34,20 +34,30 @@ namespace CdControl {
 		private void GetTOC_btn_Click(object sender, EventArgs e) {
 			FullToc toc;
 			int session = 1;
-			do {
-				toc = cdDrive.GetFullTOC(session);
-				foreach(var tocItem in toc.Entries) {
-					if(tocItem.Point > 99) continue;
 
-					var item = new ListViewItem(new string[] {
+			try {
+				track_lst.BeginUpdate();
+				track_lst.Items.Clear();
+
+				do {
+					toc = cdDrive.GetFullTOC(session);
+					foreach(var tocItem in toc.Entries) {
+						if(tocItem.Point > 99) continue;
+
+						var item = new ListViewItem(new string[] {
 					tocItem.SessionNumber.ToString(),
 					tocItem.Point.ToString(),
 					tocItem.StartPosition.ToString()
 				});
-					item.Tag = tocItem;
-					track_lst.Items.Add(item);
-				}
-			} while(session < toc.LastCompleteSession);
+						item.Tag = tocItem;
+						track_lst.Items.Add(item);
+					}
+				} while(session < toc.LastCompleteSession);
+
+			} finally {
+				track_lst.EndUpdate();
+			}
+
 			track_lst.Enabled = true;
 		}
 	}
