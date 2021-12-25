@@ -33,6 +33,18 @@ namespace CdControl {
 
 		private void GetTOC_btn_Click(object sender, EventArgs e) {
 			var toc=cdDrive.GetFullTOC(1);
+			foreach(var tocItem in toc.Entries) {
+				if(tocItem.Point > 99) continue;
+
+				var item = new ListViewItem(new string[] { 
+					tocItem.SessionNumber.ToString(),
+					tocItem.Point.ToString(),
+					tocItem.StartPosition.ToString()
+				});
+				item.Tag = tocItem;
+				track_lst.Items.Add(item);
+			}
+			track_lst.Enabled = true;
 		}
 	}
 }

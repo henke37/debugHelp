@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContinueStatus.cs" />
+    <Compile Include="DebugEvents\ExceptionEvent.cs" />
     <Compile Include="DebugInfo\CreateProcessDebugInfo.cs" />
     <Compile Include="DebugInfo\CreateThreadDebugInfo.cs" />
     <Compile Include="DebugCode.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="DebugInfo\DebugOutputStringInfo.cs" />
     <Compile Include="DebugInfo\ExceptionDebugInfo.cs" />
     <Compile Include="ExceptionCode.cs" />
+    <Compile Include="ExceptionFlag.cs" />
     <Compile Include="ExceptionRecord.cs" />
     <Compile Include="DebugInfo\ExitProcessDebugInfo.cs" />
     <Compile Include="DebugInfo\ExitThreadDebugInfo.cs" />

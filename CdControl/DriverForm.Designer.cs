@@ -26,6 +26,10 @@
 			this.load_btn = new System.Windows.Forms.Button();
 			this.eject_btn = new System.Windows.Forms.Button();
 			this.GetTOC_btn = new System.Windows.Forms.Button();
+			this.track_lst = new System.Windows.Forms.ListView();
+			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.SuspendLayout();
 			// 
 			// load_btn
@@ -58,11 +62,39 @@
 			this.GetTOC_btn.UseVisualStyleBackColor = true;
 			this.GetTOC_btn.Click += new System.EventHandler(this.GetTOC_btn_Click);
 			// 
+			// track_lst
+			// 
+			this.track_lst.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+			this.track_lst.Enabled = false;
+			this.track_lst.HideSelection = false;
+			this.track_lst.Location = new System.Drawing.Point(12, 42);
+			this.track_lst.Name = "track_lst";
+			this.track_lst.Size = new System.Drawing.Size(575, 396);
+			this.track_lst.TabIndex = 3;
+			this.track_lst.UseCompatibleStateImageBehavior = false;
+			this.track_lst.View = System.Windows.Forms.View.Details;
+			// 
+			// columnHeader1
+			// 
+			this.columnHeader1.Text = "Session";
+			// 
+			// columnHeader2
+			// 
+			this.columnHeader2.Text = "Track";
+			// 
+			// columnHeader3
+			// 
+			this.columnHeader3.Text = "Start Time";
+			// 
 			// DriverForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.ClientSize = new System.Drawing.Size(599, 450);
+			this.Controls.Add(this.track_lst);
 			this.Controls.Add(this.GetTOC_btn);
 			this.Controls.Add(this.eject_btn);
 			this.Controls.Add(this.load_btn);
@@ -77,6 +109,10 @@
 		private System.Windows.Forms.Button load_btn;
 		private System.Windows.Forms.Button eject_btn;
 		private System.Windows.Forms.Button GetTOC_btn;
+		private System.Windows.Forms.ListView track_lst;
+		private System.Windows.Forms.ColumnHeader columnHeader1;
+		private System.Windows.Forms.ColumnHeader columnHeader2;
+		private System.Windows.Forms.ColumnHeader columnHeader3;
 	}
 }
 
