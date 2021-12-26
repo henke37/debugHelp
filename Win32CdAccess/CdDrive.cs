@@ -35,6 +35,10 @@ namespace Henke37.Win32.CdAccess {
 			file.DeviceControl(DeviceIoControlCode.DiskLoadMedia);
 		}
 
+		private void VerifyMedia() {
+			file.DeviceControl(DeviceIoControlCode.CdRomCheckVerify);
+		}
+
 		public unsafe TOC GetTOC() {
 			int buffSize = Marshal.SizeOf<TOC.TocHeader>() + Marshal.SizeOf<TrackEntry.Native>() * TOCTrackCount;
 			byte[] buff = new byte[buffSize];
