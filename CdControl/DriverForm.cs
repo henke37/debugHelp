@@ -22,7 +22,12 @@ namespace CdControl {
 			NameConverter = new NativeFileNameConverter();
 
 			drives = CdDrive.GetCdDrives().ToList();
-			cdDrive = new CdDrive(drives[0]);
+			DeviceInterface deviceInterface = drives[0];
+			SelectDrive(deviceInterface);
+		}
+
+		private void SelectDrive(DeviceInterface deviceInterface) {
+			cdDrive = new CdDrive(deviceInterface);
 		}
 
 		protected override void WndProc(ref Message m) {
@@ -38,13 +43,25 @@ namespace CdControl {
 			var dev= DevBroadcast.FromMessage(ref m);
 			switch((int)m.WParam) {
 				case DevBroadcast.DBT_DEVICEARRIVAL:
+					if(IsSelectedDrive(dev)) {
+						RebuildTrackList();
+					}
+					break;
 				case DevBroadcast.DBT_DEVICEREMOVECOMPLETE:
-					if(dev is DevBroadcastVolume vol) {
-
+					if(IsSelectedDrive(dev)) {
+						ClearTrackList();
 					}
 					break;
 			}
 			
+		}
+
+		private bool IsSelectedDrive(DevBroadcast dev) {
+			if(dev is DevBroadcastVolume vol) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		private void Eject_btn_Click(object sender, EventArgs e) {
@@ -56,6 +73,10 @@ namespace CdControl {
 		}
 
 		private void GetTOC_btn_Click(object sender, EventArgs e) {
+			RebuildTrackList();
+		}
+
+		private void RebuildTrackList() {
 			FullToc toc;
 			int session = 1;
 
@@ -83,6 +104,11 @@ namespace CdControl {
 			}
 
 			track_lst.Enabled = true;
+		}
+
+		private void ClearTrackList() {
+			track_lst.Items.Clear();
+			track_lst.Enabled = false;
 		}
 	}
 }
