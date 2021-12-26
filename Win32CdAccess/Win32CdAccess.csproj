@@ -36,4 +36,9 @@
     <ProjectReference Include="..\Win32Base\Win32Base.csproj" />
     <ProjectReference Include="..\Win32DeviceEnum\Win32DeviceEnum.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Windows.Forms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

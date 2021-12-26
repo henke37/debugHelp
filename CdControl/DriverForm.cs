@@ -14,6 +14,8 @@ namespace CdControl {
 		private List<DeviceInterface> drives;
 		private NativeFileNameConverter NameConverter;
 
+		private const int WM_DEVICECHANGE = 0x0219;
+
 		public DriverForm() {
 			InitializeComponent();
 
@@ -21,6 +23,28 @@ namespace CdControl {
 
 			drives = CdDrive.GetCdDrives().ToList();
 			cdDrive = new CdDrive(drives[0]);
+		}
+
+		protected override void WndProc(ref Message m) {
+			switch(m.Msg) {
+				case WM_DEVICECHANGE:
+					OnDeviceChange(m);
+					break;
+			}
+			base.WndProc(ref m);
+		}
+
+		private void OnDeviceChange(Message m) {
+			var dev= DevBroadcast.FromMessage(ref m);
+			switch((int)m.WParam) {
+				case DevBroadcast.DBT_DEVICEARRIVAL:
+				case DevBroadcast.DBT_DEVICEREMOVECOMPLETE:
+					if(dev is DevBroadcastVolume vol) {
+
+					}
+					break;
+			}
+			
 		}
 
 		private void Eject_btn_Click(object sender, EventArgs e) {
