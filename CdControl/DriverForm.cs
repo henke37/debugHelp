@@ -92,10 +92,11 @@ namespace CdControl {
 						if(tocItem.Point > 99) continue;
 
 						var item = new ListViewItem(new string[] {
-					tocItem.SessionNumber.ToString(),
-					tocItem.Point.ToString(),
-					tocItem.StartPosition.ToString()
-				});
+							tocItem.SessionNumber.ToString(),
+							tocItem.Point.ToString(),
+							tocItem.StartPosition.ToString()
+						});
+						item.ImageKey = (tocItem.IsAudio ? "audio" : "data");
 						item.Tag = tocItem;
 						track_lst.Items.Add(item);
 					}

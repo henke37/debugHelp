@@ -23,6 +23,8 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DriverForm));
 			this.load_btn = new System.Windows.Forms.Button();
 			this.eject_btn = new System.Windows.Forms.Button();
 			this.GetTOC_btn = new System.Windows.Forms.Button();
@@ -30,6 +32,7 @@
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.listIcons = new System.Windows.Forms.ImageList(this.components);
 			this.SuspendLayout();
 			// 
 			// load_btn
@@ -73,6 +76,7 @@
 			this.track_lst.Location = new System.Drawing.Point(12, 42);
 			this.track_lst.Name = "track_lst";
 			this.track_lst.Size = new System.Drawing.Size(575, 396);
+			this.track_lst.SmallImageList = this.listIcons;
 			this.track_lst.TabIndex = 3;
 			this.track_lst.UseCompatibleStateImageBehavior = false;
 			this.track_lst.View = System.Windows.Forms.View.Details;
@@ -88,6 +92,13 @@
 			// columnHeader3
 			// 
 			this.columnHeader3.Text = "Start Time";
+			// 
+			// listIcons
+			// 
+			this.listIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("listIcons.ImageStream")));
+			this.listIcons.TransparentColor = System.Drawing.Color.Transparent;
+			this.listIcons.Images.SetKeyName(0, "data");
+			this.listIcons.Images.SetKeyName(1, "audio");
 			// 
 			// DriverForm
 			// 
@@ -113,6 +124,7 @@
 		private System.Windows.Forms.ColumnHeader columnHeader1;
 		private System.Windows.Forms.ColumnHeader columnHeader2;
 		private System.Windows.Forms.ColumnHeader columnHeader3;
+		private System.Windows.Forms.ImageList listIcons;
 	}
 }
 
