@@ -80,6 +80,8 @@ namespace CdControl {
 			FullToc toc;
 			int session = 1;
 
+			cdDrive.VerifyMedia();
+
 			try {
 				track_lst.BeginUpdate();
 				track_lst.Items.Clear();

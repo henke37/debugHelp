@@ -35,8 +35,12 @@ namespace Henke37.Win32.CdAccess {
 			file.DeviceControl(DeviceIoControlCode.DiskLoadMedia);
 		}
 
-		private void VerifyMedia() {
-			file.DeviceControl(DeviceIoControlCode.CdRomCheckVerify);
+		public void VerifyMedia() {
+			try {
+				file.DeviceControl(DeviceIoControlCode.CdRomCheckVerify);
+			} catch(Win32Exception ex) when (ex.NativeErrorCode == 1110) {
+
+			}
 		}
 
 		public unsafe TOC GetTOC() {
