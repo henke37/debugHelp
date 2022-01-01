@@ -106,6 +106,41 @@ namespace Henke37.Win32.CdAccess {
 			);
 		}
 
+		internal unsafe List<CdTextDataBlock> GetCdTextBlocks(int session=1) {
+			ReadTocEx readToc = new ReadTocEx(ReadTocFormat.CDText, true, session);
+			byte[] buff = new byte[4200];
+
+			FullToc.FullTocHeader header;
+
+			file.DeviceControlInputOutput(DeviceIoControlCode.CdRomReadTOCEx, ref readToc, buff);
+
+			List<CdTextDataBlock> blocks=new List<CdTextDataBlock>();
+
+			fixed(byte* buffPP = buff) {
+				header = Marshal.PtrToStructure<FullToc.FullTocHeader>((IntPtr)buffPP);
+
+				int length = header.LengthLo | header.LengthHi << 8;
+
+				byte* buffP = buffPP + Marshal.SizeOf<FullToc.FullTocHeader>();
+				byte* buffEndP = buffP + (length - 2);
+				for(var trackIndex = 0; buffP < buffEndP; ++trackIndex) {
+					var entry = Marshal.PtrToStructure<CdTextDataBlock.Native>((IntPtr)buffP);
+
+					blocks.Add(entry.AsManaged());
+
+					buffP += Marshal.SizeOf<CdTextDataBlock.Native>();
+				}
+			}
+
+			return blocks;
+		}
+
+		public CDText GetCdText() {
+			var blocks = GetCdTextBlocks();
+
+			return CDText.FromBlocks(blocks);
+		}
+
 		public unsafe string? GetMediaCatalogNumber() {
 			SubQDataFormat dataFormat = new SubQDataFormat() {
 				Format = (byte)SubQDataFormatFormat.MediaCatalog,

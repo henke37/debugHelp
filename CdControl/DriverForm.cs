@@ -113,5 +113,9 @@ namespace CdControl {
 			track_lst.Items.Clear();
 			track_lst.Enabled = false;
 		}
+
+		private void getCdTExt_Click(object sender, EventArgs e) {
+			var text=cdDrive.GetCdText();
+		}
 	}
 }

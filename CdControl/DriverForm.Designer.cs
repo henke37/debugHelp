@@ -33,6 +33,7 @@
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.listIcons = new System.Windows.Forms.ImageList(this.components);
+			this.getCdTExt = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// load_btn
@@ -100,11 +101,22 @@
 			this.listIcons.Images.SetKeyName(0, "data");
 			this.listIcons.Images.SetKeyName(1, "audio");
 			// 
+			// getCdTExt
+			// 
+			this.getCdTExt.Location = new System.Drawing.Point(256, 12);
+			this.getCdTExt.Name = "getCdTExt";
+			this.getCdTExt.Size = new System.Drawing.Size(75, 23);
+			this.getCdTExt.TabIndex = 4;
+			this.getCdTExt.Text = "GetCdText";
+			this.getCdTExt.UseVisualStyleBackColor = true;
+			this.getCdTExt.Click += new System.EventHandler(this.getCdTExt_Click);
+			// 
 			// DriverForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(599, 450);
+			this.Controls.Add(this.getCdTExt);
 			this.Controls.Add(this.track_lst);
 			this.Controls.Add(this.GetTOC_btn);
 			this.Controls.Add(this.eject_btn);
@@ -125,6 +137,7 @@
 		private System.Windows.Forms.ColumnHeader columnHeader2;
 		private System.Windows.Forms.ColumnHeader columnHeader3;
 		private System.Windows.Forms.ImageList listIcons;
+		private System.Windows.Forms.Button getCdTExt;
 	}
 }
 
