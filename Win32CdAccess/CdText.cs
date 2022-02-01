@@ -16,6 +16,33 @@ namespace Henke37.Win32.CdAccess {
 		internal static CDText FromBlocks(List<CdTextDataBlock> blocks) {
 			var cdText = new CDText();
 
+			StringBuilder sb=new StringBuilder();
+
+			int prevBlockTrackNr = blocks[0].TrackNr;
+			CdTextBlockType prevBlockType = blocks[0].Type;
+			int prevGroup = blocks[0].BlockNumber;
+			sb.Append(blocks[0].Text);
+
+			for(int blockIndex=1;blockIndex<blocks.Count;++blockIndex) {
+				var block = blocks[blockIndex];
+				sb.Append(block.Text);
+
+				if(block.CharacterPosition!=15) {
+					//need to use lagged appending because of continuation
+					var endPos = sb.Length - block.CharacterPosition;
+					var prevBlockString=sb.ToString(0, endPos);
+					sb.Remove(0, endPos);
+
+					cdText.infos.Add(new CdTextInfo(prevBlockType, prevBlockTrackNr, prevGroup, prevBlockString));
+
+					prevBlockTrackNr = block.TrackNr;
+					prevBlockType = block.Type;
+					prevGroup = block.BlockNumber;
+				}
+			}
+			if(sb.Length>0) {
+				cdText.infos.Add(new CdTextInfo(prevBlockType, prevBlockTrackNr, prevGroup, sb.ToString()));
+			}
 
 			return cdText;
 		}

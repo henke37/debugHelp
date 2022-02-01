@@ -2,7 +2,7 @@
 
 namespace Henke37.Win32.Threads {
 	[Flags]
-	internal enum ContextFlags : UInt32 {
+	public enum ContextFlags : UInt32 {
 		i386  = 0x00010000,
 		ARM   = 0x00200000,
 		ARM64 = 0x00400000,
