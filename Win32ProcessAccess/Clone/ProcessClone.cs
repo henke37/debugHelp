@@ -75,6 +75,10 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
+		internal void GetHandles() {
+			var walker = new Walker<HANDLE_ENTRY>(this, WalkInformationClass.HANDLES);
+		}
+
 		internal IEnumerable<ThreadEntry> GetThreads() {
 			using(var walker = new Walker<ThreadEntry.Native>(this, WalkInformationClass.THREADS)) { 
 				while(walker.MoveNext()) {
