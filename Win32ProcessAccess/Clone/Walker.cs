@@ -1,16 +1,24 @@
 ﻿using Henke37.Win32.SafeHandles;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
 
+using static Henke37.Win32.Clone.WalkerNativeMethods;
+
 namespace Henke37.Win32.Clone {
-	class Walker : IDisposable {
+	class Walker<T> : IDisposable, IEnumerator<T> where T : unmanaged {
 		private ProcessClone clone;
 		private SafeProcessCloneWalkMarkerHandle markerHandle;
 		private WalkInformationClass informationClass;
 
 		private const Int32 ERROR_NO_MORE_ITEMS = 259;
+
+		public T Current => _current;
+		object IEnumerator.Current => _current;
+		private T _current;
 
 		public Walker(ProcessClone processClone, WalkInformationClass informationClass) {
 			clone = processClone;
@@ -27,7 +35,7 @@ namespace Henke37.Win32.Clone {
 
 		[SuppressUnmanagedCodeSecurity]
 		[SecuritySafeCritical]
-		public unsafe bool Walk<T>(ref T buff) where T : unmanaged {
+		private unsafe bool Walk(ref T buff) {
 			fixed(void* buffP = &buff) {
 				var ret = PssWalkSnapshot(clone.Handle, informationClass, markerHandle, buffP, (uint)sizeof(T));
 				if(ret == ERROR_NO_MORE_ITEMS) return false;
@@ -45,6 +53,12 @@ namespace Henke37.Win32.Clone {
 			markerHandle.Dispose();
 		}
 
+		public bool MoveNext() {
+			return Walk(ref _current);
+		}
+	}
+
+	static class WalkerNativeMethods {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
 		public static extern Int32 PssWalkMarkerCreate(IntPtr allocator, SafeProcessCloneHandle cloneHandle, out SafeProcessCloneWalkMarkerHandle walkerHandle);
 
