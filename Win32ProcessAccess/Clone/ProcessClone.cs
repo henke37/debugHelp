@@ -19,11 +19,23 @@ namespace Henke37.Win32.Clone {
 			return new ProcessClone(clonedProc);
 		}
 
-		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
-		internal static extern Int32 PssCaptureSnapshot(SafeProcessHandle originalProcess, CloneFlags flags, ContextFlags contextFlags, out SafeProcessCloneHandle clonedProc);
+		internal unsafe T QueryInformation<T>(QueryInformationClass infoClass, ref T buff) where T : unmanaged {
+			fixed(void* buffP = &buff) {
+				var ret = PssQuerySnapshot(Handle, infoClass, buffP, (uint)sizeof(T));
+				if(ret != 0) throw new Win32Exception(ret);
+				return buff;
+			}
+		}
 
 		public void Dispose() {
 			Handle.Dispose();
 		}
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		internal static extern Int32 PssCaptureSnapshot(SafeProcessHandle originalProcess, CloneFlags flags, ContextFlags contextFlags, out SafeProcessCloneHandle clonedProc);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		internal static unsafe extern Int32 PssQuerySnapshot(SafeProcessCloneHandle clonedProc, QueryInformationClass informationClass, void * buffer, UInt32 buffSize);
+
 	}
 }
