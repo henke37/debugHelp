@@ -4,6 +4,7 @@ using Henke37.Win32.Threads;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Henke37.Win32.Clone {
 	public class ProcessClone : IDisposable {
@@ -13,12 +14,15 @@ namespace Henke37.Win32.Clone {
 			this.Handle = Handle;
 		}
 
+		[SuppressUnmanagedCodeSecurity]
 		public static ProcessClone CloneProcess(NativeProcess proc, CloneFlags flags, ContextFlags contextFlags = 0) {
 			var ret = PssCaptureSnapshot(proc.handle, flags, contextFlags, out SafeProcessCloneHandle clonedProc);
 			if(ret != 0) throw new Win32Exception(ret);
 			return new ProcessClone(clonedProc);
 		}
 
+		[SuppressUnmanagedCodeSecurity]
+		[SecuritySafeCritical]
 		internal unsafe T QueryInformation<T>(QueryInformationClass infoClass, ref T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				var ret = PssQuerySnapshot(Handle, infoClass, buffP, (uint)sizeof(T));

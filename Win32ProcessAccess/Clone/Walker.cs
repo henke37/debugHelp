@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Henke37.Win32.Clone {
 	class Walker : IDisposable {
@@ -14,10 +15,18 @@ namespace Henke37.Win32.Clone {
 		public Walker(ProcessClone processClone, WalkInformationClass informationClass) {
 			clone = processClone;
 			this.informationClass = informationClass;
-			var ret=PssWalkMarkerCreate(IntPtr.Zero, processClone.Handle, out markerHandle);
-			if(ret != 0) throw new Win32Exception(ret);
+			markerHandle=CreateMarker(processClone);
 		}
 
+		[SuppressUnmanagedCodeSecurity]
+		private SafeProcessCloneWalkMarkerHandle CreateMarker(ProcessClone processClone) {
+			var ret = PssWalkMarkerCreate(IntPtr.Zero, processClone.Handle, out var markerHandle);
+			if(ret != 0) throw new Win32Exception(ret);
+			return markerHandle;
+		}
+
+		[SuppressUnmanagedCodeSecurity]
+		[SecuritySafeCritical]
 		public unsafe bool Walk<T>(ref T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				var ret = PssWalkSnapshot(clone.Handle, informationClass, markerHandle, buffP, (uint)sizeof(T));
@@ -27,6 +36,7 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
+		[SuppressUnmanagedCodeSecurity]
 		public void Reset() {
 			PssWalkMarkerSeekToBeginning(markerHandle);
 		}
