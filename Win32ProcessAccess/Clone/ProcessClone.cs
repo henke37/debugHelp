@@ -87,6 +87,14 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
+		internal IEnumerable<AuxiliaryPageEntry> GetAuxPages() {
+			using(var walker=new Walker<AuxiliaryPageEntry.Native>(this,WalkInformationClass.AUXILIARY_PAGES)) {
+				while(walker.MoveNext()) {
+					yield return walker.Current.AsManaged();
+				}
+			}
+		}
+
 		public void Dispose() {
 			Handle.Dispose();
 		}
