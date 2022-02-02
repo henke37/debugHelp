@@ -1,4 +1,5 @@
-﻿using Henke37.Win32.Processes;
+﻿using Henke37.Win32.Clone.QueryStructs;
+using Henke37.Win32.Processes;
 using Henke37.Win32.SafeHandles;
 using Henke37.Win32.Threads;
 using System;
@@ -21,9 +22,51 @@ namespace Henke37.Win32.Clone {
 			return new ProcessClone(clonedProc);
 		}
 
+		internal SafeProcessHandle DuplicatedProcessHandle {
+			get {
+				QueryInformation(QueryInformationClass.VA_CLONE_INFORMATION, out VA_CLONE_INFORMATION ci);
+				return new SafeProcessHandle(ci.Handle);
+			}
+		}
+
+		internal Int32 AuxPageCount {
+			get {
+				QueryInformation(QueryInformationClass.AUXILIARY_PAGES_INFORMATION, out int Count);
+				return Count;
+			}
+		}
+
+		internal Int32 RegionCount {
+			get {
+				QueryInformation(QueryInformationClass.VA_SPACE_INFORMATION, out int Count);
+				return Count;
+			}
+		}
+
+		internal Int32 HandleCount {
+			get {
+				QueryInformation(QueryInformationClass.HANDLE_INFORMATION, out int Count);
+				return Count;
+			}
+		}
+
+		internal VA_CLONE_INFORMATION ThreadData {
+			get {
+				QueryInformation(QueryInformationClass.THREAD_INFORMATION, out VA_CLONE_INFORMATION td);
+				return td;
+			}
+		}
+
+		internal PERFORMANCE_COUNTERS PerformanceCounters {
+			get {
+				QueryInformation(QueryInformationClass.PERFORMANCE_COUNTERS, out PERFORMANCE_COUNTERS.Native native);
+				return native.AsManaged();
+			}
+		}
+
 		[SuppressUnmanagedCodeSecurity]
 		[SecuritySafeCritical]
-		internal unsafe T QueryInformation<T>(QueryInformationClass infoClass, ref T buff) where T : unmanaged {
+		internal unsafe T QueryInformation<T>(QueryInformationClass infoClass, out T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				var ret = PssQuerySnapshot(Handle, infoClass, buffP, (uint)sizeof(T));
 				if(ret != 0) throw new Win32Exception(ret);
