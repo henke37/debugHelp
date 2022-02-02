@@ -95,6 +95,14 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
+		internal IEnumerable<VASpaceEntry> GetVASpaceEntries() {
+			using(var walker = new Walker<VASpaceEntry.Native>(this, WalkInformationClass.VA_SPACE)) {
+				while(walker.MoveNext()) {
+					yield return walker.Current.AsManaged();
+				}
+			}
+		}
+
 		public void Dispose() {
 			Handle.Dispose();
 		}
