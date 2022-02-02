@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Henke37.Win32.Memory;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.Clone.QueryStructs {
@@ -6,10 +7,14 @@ namespace Henke37.Win32.Clone.QueryStructs {
 		public IntPtr BaseAddress;
 		public IntPtr AllocationBase;
 		public UInt32 AllocationProtect;
-		public IntPtr RegionSize;
-		public UInt32 State;
-		public UInt32 Protect;
-		public UInt32 Type;
+#if x86
+		public UInt32 RegionSize;
+#elif x64
+		public UInt64 RegionSize;
+#endif
+		public MemoryPageState State;
+		public MemoryProtection Protect;
+		public MemoryBackingType Type;
 		public UInt32 TimeDateStamp;
 		public UInt32 SizeOfImage;
 		public IntPtr ImageBase;
@@ -22,7 +27,11 @@ namespace Henke37.Win32.Clone.QueryStructs {
 			IntPtr BaseAddress;
 			IntPtr AllocationBase;
 			UInt32 AllocationProtect;
-			IntPtr RegionSize;
+#if x86
+			public UInt32 RegionSize;
+#elif x64
+			public UInt64 RegionSize;
+#endif
 			UInt32 State;
 			UInt32 Protect;
 			UInt32 Type;
@@ -39,9 +48,9 @@ namespace Henke37.Win32.Clone.QueryStructs {
 					AllocationBase = AllocationBase,
 					AllocationProtect = AllocationProtect,
 					RegionSize = RegionSize,
-					State = State,
-					Protect = Protect,
-					Type = Type,
+					State = (MemoryPageState)State,
+					Protect = (MemoryProtection)Protect,
+					Type = (MemoryBackingType)Type,
 					TimeDateStamp = TimeDateStamp,
 					SizeOfImage = SizeOfImage,
 					ImageBase = ImageBase,
