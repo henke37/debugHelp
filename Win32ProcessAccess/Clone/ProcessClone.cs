@@ -3,6 +3,7 @@ using Henke37.Win32.Processes;
 using Henke37.Win32.SafeHandles;
 using Henke37.Win32.Threads;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -50,9 +51,9 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
-		internal VA_CLONE_INFORMATION ThreadData {
+		internal THREAD_INFORMATION ThreadData {
 			get {
-				QueryInformation(QueryInformationClass.THREAD_INFORMATION, out VA_CLONE_INFORMATION td);
+				QueryInformation(QueryInformationClass.THREAD_INFORMATION, out THREAD_INFORMATION td);
 				return td;
 			}
 		}
@@ -71,6 +72,14 @@ namespace Henke37.Win32.Clone {
 				var ret = PssQuerySnapshot(Handle, infoClass, buffP, (uint)sizeof(T));
 				if(ret != 0) throw new Win32Exception(ret);
 				return buff;
+			}
+		}
+
+		internal IEnumerable<ThreadEntry> GetThreads() {
+			using(var walker = new Walker<ThreadEntry.Native>(this, WalkInformationClass.THREADS)) { 
+				while(walker.MoveNext()) {
+					yield return walker.Current.AsManaged();
+				}
 			}
 		}
 
