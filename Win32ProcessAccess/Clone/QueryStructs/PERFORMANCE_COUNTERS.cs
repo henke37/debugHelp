@@ -1,4 +1,5 @@
-﻿using Henke37.Win32.Processes;
+﻿using Henke37.Win32.Base;
+using Henke37.Win32.Processes;
 using System;
 using System.Runtime.InteropServices;
 
@@ -32,12 +33,12 @@ namespace Henke37.Win32.Clone.QueryStructs {
 
 			public PERFORMANCE_COUNTERS AsManaged() {
 				return new PERFORMANCE_COUNTERS() {
-					Total = ProcessTimes.FiletimeToTimeSpan(TotalWallClockPeriod),
-					VaClone = ProcessTimes.FiletimeToTimeSpan(VaCloneWallClockPeriod),
-					VaSpace = ProcessTimes.FiletimeToTimeSpan(VaSpaceWallClockPeriod),
-					AuxPages = ProcessTimes.FiletimeToTimeSpan(AuxPagesWallClockPeriod),
-					Handles = ProcessTimes.FiletimeToTimeSpan(HandlesWallClockPeriod),
-					Threads = ProcessTimes.FiletimeToTimeSpan(ThreadsWallClockPeriod)
+					Total = TotalWallClockPeriod.ToTimeSpan(),
+					VaClone = VaCloneWallClockPeriod.ToTimeSpan(),
+					VaSpace = VaSpaceWallClockPeriod.ToTimeSpan(),
+					AuxPages = AuxPagesWallClockPeriod.ToTimeSpan(),
+					Handles = HandlesWallClockPeriod.ToTimeSpan(),
+					Threads = ThreadsWallClockPeriod.ToTimeSpan()
 				};
 			}
 		}

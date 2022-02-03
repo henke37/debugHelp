@@ -1,4 +1,5 @@
-﻿using Henke37.Win32.Memory;
+﻿using Henke37.Win32.Base;
+using Henke37.Win32.Memory;
 using Henke37.Win32.Processes;
 using System;
 using System.Runtime.InteropServices;
@@ -25,7 +26,7 @@ namespace Henke37.Win32.Clone.QueryStructs {
 				return new AuxiliaryPageEntry() {
 					Address = Address,
 					BasicInformation = BasicInformation.AsManaged(),
-					CaptureTime = ProcessTimes.FiletimeToDateTime(CaptureTime),
+					CaptureTime = CaptureTime.ToDateTime(),
 					PageContents = PageContents,
 					PageSize = PageSize
 				};

@@ -1,4 +1,5 @@
-﻿using Henke37.Win32.Processes;
+﻿using Henke37.Win32.Base;
+using Henke37.Win32.Processes;
 using System;
 using System.Runtime.InteropServices;
 
@@ -82,14 +83,14 @@ namespace Henke37.Win32.Clone.QueryStructs {
 				entry.Flags = Flags;
 
 				if((Flags & HandleFlag.HaveBasicInformation) != 0) {
-					entry.CaptureTime = ProcessTimes.FiletimeToDateTime(CaptureTime);
+					entry.CaptureTime = CaptureTime.ToDateTime();
 					entry.Attributes = Attributes;
 					entry.GrantedAccess = GrantedAccess;
 					entry.HandleCount = HandleCount;
 					entry.PointerCount = PointerCount;
 					entry.PagedPoolCharge = PagedPoolCharge;
 					entry.NonPagedPoolCharge = NonPagedPoolCharge;
-					entry.CreationTime = ProcessTimes.FiletimeToDateTime(CreationTime);
+					entry.CreationTime = CreationTime.ToDateTime();
 				}
 
 				if((Flags & HandleFlag.HaveType)!=0) {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Henke37.Win32.Base;
+using System;
 using System.Runtime.InteropServices.ComTypes;
 
 namespace Henke37.Win32.Processes {
@@ -9,22 +10,10 @@ namespace Henke37.Win32.Processes {
 		public TimeSpan UserTime;
 
 		internal ProcessTimes(FILETIME creationTime, FILETIME exitTime, FILETIME kernelTime, FILETIME userTime) {
-			CreationTime = FiletimeToDateTime(creationTime);
-			ExitTime = FiletimeToDateTime(exitTime);
-			KernelTime = FiletimeToTimeSpan(kernelTime);
-			UserTime = FiletimeToTimeSpan(userTime);
-		}
-
-		internal static DateTime FiletimeToDateTime(FILETIME fileTime) {
-			//NB! uint conversion must be done on both fields before ulong conversion
-			ulong hFT2 = unchecked((((ulong)(uint)fileTime.dwHighDateTime) << 32) | (uint)fileTime.dwLowDateTime);
-			return DateTime.FromFileTimeUtc((long)hFT2);
-		}
-
-		internal static TimeSpan FiletimeToTimeSpan(FILETIME fileTime) {
-			//NB! uint conversion must be done on both fields before ulong conversion
-			ulong hFT2 = unchecked((((ulong)(uint)fileTime.dwHighDateTime) << 32) | (uint)fileTime.dwLowDateTime);
-			return TimeSpan.FromTicks((long)hFT2);
+			CreationTime = creationTime.ToDateTime();
+			ExitTime = exitTime.ToDateTime();
+			KernelTime = kernelTime.ToTimeSpan();
+			UserTime = userTime.ToTimeSpan();
 		}
 
 		public void Deconstruct(out DateTime CreationTime, out DateTime ExitTime) {

@@ -1,4 +1,5 @@
-﻿using Henke37.Win32.Processes;
+﻿using Henke37.Win32.Base;
+using Henke37.Win32.Processes;
 using System;
 using System.Runtime.InteropServices;
 
@@ -54,12 +55,12 @@ namespace Henke37.Win32.Clone.QueryStructs {
 					AffinityMask = AffinityMask,
 					Priority = Priority,
 					BasePriority = BasePriority,
-					CreateTime = ProcessTimes.FiletimeToDateTime(CreateTime),
-					ExitTime = ProcessTimes.FiletimeToDateTime(ExitTime),
-					KernelTime = ProcessTimes.FiletimeToTimeSpan(KernelTime),
-					UserTime = ProcessTimes.FiletimeToTimeSpan(UserTime),
+					CreateTime = CreateTime.ToDateTime(),
+					ExitTime = ExitTime.ToDateTime(),
+					KernelTime = KernelTime.ToTimeSpan(),
+					UserTime = UserTime.ToTimeSpan(),
 					Win32StartAddress = Win32StartAddress,
-					CaptureTime = ProcessTimes.FiletimeToDateTime(CaptureTime),
+					CaptureTime = CaptureTime.ToDateTime(),
 					Terminated = (Flags & THREAD_FLAGS.Terminated) != 0,
 					SuspendCount = SuspendCount
 				};
