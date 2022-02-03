@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Henke37.Win32.Processes;
+using System;
 using System.Runtime.InteropServices;
 
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Henke37.Win32.Clone.QueryStructs {
-	class HandleEntry {
+	public class HandleEntry {
 		public IntPtr Handle;
 		public HandleFlag Flags;
 		public ObjectType ObjectType;
@@ -20,7 +21,7 @@ namespace Henke37.Win32.Clone.QueryStructs {
 		public string? ObjectName;
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		unsafe struct Native {
+		internal unsafe struct Native {
 			IntPtr Handle;
 			HandleFlag Flags;
 			ObjectType ObjectType;
@@ -37,60 +38,105 @@ namespace Henke37.Win32.Clone.QueryStructs {
 			UInt32 ObjectNameLength;
 			char* ObjectName;
 
-			struct ProcessHandle {
-				UInt32 ExitStatus;
-				IntPtr PebBaseAddress;
-				IntPtr AffinityMask;
-				UInt32 BasePriority;
-				UInt32 ProcessId;
-				UInt32 ParentProcessId;
-				ProcessFlag Flags;
-			}
+			ProcessHandleEntry.Native Process;
+			ThreadHandleEntry.Native Thread;
+			MutantHandleEntry.Native Mutant;
+			EventHandleEntry.Native Event;
+			SectionHandleEntry.Native Section;
+			SemaphoreHandleEntry.Native Semaphore;
 
-			struct ThreadHandle {
-				UInt32 ExitStatus;
-				IntPtr TebBaseAddress;
-				UInt32 ProcessId;
-				UInt32 ThreadId;
-				IntPtr AffinityMask;
-				int Priority;
-				int BasePriority;
-				IntPtr Win32StartAddress;
-			}
+			internal HandleEntry AsManaged() {
+				HandleEntry entry;
+				if((Flags & HandleFlag.HaveTypeSpecificInformation)!=0) {
+					switch(ObjectType) {
+						case ObjectType.Process:
+							entry = Process.AsManaged();
+							break;
+						case ObjectType.Thread:
+							entry = Thread.AsManaged();
+							break;
+						case ObjectType.Mutant:
+							entry = Mutant.AsManaged();
+							break;
+						case ObjectType.Event:
+							entry = Event.AsManaged();
+							break;
+						case ObjectType.Section:
+							entry = Section.AsManaged();
+							break;
+						case ObjectType.Semaphore:
+							entry = Semaphore.AsManaged();
+							break;
 
-			struct Mutant {
-				Int32 CurrentCount;
-				UInt32 Abandoned;
-				UInt32 OwnerProcessId;
-				UInt32 OwnerThreadId;
-			}
-			struct Event {
-				UInt32 ManualReset;
-				UInt32 Signaled;
-			}
-			struct Section {
-				IntPtr BaseAddress;
-				UInt32 AllocationAttributes;
-				LargeInteger MaximumSize;
-			}
-			struct Semaphore {
-				Int32 CurrentCount;
-				Int32 MaximumCount;
+						case ObjectType.Unknown:
+							entry = new HandleEntry();
+							break;
+						default:
+							throw new NotImplementedException();
+					}
+				} else {
+					entry = new HandleEntry();
+				}
+
+				entry.Handle = Handle;
+				entry.Flags = Flags;
+
+				if((Flags & HandleFlag.HaveBasicInformation) != 0) {
+					entry.CaptureTime = ProcessTimes.FiletimeToDateTime(CaptureTime);
+					entry.Attributes = Attributes;
+					entry.GrantedAccess = GrantedAccess;
+					entry.HandleCount = HandleCount;
+					entry.PointerCount = PointerCount;
+					entry.PagedPoolCharge = PagedPoolCharge;
+					entry.NonPagedPoolCharge = NonPagedPoolCharge;
+					entry.CreationTime = ProcessTimes.FiletimeToDateTime(CreationTime);
+				}
+
+				if((Flags & HandleFlag.HaveType)!=0) {
+					entry.TypeName = new string(TypeName, 0, (int)TypeNameLength);
+				}
+				if((Flags & HandleFlag.HaveName) != 0) {
+					entry.TypeName = new string(ObjectName, 0, (int)ObjectNameLength);
+				}
+
+				return entry;
 			}
 		}
 	}
 
-	class ProcessHandleEntry : HandleEntry {
+	public class ProcessHandleEntry : HandleEntry {
 		public UInt32 ExitStatus;
 		public IntPtr PebBaseAddress;
 		public IntPtr AffinityMask;
 		public UInt32 BasePriority;
 		public UInt32 ProcessId;
 		public UInt32 ParentProcessId;
-		public ProcessFlag Flags;
+		public ProcessFlag ProcessFlags;
+
+		internal new struct Native {
+			UInt32 ExitStatus;
+			IntPtr PebBaseAddress;
+			IntPtr AffinityMask;
+			UInt32 BasePriority;
+			UInt32 ProcessId;
+			UInt32 ParentProcessId;
+			ProcessFlag Flags;
+
+			internal ProcessHandleEntry AsManaged() {
+				return new ProcessHandleEntry() {
+					ExitStatus = ExitStatus,
+					PebBaseAddress = PebBaseAddress,
+					AffinityMask = AffinityMask,
+					BasePriority = BasePriority,
+					ProcessId = ProcessId,
+					ParentProcessId = ParentProcessId,
+					ProcessFlags = Flags
+				};
+			}
+		}
 	}
 
-	class ThreadHandleEntry : HandleEntry {
+	public class ThreadHandleEntry : HandleEntry {
 		public UInt32 ExitStatus;
 		public IntPtr TebBaseAddress;
 		public UInt32 ProcessId;
@@ -99,30 +145,109 @@ namespace Henke37.Win32.Clone.QueryStructs {
 		public int Priority;
 		public int BasePriority;
 		public IntPtr Win32StartAddress;
+
+		internal new struct Native {
+			UInt32 ExitStatus;
+			IntPtr TebBaseAddress;
+			UInt32 ProcessId;
+			UInt32 ThreadId;
+			IntPtr AffinityMask;
+			int Priority;
+			int BasePriority;
+			IntPtr Win32StartAddress;
+
+			internal ThreadHandleEntry AsManaged() {
+				return new ThreadHandleEntry() {
+					ExitStatus = ExitStatus,
+					TebBaseAddress = TebBaseAddress,
+					ProcessId = ProcessId,
+					ThreadId = ThreadId,
+					AffinityMask = AffinityMask,
+					Priority = Priority,
+					BasePriority = BasePriority,
+					Win32StartAddress = Win32StartAddress
+				};
+			}
+		}
+
 	}
 
-	class MutantHandleEntry : HandleEntry {
+	public class MutantHandleEntry : HandleEntry {
 		public Int32 CurrentCount;
-		public UInt32 Abandoned;
+		public bool Abandoned;
 		public UInt32 OwnerProcessId;
 		public UInt32 OwnerThreadId;
+
+		internal new struct Native {
+			Int32 CurrentCount;
+			UInt32 Abandoned;
+			UInt32 OwnerProcessId;
+			UInt32 OwnerThreadId;
+
+			internal MutantHandleEntry AsManaged() {
+				return new MutantHandleEntry() {
+					CurrentCount = CurrentCount,
+					Abandoned = Abandoned != 0,
+					OwnerProcessId = OwnerProcessId,
+					OwnerThreadId = OwnerThreadId
+				};
+			}
+		}
 	}
-	class EventHandleEntry : HandleEntry {
-		public UInt32 ManualReset;
-		public UInt32 Signaled;
+	public class EventHandleEntry : HandleEntry {
+		public bool ManualReset;
+		public bool Signaled;
+
+		internal new struct Native {
+			UInt32 ManualReset;
+			UInt32 Signaled;
+
+			internal EventHandleEntry AsManaged() {
+				return new EventHandleEntry() {
+					ManualReset = ManualReset!=0,
+					Signaled = Signaled!=0
+				};
+			}
+		}
 	}
-	class SectionHandleEntry : HandleEntry {
+	public class SectionHandleEntry : HandleEntry {
 		public IntPtr BaseAddress;
 		public UInt32 AllocationAttributes;
 		public LargeInteger MaximumSize;
+
+		internal new struct Native {
+			IntPtr BaseAddress;
+			UInt32 AllocationAttributes;
+			LargeInteger MaximumSize;
+
+			internal SectionHandleEntry AsManaged() {
+				return new SectionHandleEntry() {
+					BaseAddress = BaseAddress,
+					AllocationAttributes = AllocationAttributes,
+					MaximumSize = MaximumSize
+				};
+			}
+		}
 	}
-	class SemaphoteHandleEntry : HandleEntry {
+	public class SemaphoreHandleEntry : HandleEntry {
 		public Int32 CurrentCount;
 		public Int32 MaximumCount;
+
+		internal new struct Native {
+			Int32 CurrentCount;
+			Int32 MaximumCount;
+
+			internal SemaphoreHandleEntry AsManaged() {
+				return new SemaphoreHandleEntry() {
+					CurrentCount = CurrentCount,
+					MaximumCount = MaximumCount
+				};
+			}
+		}
 	}
 
 	[Flags]
-	enum HandleFlag {
+	public enum HandleFlag {
 		None = 0x00,
 		HaveType = 0x01,
 		HaveName = 0x02,
@@ -130,7 +255,7 @@ namespace Henke37.Win32.Clone.QueryStructs {
 		HaveTypeSpecificInformation = 0x08
 	}
 
-	enum ObjectType {
+	public enum ObjectType {
 		Unknown = 0,
 		Process = 1,
 		Thread = 2,
@@ -141,7 +266,7 @@ namespace Henke37.Win32.Clone.QueryStructs {
 	}
 
 	[Flags]
-	enum ProcessFlag : UInt32 {
+	public enum ProcessFlag : UInt32 {
 		None = 0x00000000,
 		Protected = 0x00000001,
 		WOW64 = 0x00000002,
