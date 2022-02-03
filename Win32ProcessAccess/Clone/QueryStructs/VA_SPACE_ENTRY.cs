@@ -3,7 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Henke37.Win32.Clone.QueryStructs {
-	class VASpaceEntry {
+	public class VASpaceEntry {
 		public IntPtr BaseAddress;
 		public IntPtr AllocationBase;
 		public UInt32 AllocationProtect;

@@ -30,21 +30,21 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
-		internal Int32 AuxPageCount {
+		public Int32 AuxPageCount {
 			get {
 				QueryInformation(QueryInformationClass.AUXILIARY_PAGES_INFORMATION, out int Count);
 				return Count;
 			}
 		}
 
-		internal Int32 RegionCount {
+		public Int32 RegionCount {
 			get {
 				QueryInformation(QueryInformationClass.VA_SPACE_INFORMATION, out int Count);
 				return Count;
 			}
 		}
 
-		internal Int32 HandleCount {
+		public Int32 HandleCount {
 			get {
 				QueryInformation(QueryInformationClass.HANDLE_INFORMATION, out int Count);
 				return Count;
@@ -75,7 +75,7 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
-		internal IEnumerable<HandleEntry> GetHandles() {
+		public IEnumerable<HandleEntry> GetHandles() {
 			using(var walker = new Walker<HandleEntry.Native>(this, WalkInformationClass.HANDLES)) {
 				while(walker.MoveNext()) {
 					yield return walker.Current.AsManaged();
@@ -83,7 +83,7 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
-		internal IEnumerable<ThreadEntry> GetThreads() {
+		public IEnumerable<ThreadEntry> GetThreads() {
 			using(var walker = new Walker<ThreadEntry.Native>(this, WalkInformationClass.THREADS)) { 
 				while(walker.MoveNext()) {
 					yield return walker.Current.AsManaged();
@@ -91,7 +91,7 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
-		internal IEnumerable<AuxiliaryPageEntry> GetAuxPages() {
+		public IEnumerable<AuxiliaryPageEntry> GetAuxPages() {
 			using(var walker=new Walker<AuxiliaryPageEntry.Native>(this,WalkInformationClass.AUXILIARY_PAGES)) {
 				while(walker.MoveNext()) {
 					yield return walker.Current.AsManaged();
@@ -99,7 +99,7 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
-		internal IEnumerable<VASpaceEntry> GetVASpaceEntries() {
+		public IEnumerable<VASpaceEntry> GetVASpaceEntries() {
 			using(var walker = new Walker<VASpaceEntry.Native>(this, WalkInformationClass.VA_SPACE)) {
 				while(walker.MoveNext()) {
 					yield return walker.Current.AsManaged();

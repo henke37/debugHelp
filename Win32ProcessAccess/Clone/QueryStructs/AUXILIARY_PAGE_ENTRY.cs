@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Henke37.Win32.Clone.QueryStructs {
-	unsafe class AuxiliaryPageEntry {
+	public unsafe class AuxiliaryPageEntry {
 		public UIntPtr Address;
 		public MemoryBasicInformation BasicInformation;
 		public DateTime CaptureTime;
