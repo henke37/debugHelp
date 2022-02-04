@@ -58,9 +58,9 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
-		internal PERFORMANCE_COUNTERS PerformanceCounters {
+		public PerformanceCounters PerformanceCounters {
 			get {
-				QueryInformation(QueryInformationClass.PERFORMANCE_COUNTERS, out PERFORMANCE_COUNTERS.Native native);
+				QueryInformation(QueryInformationClass.PERFORMANCE_COUNTERS, out PerformanceCounters.Native native);
 				return native.AsManaged();
 			}
 		}

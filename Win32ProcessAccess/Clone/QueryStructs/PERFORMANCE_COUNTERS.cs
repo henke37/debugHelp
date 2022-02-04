@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Henke37.Win32.Clone.QueryStructs {
-	class PERFORMANCE_COUNTERS {
+	public class PerformanceCounters {
 
 		public TimeSpan Total;
 		public TimeSpan VaClone;
@@ -31,8 +31,8 @@ namespace Henke37.Win32.Clone.QueryStructs {
 			UInt64 ThreadsCycleCount;
 			FILETIME ThreadsWallClockPeriod;
 
-			public PERFORMANCE_COUNTERS AsManaged() {
-				return new PERFORMANCE_COUNTERS() {
+			public PerformanceCounters AsManaged() {
+				return new PerformanceCounters() {
 					Total = TotalWallClockPeriod.ToTimeSpan(),
 					VaClone = VaCloneWallClockPeriod.ToTimeSpan(),
 					VaSpace = VaSpaceWallClockPeriod.ToTimeSpan(),
