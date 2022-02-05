@@ -10,7 +10,6 @@ namespace Henke37.Win32.Clone.QueryStructs {
 
 		public TimeSpan Total;
 		public TimeSpan VaClone;
-		public TimeSpan TotalWallClock;
 		public TimeSpan VaSpace;
 		public TimeSpan AuxPages;
 		public TimeSpan Handles;
