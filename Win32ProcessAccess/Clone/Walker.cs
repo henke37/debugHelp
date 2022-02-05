@@ -60,16 +60,16 @@ namespace Henke37.Win32.Clone {
 
 	static class WalkerNativeMethods {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
-		public static extern Int32 PssWalkMarkerCreate(IntPtr allocator, SafeProcessCloneHandle cloneHandle, out SafeProcessCloneWalkMarkerHandle walkerHandle);
+		internal static extern Int32 PssWalkMarkerCreate(IntPtr allocator, SafeProcessCloneHandle cloneHandle, out SafeProcessCloneWalkMarkerHandle walkerHandle);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
-		public static extern Int32 PssWalkMarkerSetPosition(SafeProcessCloneWalkMarkerHandle walkerHandle, IntPtr position);
+		internal static extern Int32 PssWalkMarkerSetPosition(SafeProcessCloneWalkMarkerHandle walkerHandle, IntPtr position);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
-		public static extern Int32 PssWalkMarkerGetPosition(SafeProcessCloneWalkMarkerHandle walkerHandle, out IntPtr position);
+		internal static extern Int32 PssWalkMarkerGetPosition(SafeProcessCloneWalkMarkerHandle walkerHandle, out IntPtr position);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
-		public static extern Int32 PssWalkMarkerSeekToBeginning(SafeProcessCloneWalkMarkerHandle walkerHandle);
+		internal static extern Int32 PssWalkMarkerSeekToBeginning(SafeProcessCloneWalkMarkerHandle walkerHandle);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
 		internal static unsafe extern Int32 PssWalkSnapshot(SafeProcessCloneHandle clonedProc, WalkInformationClass informationClass, SafeProcessCloneWalkMarkerHandle markerHandle, void* buffer, UInt32 buffSize);
