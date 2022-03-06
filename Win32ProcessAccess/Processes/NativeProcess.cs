@@ -43,6 +43,9 @@ namespace Henke37.Win32.Processes {
 			StartupInfoW startupInfo = new StartupInfoW(flags2);
 			return CreateProcess(applicationName, commandLine, flags, startupInfo, currentDirectory, out firstThread);
 		}
+		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, string currentDirectory, out NativeThread firstThread) {
+			return CreateProcess(applicationName, commandLine, flags, startupInfo, (IReadOnlyDictionary<string, string>?)null, currentDirectory, out firstThread);
+		}
 
 		[SecuritySafeCritical]
 		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, string currentDirectory, out NativeThread firstThread) {
@@ -61,8 +64,11 @@ namespace Henke37.Win32.Processes {
 			return CreateProcess(applicationName, commandLine, flags, startupInfo, atts, currentDirectory, out firstThread);
 		}
 
-		[SecuritySafeCritical]
 		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, ProcThreadAttributeList atts, string currentDirectory, out NativeThread firstThread) {
+			return CreateProcess(applicationName, commandLine, flags, startupInfo, atts, null, currentDirectory, out firstThread);
+		}
+
+		[SecuritySafeCritical]
 			if((flags & ~SupportedCreateProcessFlags) != 0) {
 				throw new ArgumentException("Unsupported CreateProcessFlags given!");
 			}
