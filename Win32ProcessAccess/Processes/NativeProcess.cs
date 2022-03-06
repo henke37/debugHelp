@@ -18,6 +18,8 @@ using Henke37.Win32.Snapshots;
 using Henke37.Win32.Threads;
 using Henke37.Win32.Base;
 using System.Threading;
+using System.Collections.Specialized;
+using System.Collections;
 
 namespace Henke37.Win32.Processes {
 #if NETFRAMEWORK
@@ -48,7 +50,7 @@ namespace Henke37.Win32.Processes {
 		}
 
 		[SecuritySafeCritical]
-		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, string currentDirectory, out NativeThread firstThread) {
+		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, StringDictionary? envVars, string currentDirectory, out NativeThread firstThread) {
 			if((flags & ~SupportedCreateProcessFlags) != 0) {
 				throw new ArgumentException("Unsupported CreateProcessFlags given!");
 			}
@@ -56,7 +58,19 @@ namespace Henke37.Win32.Processes {
 				throw new ArgumentException("Unsupported StartupInfoFlags given");
 			}
 
-			return CreateProcessInternal(applicationName, commandLine, flags, startupInfo, null, currentDirectory, out firstThread);
+			return CreateProcessInternal(applicationName, commandLine, flags, startupInfo, buildEnvData(envVars), currentDirectory, out firstThread);
+		}
+
+		[SecuritySafeCritical]
+		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, IReadOnlyDictionary<string, string>? envVars, string currentDirectory, out NativeThread firstThread) {
+			if((flags & ~SupportedCreateProcessFlags) != 0) {
+				throw new ArgumentException("Unsupported CreateProcessFlags given!");
+			}
+			if((startupInfo.dwFlags & ~SupportedStartupInfoFlags) != 0) {
+				throw new ArgumentException("Unsupported StartupInfoFlags given");
+			}
+
+			return CreateProcessInternal(applicationName, commandLine, flags, startupInfo, buildEnvData(envVars), currentDirectory, out firstThread);
 		}
 
 		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoFlags flags2, ProcThreadAttributeList atts, string currentDirectory, out NativeThread firstThread) {
@@ -65,10 +79,28 @@ namespace Henke37.Win32.Processes {
 		}
 
 		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, ProcThreadAttributeList atts, string currentDirectory, out NativeThread firstThread) {
-			return CreateProcess(applicationName, commandLine, flags, startupInfo, atts, null, currentDirectory, out firstThread);
+			return CreateProcess(applicationName, commandLine, flags, startupInfo, atts, (StringDictionary?)null, currentDirectory, out firstThread);
 		}
 
 		[SecuritySafeCritical]
+		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, ProcThreadAttributeList atts, StringDictionary? envVars, string currentDirectory, out NativeThread firstThread) {
+			if((flags & ~SupportedCreateProcessFlags) != 0) {
+				throw new ArgumentException("Unsupported CreateProcessFlags given!");
+			}
+			if((startupInfo.dwFlags & ~SupportedStartupInfoFlags) != 0) {
+				throw new ArgumentException("Unsupported StartupInfoFlags given");
+			}
+			if(atts.IsDisposed) throw new ObjectDisposedException("Atts");
+
+			StartupInfoExW startupInfoEx = new StartupInfoExW(startupInfo, atts);
+
+			flags |= CreateProcessFlags.ExtendedStartupInfoPresent;
+
+			return CreateProcessInternal(applicationName, commandLine, flags, startupInfoEx, buildEnvData(envVars), currentDirectory, out firstThread);
+		}
+
+		[SecuritySafeCritical]
+		public static NativeProcess CreateProcess(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, ProcThreadAttributeList atts, IReadOnlyDictionary<string,string>? envVars, string currentDirectory, out NativeThread firstThread) {
 			if((flags & ~SupportedCreateProcessFlags) != 0) {
 				throw new ArgumentException("Unsupported CreateProcessFlags given!");
 			}
@@ -81,7 +113,7 @@ namespace Henke37.Win32.Processes {
 
 			flags |= CreateProcessFlags.ExtendedStartupInfoPresent;
 
-			return CreateProcessInternal(applicationName, commandLine, flags, startupInfoEx, null, currentDirectory, out firstThread);
+			return CreateProcessInternal(applicationName, commandLine, flags, startupInfoEx, buildEnvData(envVars), currentDirectory, out firstThread);
 		}
 
 #if NETFRAMEWORK
@@ -114,6 +146,38 @@ namespace Henke37.Win32.Processes {
 
 			firstThread = new NativeThread(new SafeThreadHandle(processInfo.hThread));
 			return new NativeProcess(new SafeProcessHandle(processInfo.hProcess));
+		}
+
+		private static char[]? buildEnvData(IReadOnlyDictionary<string, string>? envVars) {
+			if(envVars == null) return null;
+
+			var sb = new StringBuilder(32 * envVars.Count);//rough guestimate for how much capacity it needs
+			foreach(var kv in envVars) {
+				sb.Append(kv.Key);
+				sb.Append('=');
+				sb.Append(kv.Value);
+				sb.Append('\0');
+			}
+
+			sb.Append('\0');
+
+			return sb.ToString().ToCharArray();
+		}
+
+		private static char[]? buildEnvData(StringDictionary? envVars) {
+			if(envVars == null) return null;
+
+			var sb = new StringBuilder(32 * envVars.Count);//rough guestimate for how much capacity it needs
+			foreach(DictionaryEntry kv in envVars) {
+				sb.Append(kv.Key);
+				sb.Append('=');
+				sb.Append(kv.Value);
+				sb.Append('\0');
+			}
+
+			sb.Append('\0');
+
+			return sb.ToString().ToCharArray();
 		}
 
 		internal NativeProcess(SafeProcessHandle handle) {
