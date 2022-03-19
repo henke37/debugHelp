@@ -12,10 +12,15 @@ namespace Henke37.Win32.Memory {
 	[HostProtection(Unrestricted = true, ExternalProcessMgmt = true)]
 #endif
 	public sealed class LiveProcessMemoryAccessor : ProcessMemoryAccessor {
-		private NativeProcess process;
+		private SafeProcessHandle handle;
 
 		public LiveProcessMemoryAccessor(NativeProcess process) {
-			this.process = process;
+			this.handle = process.handle;
+		}
+
+		public LiveProcessMemoryAccessor(SafeProcessHandle handle) {
+			if(handle == null) throw new ArgumentNullException(nameof(handle));
+			this.handle = handle;
 		}
 
 		[SecuritySafeCritical]
@@ -25,7 +30,7 @@ namespace Henke37.Win32.Memory {
 			int readC;
 			try {
 				fixed (Byte* buffP = buff) {
-					bool success = ReadProcessMemory(process.handle, addr, buffP, size, out readC);
+					bool success = ReadProcessMemory(handle, addr, buffP, size, out readC);
 					if(!success) throw new Win32Exception();
 				}
 			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteReadException.ErrorNumber) {
@@ -40,7 +45,7 @@ namespace Henke37.Win32.Memory {
 		[SuppressUnmanagedCodeSecurity]
 		public unsafe override void ReadBytes(IntPtr addr, uint size, void* buff) {
 			try {
-				bool success = ReadProcessMemory(process.handle, addr, buff, size, out int readC);
+				bool success = ReadProcessMemory(handle, addr, buff, size, out int readC);
 				if(!success) throw new Win32Exception();
 				if(readC != size) throw new IncompleteReadException();
 			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteReadException.ErrorNumber) {
@@ -54,7 +59,7 @@ namespace Henke37.Win32.Memory {
 		public override unsafe void WriteBytes(byte[] srcBuff, IntPtr dstAddr, uint size) {
 			try {
 				fixed (byte* buffP = srcBuff) {
-					bool success = WriteProcessMemory(process.handle, (IntPtr)dstAddr, buffP, size, out var written);
+					bool success = WriteProcessMemory(handle, (IntPtr)dstAddr, buffP, size, out var written);
 					if(!success) throw new Win32Exception();
 				}
 			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteWriteException.ErrorNumber) {
@@ -67,7 +72,7 @@ namespace Henke37.Win32.Memory {
 		[SuppressUnmanagedCodeSecurity]
 		public override unsafe void WriteBytes(void* srcBuff, IntPtr dstAddr, uint size) {
 			try {
-				bool success = WriteProcessMemory(process.handle, (IntPtr)dstAddr, (byte*)srcBuff, size, out var written);
+				bool success = WriteProcessMemory(handle, (IntPtr)dstAddr, (byte*)srcBuff, size, out var written);
 				if(!success) throw new Win32Exception();
 			} catch(Win32Exception err) when(err.NativeErrorCode == IncompleteWriteException.ErrorNumber) {
 				throw new IncompleteWriteException(err);

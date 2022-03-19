@@ -1,4 +1,5 @@
 ﻿using Henke37.Win32.Clone.QueryStructs;
+using Henke37.Win32.Memory;
 using Henke37.Win32.Processes;
 using Henke37.Win32.SafeHandles;
 using Henke37.Win32.Threads;
@@ -23,10 +24,17 @@ namespace Henke37.Win32.Clone {
 			return new ProcessClone(clonedProc);
 		}
 
+		
+		public LiveProcessMemoryAccessor MemoryAccessor {
+			get => new LiveProcessMemoryAccessor(DuplicatedProcessHandle);
+		}
+
+		private SafeProcessHandle duplicatedProcessHandle;
 		internal SafeProcessHandle DuplicatedProcessHandle {
 			get {
+				if(duplicatedProcessHandle != null) return duplicatedProcessHandle;
 				QueryInformation(QueryInformationClass.VA_CLONE_INFORMATION, out VA_CLONE_INFORMATION ci);
-				return new SafeProcessHandle(ci.Handle);
+				return duplicatedProcessHandle = new SafeProcessHandle(ci.Handle);
 			}
 		}
 
