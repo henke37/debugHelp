@@ -1,4 +1,6 @@
-﻿namespace Henke37.Win32.Jobs {
+﻿using Henke37.Win32.Base;
+
+namespace Henke37.Win32.Jobs {
 	internal enum JobInformationClass {
 		AssociateCompletionPortInformation = 7,
 		BasicAccountingInformation = 1,
@@ -9,6 +11,8 @@
 		CpuRateControlInformation = 15,
 		EndOfJobTimeInformation = 6,
 		ExtendedLimitInformation = 9,
+		[Undocumented]
+		FreezeInformation = 18,
 		GroupInformation = 11,
 		GroupInformationEx = 14,
 		LimitViolationInformation = 13,
