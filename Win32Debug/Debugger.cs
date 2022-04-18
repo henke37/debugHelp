@@ -21,6 +21,13 @@ namespace Henke37.Win32.Debug {
 
 		private Debugger() { }
 
+		public bool KillAttachedProcessesOnExit {
+			set {
+				bool success = DebugSetProcessKillOnExit(value);
+				if(!success) throw new Win32Exception();
+			}
+		}
+
 		public void ContinueDebugEvent(UInt32 processId, UInt32 threadId, ContinueStatus status) {
 			bool success = ContinueDebugEventNative(processId, threadId, status);
 			if(!success) throw new Win32Exception();
@@ -92,5 +99,9 @@ namespace Henke37.Win32.Debug {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "WaitForDebugEventEx")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool WaitForDebugEventEx(out DebugEvent.Native evt, UInt32 timeout);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "DebugSetProcessKillOnExit")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool DebugSetProcessKillOnExit([MarshalAs(UnmanagedType.Bool)] bool killOnExit);
 	}
 }
