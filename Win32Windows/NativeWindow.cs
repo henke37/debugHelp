@@ -56,6 +56,12 @@ namespace Henke37.Win32.Windows {
 
 		public IntPtr Handle { get => handle; set => handle = value; }
 
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		public void Move(int x, int y, int width, int height) {
+			var success = MoveWindowNative(handle, x, y, width, height, true);
+			if(!success) throw new Win32Exception();
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		private unsafe string GetClassName() {
@@ -161,6 +167,11 @@ namespace Henke37.Win32.Windows {
 		[DllImport("User32.dll", SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool IsZoomed(IntPtr hWnd);
+
+
+		[DllImport("User32.dll", SetLastError = false, EntryPoint = "MoveWindow")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool MoveWindowNative(IntPtr hWnd, Int32 x, Int32 y, Int32 width, Int32 height, [MarshalAs(UnmanagedType.Bool)] bool repaint);
 
 
 
