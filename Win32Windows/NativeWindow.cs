@@ -5,24 +5,25 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Henke37.Win32.Windows {
-	public class NativeWindow {
-		private IntPtr Handle;
+	public class NativeWindow : IWin32Window {
+		private IntPtr handle;
 
 		internal NativeWindow(IntPtr handle) {
-			Handle = handle;
+			this.handle = handle;
 		}
 
 		public uint ThreadId {
 			get {
-				return GetWindowThreadProcessId(Handle, out _);
+				return GetWindowThreadProcessId(handle, out _);
 			}
 		}
 
 		public uint ProcessId {
 			get {
-				GetWindowThreadProcessId(Handle, out uint pid);
+				GetWindowThreadProcessId(handle, out uint pid);
 				return pid;
 			}
 		}
@@ -35,24 +36,26 @@ namespace Henke37.Win32.Windows {
 			get => GetText();
 		}
 
+
+		public IntPtr Handle { get => handle; set => handle = value; }
 		private unsafe string GetClassName() {
 			uint buffSize = 256;
 			var buff = new char[buffSize];
 			fixed(char* buffp = buff) {
-				var len = GetClassNameW(Handle, buffp, buffSize);
+				var len = GetClassNameW(handle, buffp, buffSize);
 
 				return new string(buffp, 0, (int)len);
 			}
 		}
 
 		private unsafe string GetText() {
-			var buffSize = GetWindowTextLengthW(Handle);
+			var buffSize = GetWindowTextLengthW(handle);
 			if(buffSize == 0 && Marshal.GetLastWin32Error() != 0) {
 				throw new Win32Exception();
 			}
 			var buff = new char[buffSize];
 			fixed(char* buffp=buff) {
-				var len = GetWindowTextW(Handle, buffp, buffSize);
+				var len = GetWindowTextW(handle, buffp, buffSize);
 
 				return new string(buffp,0,(int)len);
 			}
