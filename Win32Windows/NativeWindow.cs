@@ -82,6 +82,29 @@ namespace Henke37.Win32.Windows {
 			return list;
 		}
 
+		public static List<NativeWindow> FindTopWindows(string? className, string? windowName) {
+			return FindWindows(IntPtr.Zero, className, windowName);
+		}
+
+		public List<NativeWindow> FindChildWindows(string? className, string? windowName) {
+			return FindWindows(handle, className, windowName);
+		}
+
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		internal static List<NativeWindow> FindWindows(IntPtr parent, string? className, string? windowName) {
+			var list = new List<NativeWindow>();
+
+			IntPtr childWnd = IntPtr.Zero;
+			for(; ; ) {
+				childWnd = FindWindowExW(parent, childWnd, className, windowName);
+				if(childWnd == IntPtr.Zero) break;
+				list.Add(new NativeWindow(childWnd));
+			}
+
+			return list;
+		}
+
 		internal static bool windEnumCallback(IntPtr hwnd, IntPtr lParam) {
 			GCHandle gch = GCHandle.FromIntPtr(lParam);
 			var list = (List<NativeWindow>)gch.Target;
@@ -129,5 +152,11 @@ namespace Henke37.Win32.Windows {
 		[DllImport("user32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool EnumThreadWindows(uint dwThreadId, EnumWindowDelegate lpfn, IntPtr lParam);
+
+
+		[DllImport("user32.dll")]
+		static extern IntPtr FindWindowExW(IntPtr parent, IntPtr childAfter, [MarshalAs (UnmanagedType.LPWStr)] string? className, [MarshalAs(UnmanagedType.LPWStr)] string? windowName);
+		[DllImport("user32.dll", EntryPoint = "FindWindowExW")]
+		static extern IntPtr FindWindowExWAtom(IntPtr parent, IntPtr childAfter, IntPtr atom, [MarshalAs(UnmanagedType.LPWStr)] string? windowName);
 	}
 }
