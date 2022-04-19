@@ -47,6 +47,13 @@ namespace Henke37.Win32.Windows {
 			}
 		}
 
+		public bool IsMaximized {
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get {
+				return IsZoomed(handle);
+			}
+		}
+
 		public IntPtr Handle { get => handle; set => handle = value; }
 
 		[SecuritySafeCritical]
@@ -147,9 +154,13 @@ namespace Henke37.Win32.Windows {
 		[DllImport("User32.dll", SetLastError = true)]
 		static extern UInt32 GetWindowThreadProcessId(IntPtr hWnd, out UInt32 ProcessId);
 
-		[DllImport("User32.dll", SetLastError = true)]
+		[DllImport("User32.dll", SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool IsWindowVisible(IntPtr hWnd);
+
+		[DllImport("User32.dll", SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool IsZoomed(IntPtr hWnd);
 
 
 
