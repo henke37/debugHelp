@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,12 +18,14 @@ namespace Henke37.Win32.Windows {
 		}
 
 		public uint ThreadId {
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				return GetWindowThreadProcessId(handle, out _);
 			}
 		}
 
 		public uint ProcessId {
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				GetWindowThreadProcessId(handle, out uint pid);
 				return pid;
@@ -38,6 +42,9 @@ namespace Henke37.Win32.Windows {
 
 
 		public IntPtr Handle { get => handle; set => handle = value; }
+
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		private unsafe string GetClassName() {
 			uint buffSize = 256;
 			var buff = new char[buffSize];
@@ -48,6 +55,8 @@ namespace Henke37.Win32.Windows {
 			}
 		}
 
+		[SecuritySafeCritical]
+		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		private unsafe string GetText() {
 			var buffSize = GetWindowTextLengthW(handle);
 			if(buffSize == 0 && Marshal.GetLastWin32Error() != 0) {
