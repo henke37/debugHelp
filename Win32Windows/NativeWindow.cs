@@ -10,7 +10,7 @@ namespace Henke37.Win32.Windows {
 	public class NativeWindow {
 		private IntPtr Handle;
 
-		private NativeWindow(IntPtr handle) {
+		internal NativeWindow(IntPtr handle) {
 			Handle = handle;
 		}
 
@@ -58,6 +58,42 @@ namespace Henke37.Win32.Windows {
 			}
 		}
 
+		public static List<NativeWindow> GetTopWindows() {
+			var list = new List<NativeWindow>();
+
+			GCHandle gch = GCHandle.Alloc(list, GCHandleType.Normal);
+
+			EnumWindows(windEnumCallback, GCHandle.ToIntPtr(gch));
+
+			gch.Free();
+
+			return list;
+		}
+
+		internal static bool windEnumCallback(IntPtr hwnd, IntPtr lParam) {
+			GCHandle gch = GCHandle.FromIntPtr(lParam);
+			var list = (List<NativeWindow>)gch.Target;
+
+			list.Add(new NativeWindow(hwnd));
+
+			return true;
+		}
+
+		public static List<NativeWindow> GetThreadWindows(UInt32 threadId) {
+			var list = new List<NativeWindow>();
+
+			GCHandle gch = GCHandle.Alloc(list, GCHandleType.Normal);
+
+			EnumThreadWindows(threadId, windEnumCallback, GCHandle.ToIntPtr(gch));
+
+			gch.Free();
+
+			return list;
+		}
+
+
+
+
 		[DllImport("User32.dll", SetLastError = true)]
 		static extern UInt32 GetWindowTextLengthW(IntPtr hWnd);
 
@@ -69,5 +105,17 @@ namespace Henke37.Win32.Windows {
 
 		[DllImport("User32.dll", SetLastError = true)]
 		static extern UInt32 GetWindowThreadProcessId(IntPtr hWnd, out UInt32 ProcessId);
+
+
+
+		private delegate bool EnumWindowDelegate(IntPtr hwnd, IntPtr lParam);
+
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool EnumWindows(EnumWindowDelegate lpfn, IntPtr lParam);
+
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool EnumThreadWindows(uint dwThreadId, EnumWindowDelegate lpfn, IntPtr lParam);
 	}
 }
