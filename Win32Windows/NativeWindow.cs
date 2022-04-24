@@ -98,6 +98,12 @@ namespace Henke37.Win32.Windows {
 			var success = SetPropWAtom(Handle, atom, handle);
 			if(!success) throw new Win32Exception();
 		}
+		public IntPtr RemoveProp(string name) {
+			return RemovePropW(Handle, name);
+		}
+		public IntPtr RemoveProp(IntPtr atom) {
+			return RemovePropWAtom(Handle, atom);
+		}
 
 		private static bool windPropEnumCallback(IntPtr hwnd, string name, IntPtr handle, IntPtr lParam) {
 			GCHandle gch = GCHandle.FromIntPtr(lParam);
@@ -259,5 +265,10 @@ namespace Henke37.Win32.Windows {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[DllImport("user32.dll", EntryPoint = "SetPropW", SetLastError = true)]
 		static extern bool SetPropWAtom(IntPtr hwnd, IntPtr atom, IntPtr handle);
+
+		[DllImport("user32.dll")]
+		static extern IntPtr RemovePropW(IntPtr hwnd, [MarshalAs(UnmanagedType.LPWStr)] string name);
+		[DllImport("user32.dll", EntryPoint = "RemovePropW")]
+		static extern IntPtr RemovePropWAtom(IntPtr hwnd, IntPtr atom);
 	}
 }
