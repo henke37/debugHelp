@@ -62,6 +62,17 @@ namespace Henke37.Win32.Windows {
 			if(!success) throw new Win32Exception();
 		}
 
+		public NativeWindow GetParent() {
+			return new NativeWindow(GetAncestor(Handle, 1));
+		}
+		public NativeWindow GetRoot() {
+			return new NativeWindow(GetAncestor(Handle, 2));
+		}
+		public NativeWindow GetRootOwner() {
+			return new NativeWindow(GetAncestor(Handle, 3));
+		}
+
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		private unsafe string GetClassName() {
@@ -190,5 +201,9 @@ namespace Henke37.Win32.Windows {
 		static extern IntPtr FindWindowExW(IntPtr parent, IntPtr childAfter, [MarshalAs (UnmanagedType.LPWStr)] string? className, [MarshalAs(UnmanagedType.LPWStr)] string? windowName);
 		[DllImport("user32.dll", EntryPoint = "FindWindowExW")]
 		static extern IntPtr FindWindowExWAtom(IntPtr parent, IntPtr childAfter, IntPtr atom, [MarshalAs(UnmanagedType.LPWStr)] string? windowName);
+
+
+		[DllImport("user32.dll")]
+		static extern IntPtr GetAncestor(IntPtr parent, UInt32 flags);
 	}
 }
