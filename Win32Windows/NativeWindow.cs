@@ -84,6 +84,21 @@ namespace Henke37.Win32.Windows {
 			return props;
 		}
 
+		public IntPtr GetProp(string name) {
+			return GetPropW(Handle, name);
+		}
+		public IntPtr GetProp(IntPtr atom) {
+			return GetPropWAtom(Handle, atom);
+		}
+		public void SetProp(string name, IntPtr handle) {
+			var success = SetPropW(Handle, name, handle);
+			if(!success) throw new Win32Exception();
+		}
+		public void SetProp(IntPtr atom, IntPtr handle) {
+			var success = SetPropWAtom(Handle, atom, handle);
+			if(!success) throw new Win32Exception();
+		}
+
 		private static bool windPropEnumCallback(IntPtr hwnd, string name, IntPtr handle, IntPtr lParam) {
 			GCHandle gch = GCHandle.FromIntPtr(lParam);
 			var list = (Dictionary<string, IntPtr>)gch.Target;
@@ -232,5 +247,17 @@ namespace Henke37.Win32.Windows {
 		[DllImport("user32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool EnumPropsExW(IntPtr hwnd, EnumPropDelegate lpfn, IntPtr lParam);
+
+		[DllImport("user32.dll")]
+		static extern IntPtr GetPropW(IntPtr hwnd, [MarshalAs(UnmanagedType.LPWStr)] string name);
+		[DllImport("user32.dll", EntryPoint = "GetPropW")]
+		static extern IntPtr GetPropWAtom(IntPtr hwnd, IntPtr atom);
+
+		[DllImport("user32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool SetPropW(IntPtr hwnd, [MarshalAs(UnmanagedType.LPWStr)] string name, IntPtr handle);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[DllImport("user32.dll", EntryPoint = "SetPropW", SetLastError = true)]
+		static extern bool SetPropWAtom(IntPtr hwnd, IntPtr atom, IntPtr handle);
 	}
 }
