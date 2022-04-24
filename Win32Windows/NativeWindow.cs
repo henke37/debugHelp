@@ -72,6 +72,26 @@ namespace Henke37.Win32.Windows {
 			return new NativeWindow(GetAncestor(Handle, 3));
 		}
 
+		public List<WindowProp> GetWindowProps() {
+			var props = new List<WindowProp>();
+
+			GCHandle gch = GCHandle.Alloc(props, GCHandleType.Normal);
+
+			EnumPropsExW(Handle, windPropEnumCallback, GCHandle.ToIntPtr(gch));
+
+			gch.Free();
+
+			return props;
+		}
+
+		private static bool windPropEnumCallback(IntPtr hwnd, string name, IntPtr handle, IntPtr lParam) {
+			GCHandle gch = GCHandle.FromIntPtr(lParam);
+			var list = (List<WindowProp>)gch.Target;
+
+			list.Add(new WindowProp(name, handle));
+
+			return true;
+		}
 
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -205,5 +225,12 @@ namespace Henke37.Win32.Windows {
 
 		[DllImport("user32.dll")]
 		static extern IntPtr GetAncestor(IntPtr parent, UInt32 flags);
+
+
+		private delegate bool EnumPropDelegate(IntPtr hwnd, [MarshalAs(UnmanagedType.LPWStr)] string name, IntPtr handle, IntPtr lParam);
+
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool EnumPropsExW(IntPtr hwnd, EnumPropDelegate lpfn, IntPtr lParam);
 	}
 }
