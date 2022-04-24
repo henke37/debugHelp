@@ -62,6 +62,13 @@ namespace Henke37.Win32.Windows {
 			}
 		}
 
+		public bool IsUnicode {
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get {
+				return IsWindowUnicode(handle);
+			}
+		}
+
 		public IntPtr Handle { get => handle; set => handle = value; }
 
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -238,6 +245,10 @@ namespace Henke37.Win32.Windows {
 		[DllImport("User32.dll", SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool IsIconic(IntPtr hWnd);
+
+		[DllImport("User32.dll", SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool IsWindowUnicode(IntPtr hWnd);
 
 
 		[DllImport("User32.dll", SetLastError = false, EntryPoint = "MoveWindow")]
