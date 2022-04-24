@@ -72,8 +72,8 @@ namespace Henke37.Win32.Windows {
 			return new NativeWindow(GetAncestor(Handle, 3));
 		}
 
-		public List<WindowProp> GetWindowProps() {
-			var props = new List<WindowProp>();
+		public Dictionary<string, IntPtr> GetWindowProps() {
+			var props = new Dictionary<string, IntPtr>();
 
 			GCHandle gch = GCHandle.Alloc(props, GCHandleType.Normal);
 
@@ -86,9 +86,9 @@ namespace Henke37.Win32.Windows {
 
 		private static bool windPropEnumCallback(IntPtr hwnd, string name, IntPtr handle, IntPtr lParam) {
 			GCHandle gch = GCHandle.FromIntPtr(lParam);
-			var list = (List<WindowProp>)gch.Target;
+			var list = (Dictionary<string, IntPtr>)gch.Target;
 
-			list.Add(new WindowProp(name, handle));
+			list.Add(name, handle);
 
 			return true;
 		}
