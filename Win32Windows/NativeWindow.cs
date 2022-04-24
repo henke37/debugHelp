@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -197,7 +198,14 @@ namespace Henke37.Win32.Windows {
 			return list;
 		}
 
-
+		public static NativeWindow? WindowFromPoint(System.Drawing.Point p1) {
+			PInvoke.POINT p2;
+			p2.x = p1.X;
+			p2.y = p1.Y;
+			IntPtr hwnd=WindowFromPointNative(p2);
+			if(hwnd == IntPtr.Zero) return null;
+			return new NativeWindow(hwnd);
+		}
 
 
 		[DllImport("User32.dll", SetLastError = true)]
@@ -270,5 +278,8 @@ namespace Henke37.Win32.Windows {
 		static extern IntPtr RemovePropW(IntPtr hwnd, [MarshalAs(UnmanagedType.LPWStr)] string name);
 		[DllImport("user32.dll", EntryPoint = "RemovePropW")]
 		static extern IntPtr RemovePropWAtom(IntPtr hwnd, IntPtr atom);
+
+		[DllImport("user32.dll", EntryPoint = "WindowFromPoint")]
+		static extern IntPtr WindowFromPointNative(PInvoke.POINT point);
 	}
 }
