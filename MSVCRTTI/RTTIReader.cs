@@ -45,8 +45,8 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			CompleteObjectLocator locator = new CompleteObjectLocator(
 				GetTypeDescriptor(memoryStruct.pTypeDescriptor),
 				GetClassHierarchyDescriptor(memoryStruct.pClassDescriptor),
-				memoryStruct.ConstructorDescriptorOffset,
-				memoryStruct.ObjectRootOffset
+				memoryStruct.ObjectRootOffset,
+				memoryStruct.ConstructorDescriptorOffset
 			);
 
 			return locator;
@@ -126,7 +126,7 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			var baseClass = col.ClassHierarchyDescriptor[mangledBaseClassName];
 			if(baseClass == null) throw new InvalidCastException(string.Format(Resources.BadDynamicCast_NoSuchBase, mangledBaseClassName));
 
-			IntPtr completeObjAddr = col.LocateCompleteObject(objAddr);
+			IntPtr completeObjAddr = col.LocateCompleteObject(objAddr, processMemoryReader);
 			return baseClass.DisplacementData.LocateBaseObject(completeObjAddr, processMemoryReader);
 		}
 
@@ -135,7 +135,7 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			var baseClass = col.ClassHierarchyDescriptor[mangledBaseClassName];
 			if(baseClass == null) { resAddr = IntPtr.Zero; return false; }
 
-			IntPtr completeObjAddr = col.LocateCompleteObject(objAddr);
+			IntPtr completeObjAddr = col.LocateCompleteObject(objAddr, processMemoryReader);
 			resAddr=baseClass.DisplacementData.LocateBaseObject(completeObjAddr, processMemoryReader);
 			return true;
 		}

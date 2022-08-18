@@ -25,8 +25,15 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			public IntPtr pClassDescriptor;
 		}
 
-		public IntPtr LocateCompleteObject(IntPtr objAddr) {
-			return objAddr - ObjectRootOffset;
+		public IntPtr LocateCompleteObject(IntPtr objAddr, ProcessMemoryReader processMemoryReader) {
+			var completeAddr = objAddr - ObjectRootOffset;
+
+			if(ConstructorDescriptorOffset !=0 ) {
+				int offsetVal = processMemoryReader.ReadInt32(objAddr - ConstructorDescriptorOffset);
+				completeAddr -= offsetVal;
+			}
+
+			return completeAddr;
 		}
 	}
 }
