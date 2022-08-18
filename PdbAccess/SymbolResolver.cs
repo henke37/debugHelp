@@ -28,6 +28,11 @@ namespace Henke37.DebugHelp.PdbAccess {
 			return FindSymbol(SymTagEnum.Data, symbolName);
 		}
 
+		public IntPtr GlobalAddress(string symbolName) {
+			var symb = FindSymbol(SymTagEnum.Data, symbolName);
+			return (IntPtr)symb.virtualAddress;
+		}
+
 		public IDiaSymbol FindClass(string className) {
 			return FindSymbol(SymTagEnum.UDT, className);
 		}
@@ -52,6 +57,11 @@ namespace Henke37.DebugHelp.PdbAccess {
 		public int FieldOffset(IDiaSymbol classSymb, string fieldName) {
 			IDiaSymbol field = FindField(classSymb, fieldName);
 			return field.offset;
+		}
+
+		public IntPtr StaticFieldAddress(IDiaSymbol classSymb, string fieldName) {
+			IDiaSymbol field = FindField(classSymb, fieldName);
+			return (IntPtr)field.virtualAddress;
 		}
 
 		public int FieldSize(IDiaSymbol classSymb, string fieldName) {
