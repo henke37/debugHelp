@@ -56,9 +56,7 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 		private ClassHierarchyDescriptor GetClassHierarchyDescriptor(IntPtr pClassDescriptor) {
 			ClassHierarchyDescriptor desc;
 			if(classDescriptorMap.TryGetValue(pClassDescriptor, out desc)) return desc;
-			desc = ReadClassHierarchyDescriptor(pClassDescriptor);
-			classDescriptorMap[pClassDescriptor] = desc;
-			return desc;
+			return ReadClassHierarchyDescriptor(pClassDescriptor);
 		}
 
 		private ClassHierarchyDescriptor ReadClassHierarchyDescriptor(IntPtr pClassDescriptor) {
@@ -72,7 +70,9 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 				memoryStruct.Flags
 			);
 
-			IntPtr[] baseDescriptorPointers =processMemoryReader.ReadIntPtrArray(memoryStruct.pBaseClassArray, memoryStruct.numBaseClasses);
+			classDescriptorMap[pClassDescriptor] = desc;
+
+			IntPtr[] baseDescriptorPointers = processMemoryReader.ReadIntPtrArray(memoryStruct.pBaseClassArray, memoryStruct.numBaseClasses);
 
 			for(uint baseClassIndex = 0; baseClassIndex < memoryStruct.numBaseClasses; ++baseClassIndex) {
 				desc.BaseClasses.Add(ReadBaseClassDescriptor(baseDescriptorPointers[baseClassIndex]));
@@ -85,10 +85,17 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			BaseClassDescriptor.MemoryStruct memoryStruct = new BaseClassDescriptor.MemoryStruct();
 			processMemoryReader.ReadStruct(baseClassDescriptorPointer, ref memoryStruct);
 
+			ClassHierarchyDescriptor hierarchy = null;
+			if((memoryStruct.Flags & BaseClassDescriptor.BCDFlags.HasPCHD) != 0) {
+				hierarchy = GetClassHierarchyDescriptor(memoryStruct.pClassDescriptor);
+			}
+
 			BaseClassDescriptor desc = new BaseClassDescriptor(
 				GetTypeDescriptor(memoryStruct.pTypeDescriptor),
 				memoryStruct.NumContainedBases,
-				memoryStruct.DisplacementData
+				memoryStruct.DisplacementData,
+				memoryStruct.Flags,
+				hierarchy
 			);
 			return desc;
 		}
