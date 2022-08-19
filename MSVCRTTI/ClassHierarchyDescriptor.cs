@@ -23,7 +23,8 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 		[Flags]
 		public enum ClassHierarchyFlags : uint {
 			MultipleInhertience = 1,
-			VirtualInhertience = 2
+			VirtualInhertience = 2,
+			Ambigous = 4
 		}
 	}
 }
