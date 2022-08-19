@@ -38,13 +38,20 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 #pragma warning restore CS0649
 
 			public IntPtr LocateBaseObject(IntPtr completeObjectAddr, ProcessMemoryReader reader) {
-				completeObjectAddr += mdisp;
-				if(pdisp != -1) {
-					IntPtr vtbl = completeObjectAddr + pdisp;
-					completeObjectAddr += reader.ReadInt32(vtbl + vdisp);
-				}
-				return completeObjectAddr;
+				int offset = OffsetToCompleteObject(completeObjectAddr, reader);
+				return completeObjectAddr + offset;
 			}
+
+			public int OffsetToCompleteObject(IntPtr completeObjectAddr, ProcessMemoryReader reader) { 
+				int offset = mdisp;
+				if(pdisp != -1) {
+					IntPtr vtbl = completeObjectAddr + offset + pdisp;
+					offset += reader.ReadInt32(vtbl + vdisp);
+				}
+				return offset;
+			}
+
+
 		}
 
 		[Flags]

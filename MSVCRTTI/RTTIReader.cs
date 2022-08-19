@@ -153,5 +153,13 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			}
 			return found;
 		}
+
+		private BaseClassDescriptor? GetBaseClass(CompleteObjectLocator col, int targetOffset, IntPtr completeObjAddr) {
+			foreach(var baseClass in col.ClassHierarchyDescriptor.BaseClasses) {
+				var candidateOffset = baseClass.DisplacementData.OffsetToCompleteObject(completeObjAddr, processMemoryReader);
+				if(candidateOffset == targetOffset) return baseClass;
+			}
+			return null;
+		}
 	}
 }
