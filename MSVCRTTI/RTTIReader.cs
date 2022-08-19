@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 
 namespace Henke37.DebugHelp.RTTI.MSVC {
 	public class RTTIReader {
@@ -111,11 +112,6 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			return col.TypeDescriptor.MangledName;
 		}
 
-		public BaseClassDescriptor? GetBaseClassDescriptorForObject(IntPtr objAddr, string mangledName) {
-			var col = readObjPtr(objAddr);
-			return col.ClassHierarchyDescriptor[mangledName];
-		}
-
 		public ClassHierarchyDescriptor GetMangledHeirarchyFromObjPtr(IntPtr objAddr) {
 			var col = readObjPtr(objAddr);
 			return col.ClassHierarchyDescriptor;
@@ -123,7 +119,7 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 
 		public IntPtr DynamicCast(IntPtr objAddr, string mangledBaseClassName) {
 			var col = readObjPtr(objAddr);
-			var baseClass = col.ClassHierarchyDescriptor[mangledBaseClassName];
+			var baseClass = GetBaseClass(col, mangledBaseClassName);
 			if(baseClass == null) throw new InvalidCastException(string.Format(Resources.BadDynamicCast_NoSuchBase, mangledBaseClassName));
 
 			IntPtr completeObjAddr = col.LocateCompleteObject(objAddr, processMemoryReader);
@@ -132,7 +128,7 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 
 		public bool TryDynamicCast(IntPtr objAddr, string mangledBaseClassName, out IntPtr resAddr) {
 			var col = readObjPtr(objAddr);
-			var baseClass = col.ClassHierarchyDescriptor[mangledBaseClassName];
+			var baseClass = GetBaseClass(col, mangledBaseClassName);
 			if(baseClass == null) { resAddr = IntPtr.Zero; return false; }
 
 			IntPtr completeObjAddr = col.LocateCompleteObject(objAddr, processMemoryReader);
@@ -140,9 +136,15 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			return true;
 		}
 
-		public bool HasBaseClass(IntPtr objAddr, string mangledBaseClassName) {
-			var col = readObjPtr(objAddr);
-			return null != col.ClassHierarchyDescriptor[mangledBaseClassName];
+		private BaseClassDescriptor? GetBaseClass(CompleteObjectLocator col, string mangledName) {
+			BaseClassDescriptor? found = null;
+			foreach(var baseClass in col.ClassHierarchyDescriptor.BaseClasses) {
+				if(baseClass.TypeDescriptor.MangledName == mangledName) {
+					if(found != null) throw new AmbiguousMatchException("Base class is ambigious!");
+					found = baseClass;
+				}
+			}
+			return found;
 		}
 	}
 }
