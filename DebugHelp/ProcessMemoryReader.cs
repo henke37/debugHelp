@@ -114,6 +114,24 @@ namespace Henke37.DebugHelp {
 			return (ushort)(scratchBuff[0] | (scratchBuff[1] << 8));
 		}
 
+		[SecuritySafeCritical]
+		public unsafe float ReadSingle(IntPtr addr) {
+			ReadBytes(addr, 4, scratchBuff);
+
+			fixed(byte* sbPtr=scratchBuff) {
+				return *((float*)sbPtr);
+			}
+		}
+
+		[SecuritySafeCritical]
+		public unsafe double ReadDouble(IntPtr addr) {
+			ReadBytes(addr, 8, scratchBuff);
+
+			fixed(byte* sbPtr = scratchBuff) {
+				return *((double*)sbPtr);
+			}
+		}
+
 		public short[] ReadInt16Array(IntPtr addr, uint count) {
 			Int16[] arr = new short[count];
 			ReadInt16Array(addr, count, arr);
