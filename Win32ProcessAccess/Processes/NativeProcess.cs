@@ -568,6 +568,42 @@ namespace Henke37.Win32.Processes {
 			if(!success) throw new Win32Exception();
 		}
 
+		private unsafe IntPtr DuplicateHandleFrom(IntPtr sourceHandle, uint desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+			IntPtr destHandle=new IntPtr();
+			bool success=SafeKernelObjHandle.DuplicateHandle(this.handle, sourceHandle, SafeProcessHandle.CurrentProcess, new IntPtr(&destHandle), desiredAccess, inherit, options);
+			if(!success) throw new Win32Exception();
+			return destHandle;
+		}
+
+		internal SafeFileObjectHandle DuplicateFileHandleFrom(IntPtr sourceHandle, FileObjectAccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+			return new SafeFileObjectHandle(DuplicateHandleFrom(sourceHandle, (uint)desiredAccess, inherit, options));
+		}
+
+		internal SafeProcessHandle DuplicateProcessHandleFrom(IntPtr sourceHandle, ProcessAccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+			return new SafeProcessHandle(DuplicateHandleFrom(sourceHandle, (uint)desiredAccess, inherit, options));
+		}
+
+		internal SafeThreadHandle DuplicateThreadHandleFrom(IntPtr sourceHandle, ThreadAcccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+			return new SafeThreadHandle(DuplicateHandleFrom(sourceHandle, (uint)desiredAccess, inherit, options));
+		}
+
+		private void DuplicateHandleInto(IntPtr sourceHandle, IntPtr destinationAddr, uint desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+			bool success = SafeKernelObjHandle.DuplicateHandle(SafeProcessHandle.CurrentProcess, sourceHandle, handle, destinationAddr, desiredAccess, inherit, options);
+			if(!success) throw new Win32Exception();
+		}
+
+		internal void DuplicateHandleInto(SafeFileObjectHandle sourceHandle, IntPtr destinationAddr, FileObjectAccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+			DuplicateHandleInto(sourceHandle.DangerousGetHandle(), destinationAddr, (uint)desiredAccess, inherit, options);
+		}
+
+		internal void DuplicateHandleInto(SafeProcessHandle sourceHandle, IntPtr destinationAddr, ProcessAccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+			DuplicateHandleInto(sourceHandle.DangerousGetHandle(), destinationAddr, (uint)desiredAccess, inherit, options);
+		}
+
+		internal void DuplicateHandleInto(SafeThreadHandle sourceHandle, IntPtr destinationAddr, ThreadAcccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+			DuplicateHandleInto(sourceHandle.DangerousGetHandle(), destinationAddr, (uint)desiredAccess, inherit, options);
+		}
+
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			bool success = TerminateProcess(handle, exitCode);
