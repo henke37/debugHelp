@@ -13,6 +13,7 @@ The projects (as indicated by the folder names) have separate licenses:
 * Win32ProcessAccess: MIT License
 * Win32RestartManager: MIT License
 * Win32WaitChain: MIT License
+* Win32Window: MIT License
 
 * BatteryTest: Public domain
 * CdControl: Public domain
@@ -22,6 +23,7 @@ The projects (as indicated by the folder names) have separate licenses:
 * StackDumper: Public domain
 * TokenTest: Public domain
 * UnloadedModuleTest: Public domain
+* WindowTest: Public domain
 
 
 Find the full license texts at the following urls:
