@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Henke37.Win32.Files {
 	public class NativeFileObject : IDisposable {
@@ -20,6 +21,18 @@ namespace Henke37.Win32.Files {
 
 		public void Dispose() => handle.Dispose();
 		public void Close() => handle.Close();
+
+		public string GetFinalPath(GetFinalPathFlags flags) {
+			StringBuilder sb = new StringBuilder();
+			UInt32 neededBuff=16;
+			do {
+				sb.Capacity = (int)neededBuff+1;
+				neededBuff = GetFinalPathNameByHandleW(handle, sb, (uint)sb.Capacity, (UInt32)flags);
+				if(neededBuff == 0) throw new Win32Exception();
+			} while(neededBuff > sb.Capacity);
+
+			return sb.ToString();
+		}
 
 		public FileObjectType FileType {
 			get {
@@ -125,5 +138,19 @@ namespace Henke37.Win32.Files {
 		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "UnlockFile")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool UnlockFileNative(SafeFileObjectHandle handle, UInt32 offsetLow, UInt32 offsetHigh, UInt32 sizeLow, UInt32 sizeHigh);
+
+
+		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		internal static extern UInt32 GetFinalPathNameByHandleW(SafeFileObjectHandle handle, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder buff, UInt32 buffLen, UInt32 flags);
+
+		[Flags]
+		public enum GetFinalPathFlags : UInt32 {
+			Normalized = 0,
+			Opened = 8,
+			VolumeNameDos = 0,
+			VolumeNameGUID = 1,
+			VolumeNameNT = 2,
+			VolumeNameNone = 4
+		}
 	}
 }
