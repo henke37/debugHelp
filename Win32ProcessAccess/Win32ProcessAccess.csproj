@@ -40,7 +40,7 @@
   <ItemGroup>
     <PackageReference Include="PInvoke.Kernel32" Version="0.5.184" />
     <PackageReference Include="PInvoke.Windows.Core" Version="0.5.184" />
-    <PackageReference Include="System.Security.Principal" Version="4.3.0" />
+    <PackageReference Include="System.Security.Principal.Windows" />
   </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\DebugHelp\DebugHelp.csproj">
@@ -48,5 +48,8 @@
 			<Name>DebugHelp</Name>
 		</ProjectReference>
 		<ProjectReference Include="..\Win32Base\Win32Base.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="System.Security" />
 	</ItemGroup>
 </Project>

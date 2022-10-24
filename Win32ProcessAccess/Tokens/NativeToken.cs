@@ -48,7 +48,9 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
+#if NETFRAMEWORK
 		[HostProtection(MayLeakOnAbort = true)]
+#endif
 		public NativeToken GetLinkedToken() {
 			GetTokenInformation(TokenInformationClass.LinkedToken, out IntPtr newHandle);
 			return new NativeToken(new SafeTokenHandle(newHandle));
