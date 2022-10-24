@@ -5,7 +5,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Stackwalker</RootNamespace>
     <AssemblyName>Stackwalker</AssemblyName>
-	<TargetFrameworks>net461;netstandard20</TargetFrameworks>
+	  <TargetFrameworks>net462;netstandard20</TargetFrameworks>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <PlatformTarget>x86</PlatformTarget>

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<ProjectGuid>{F95563D3-569B-4D59-BD8B-C9E69CD62FB7}</ProjectGuid>
-		<TargetFrameworks>net461;netstandard20</TargetFrameworks>
+		<TargetFrameworks>net462;netstandard20</TargetFrameworks>
 		<FileAlignment>512</FileAlignment>
 		<Deterministic>true</Deterministic>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>

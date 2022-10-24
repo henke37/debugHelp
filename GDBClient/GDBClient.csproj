@@ -4,7 +4,7 @@
 		<OutputType>Library</OutputType>
 		<RootNamespace>Henke37.DebugHelp.Gdb</RootNamespace>
 		<AssemblyName>GDBClient</AssemblyName>
-		<TargetFrameworks>net461;netstandard20</TargetFrameworks>
+		<TargetFrameworks>net462;netstandard20</TargetFrameworks>
 		<FileAlignment>512</FileAlignment>
 		<Deterministic>true</Deterministic>
 		<PackageId>Henke37.DebugHelp.Gdb</PackageId>

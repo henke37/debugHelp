@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net461;netstandard20</TargetFrameworks>
+		<TargetFrameworks>net462;netstandard20</TargetFrameworks>
 		<Authors>Henke37</Authors>
 		<PackageId>Henke37.DebugHelp.PdbAccess</PackageId>
 		<Version>2.0.0-alpha</Version>

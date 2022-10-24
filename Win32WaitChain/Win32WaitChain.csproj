@@ -5,7 +5,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Henke37.Win32.WaitChain</RootNamespace>
     <AssemblyName>Henke37.Win32.WaitChain</AssemblyName>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks>net462;netstandard20</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Authors>Henke37</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard20</TargetFrameworks>
+    <TargetFrameworks>net462;netstandard20</TargetFrameworks>
     <AssemblyName>Henke37.Win32.DeviceEnum</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Authors>Henke37</Authors>
@@ -12,7 +12,7 @@
     <RepositoryUrl>https://github.com/henke37/debugHelp</RepositoryUrl>
     <Platforms>x64;x86</Platforms>
     <RootNamespace>Henke37.Win32.DeviceEnum</RootNamespace>
-	<LangVersion>8.0</LangVersion>
+	  <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <Version>2.0.0</Version>
   </PropertyGroup>
