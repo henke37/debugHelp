@@ -34,6 +34,8 @@
 			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.listIcons = new System.Windows.Forms.ImageList(this.components);
 			this.getCdTExt = new System.Windows.Forms.Button();
+			this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.AlbumTitle = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// load_btn
@@ -71,7 +73,8 @@
 			this.track_lst.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
-            this.columnHeader3});
+            this.columnHeader3,
+            this.columnHeader4});
 			this.track_lst.Enabled = false;
 			this.track_lst.HideSelection = false;
 			this.track_lst.Location = new System.Drawing.Point(12, 42);
@@ -111,11 +114,26 @@
 			this.getCdTExt.UseVisualStyleBackColor = true;
 			this.getCdTExt.Click += new System.EventHandler(this.getCdTExt_Click);
 			// 
+			// columnHeader4
+			// 
+			this.columnHeader4.Text = "Title";
+			this.columnHeader4.Width = 390;
+			// 
+			// AlbumTitle
+			// 
+			this.AlbumTitle.AutoSize = true;
+			this.AlbumTitle.Location = new System.Drawing.Point(338, 12);
+			this.AlbumTitle.Name = "AlbumTitle";
+			this.AlbumTitle.Size = new System.Drawing.Size(85, 13);
+			this.AlbumTitle.TabIndex = 5;
+			this.AlbumTitle.Text = "Album Title Here";
+			// 
 			// DriverForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(599, 450);
+			this.Controls.Add(this.AlbumTitle);
 			this.Controls.Add(this.getCdTExt);
 			this.Controls.Add(this.track_lst);
 			this.Controls.Add(this.GetTOC_btn);
@@ -124,6 +142,7 @@
 			this.Name = "DriverForm";
 			this.Text = "Cd Test";
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -138,6 +157,8 @@
 		private System.Windows.Forms.ColumnHeader columnHeader3;
 		private System.Windows.Forms.ImageList listIcons;
 		private System.Windows.Forms.Button getCdTExt;
+		private System.Windows.Forms.ColumnHeader columnHeader4;
+		private System.Windows.Forms.Label AlbumTitle;
 	}
 }
 
