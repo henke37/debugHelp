@@ -69,16 +69,14 @@ namespace Henke37.Win32.CdAccess {
 
 	public class TocFullDataBlock {
 		public byte SessionNumber;
-		public byte TrackNumber;
 		public TrackAddr Addr;
 		public TrackCtrl Ctrl;
 		public byte Point;
 		public TrackTime ATime;
 		public TrackTime StartPosition;
 
-		public TocFullDataBlock(byte sessionNumber, byte CtrlAddr, byte trackNumber, byte point, TrackTime aTime, TrackTime startPosition) {
+		public TocFullDataBlock(byte sessionNumber, byte CtrlAddr, byte point, TrackTime aTime, TrackTime startPosition) {
 			SessionNumber = sessionNumber;
-			TrackNumber = trackNumber;
 			Point = point;
 			ATime = aTime;
 			StartPosition = startPosition;
@@ -104,7 +102,7 @@ namespace Henke37.Win32.CdAccess {
 		internal struct Native {
 			internal byte SessionNumber;
 			internal byte CtrlAddr;
-			internal byte TrackNumber;
+			internal byte Reserved;
 			internal byte Point;
 			internal byte Minutes;
 			internal byte Seconds;
@@ -118,7 +116,6 @@ namespace Henke37.Win32.CdAccess {
 			public TocFullDataBlock AsManaged() {
 				return new TocFullDataBlock(SessionNumber,
 					CtrlAddr,
-					TrackNumber,
 					Point,
 					new TrackTime() {
 						Minutes = Minutes,

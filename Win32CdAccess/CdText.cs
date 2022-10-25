@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Henke37.Win32.CdAccess {
 
@@ -16,32 +17,35 @@ namespace Henke37.Win32.CdAccess {
 		internal static CDText FromBlocks(List<CdTextDataBlock> blocks) {
 			var cdText = new CDText();
 
-			StringBuilder sb=new StringBuilder();
+			var textBuff=new List<char>();
 
-			int prevBlockTrackNr = blocks[0].TrackNr;
-			CdTextBlockType prevBlockType = blocks[0].Type;
-			int prevGroup = blocks[0].BlockNumber;
-			sb.Append(blocks[0].Text);
+			textBuff.AddRange(blocks[0].Text);
+			CdTextBlockType prevType = blocks[0].Type;
+			int prevTrackNr = blocks[0].TrackNr;
 
 			for(int blockIndex=1;blockIndex<blocks.Count;++blockIndex) {
 				var block = blocks[blockIndex];
-				sb.Append(block.Text);
 
-				if(block.CharacterPosition!=15) {
-					//need to use lagged appending because of continuation
-					var endPos = sb.Length - block.CharacterPosition;
-					var prevBlockString=sb.ToString(0, endPos);
-					sb.Remove(0, endPos);
+				var prevBuffSize = textBuff.Count;
+				textBuff.AddRange(block.Text);
 
-					cdText.infos.Add(new CdTextInfo(prevBlockType, prevBlockTrackNr, prevGroup, prevBlockString));
+				if(block.Type != prevType || block.TrackNr != prevTrackNr) {
 
-					prevBlockTrackNr = block.TrackNr;
-					prevBlockType = block.Type;
-					prevGroup = block.BlockNumber;
+					int endPos = prevBuffSize - block.CharacterPosition;
+
+					string txt=new string(textBuff.GetRange(0, endPos).ToArray());
+					textBuff.RemoveRange(0, endPos);
+
+					cdText.infos.Add(new CdTextInfo(prevType, prevTrackNr, txt));
 				}
+
+				prevType = block.Type;
+				prevTrackNr = block.TrackNr;
 			}
-			if(sb.Length>0) {
-				cdText.infos.Add(new CdTextInfo(prevBlockType, prevBlockTrackNr, prevGroup, sb.ToString()));
+
+			if(textBuff.Count>0) {
+				var txt= new string(textBuff.ToArray());
+				cdText.infos.Add(new CdTextInfo(prevType, prevTrackNr, txt));
 			}
 
 			return cdText;
@@ -53,10 +57,37 @@ namespace Henke37.Win32.CdAccess {
 		public int TrackNr;
 		public string Text;
 
-		public CdTextInfo(CdTextBlockType type, int trackNr, int group, string text) {
+		public CdTextInfo(CdTextBlockType type, int trackNr, string text) {
 			this.Type = type;
 			this.TrackNr = trackNr;
 			this.Text = text;
+		}
+
+		public override string ToString() {
+			switch(Type) {
+				case CdTextBlockType.AlbumNameOrTrackTitle:
+					if(TrackNr == 0) return $"Album: {Text}";
+					return $"{TrackNr} {Text}";
+
+				case CdTextBlockType.Performer:
+					return $"{TrackNr} Performer: {Text}";
+				case CdTextBlockType.Composer:
+					return $"{TrackNr} Composer: {Text}";
+				case CdTextBlockType.Arranger:
+					return $"{TrackNr} Aranger: {Text}";
+				case CdTextBlockType.Songwriter:
+					return $"{TrackNr} Songwriter: {Text}";
+				case CdTextBlockType.Message:
+					return $"{TrackNr} MSG: {Text}";
+
+				case CdTextBlockType.Genre:
+					return $"{TrackNr} Genre";
+				case CdTextBlockType.SizeInfo:
+					return $"{TrackNr} Size";
+
+				default:
+					return $"{TrackNr} {Type} {Text}";
+			}
 		}
 	}
 
@@ -102,6 +133,10 @@ namespace Henke37.Win32.CdAccess {
 				return block;
 			}
 		}
+
+		public override string ToString() {
+			return $"{TrackNr} {Type} -{CharacterPosition} {Text}";
+		}
 	}
 
 	public enum CdTextBlockType : byte {
@@ -110,7 +145,7 @@ namespace Henke37.Win32.CdAccess {
 		Songwriter = 0x82,
 		Composer = 0x83,
 		Arranger = 0x84,
-		Messages = 0x85,
+		Message = 0x85,
 		DiscID = 0x86,
 		Genre = 0x87,
 		TocInfo = 0x88,

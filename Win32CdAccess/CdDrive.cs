@@ -135,10 +135,14 @@ namespace Henke37.Win32.CdAccess {
 			return blocks;
 		}
 
-		public CDText GetCdText() {
-			var blocks = GetCdTextBlocks();
+		public CDText? GetCdText(int session=1) {
+			try {
+				var blocks = GetCdTextBlocks(session);
 
-			return CDText.FromBlocks(blocks);
+				return CDText.FromBlocks(blocks);
+			} catch(Win32Exception err) when ((uint)err.HResult==0x80004005) {
+				return null;
+			}
 		}
 
 		public unsafe string? GetMediaCatalogNumber() {
