@@ -84,6 +84,10 @@ namespace Henke37.Win32.CdAccess {
 					return $"{TrackNr} Genre";
 				case CdTextBlockType.SizeInfo:
 					return $"{TrackNr} Size";
+				case CdTextBlockType.DiscID:
+					return $"{TrackNr} DiscID";
+				case CdTextBlockType.UPCEAN:
+					return $"{TrackNr} UPC/EAN";
 
 				default:
 					return $"{TrackNr} {Type} {Text}";
