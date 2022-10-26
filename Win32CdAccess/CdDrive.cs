@@ -190,6 +190,12 @@ namespace Henke37.Win32.CdAccess {
 			return native.GetDeviceName();
 		}
 
+		public SessionData GetSessionData() {
+			SessionData.Native native=new SessionData.Native();
+			file.DeviceControlOutput<SessionData.Native>(DeviceIoControlCode.CdRomGetLastSession, ref native);
+			return native.AsManaged();
+		}
+
 		public void RawRead(UInt64 diskOffset, UInt32 sectorCount, TrackReadMode readMode, byte[] buffer) {
 			RawReadInfo info = new RawReadInfo() {
 				DiskOffset = diskOffset,
