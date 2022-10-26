@@ -84,6 +84,8 @@ namespace CdControl {
 
 			cdDrive.VerifyMedia();
 
+			var sessions = cdDrive.GetSessionData();
+
 			try {
 				AlbumTitle.Text = "";
 				track_lst.BeginUpdate();
@@ -117,7 +119,7 @@ namespace CdControl {
 						item.Tag = tocItem;
 						track_lst.Items.Add(item);
 					}
-				} while(session < toc.LastCompleteSession);
+				} while(session < sessions.LastCompleteSession);
 
 			} finally {
 				track_lst.EndUpdate();
