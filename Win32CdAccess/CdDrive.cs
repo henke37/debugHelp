@@ -205,6 +205,10 @@ namespace Henke37.Win32.CdAccess {
 			RawRead(info, buffer);
 		}
 
+		private void RawRead(RawReadInfo info, byte[] buffer) {
+			file.DeviceControlInputOutput(DeviceIoControlCode.CdRomRawRead, ref info, buffer);
+		}
+
 		public bool DiskIsReadOnly {
 			get {
 				try {
@@ -214,10 +218,6 @@ namespace Henke37.Win32.CdAccess {
 					return true;
 				}
 			}
-		}
-
-		private void RawRead(RawReadInfo info, byte[] buffer) {
-			file.DeviceControlInputOutput(DeviceIoControlCode.CdRomRawRead, ref info, buffer);
 		}
 	}
 }
