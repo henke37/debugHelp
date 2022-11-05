@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 
 using Henke37.Win32.AccessRights;
 using Henke37.Win32.DeviceEnum;
 using Henke37.Win32.Files;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Henke37.Win32.CdAccess {
 	public class CdDrive {
@@ -43,6 +45,7 @@ namespace Henke37.Win32.CdAccess {
 			}
 		}
 
+		[SecuritySafeCritical]
 		public unsafe TOC GetTOC() {
 			int buffSize = Marshal.SizeOf<TOC.TocHeader>() + Marshal.SizeOf<TrackEntry.Native>() * TOCTrackCount;
 			byte[] buff = new byte[buffSize];
@@ -71,6 +74,7 @@ namespace Henke37.Win32.CdAccess {
 			);
 		}
 
+		[SecuritySafeCritical]
 		public unsafe FullToc GetFullTOC(int session) {
 			ReadTocEx readToc = new ReadTocEx(ReadTocFormat.FullToc, true, session);
 
@@ -106,6 +110,38 @@ namespace Henke37.Win32.CdAccess {
 			);
 		}
 
+		[SecuritySafeCritical]
+		public unsafe List<ATIP> GetATIP() {
+			ReadTocEx readToc = new ReadTocEx(ReadTocFormat.ATIP, true, 0);
+
+			List<ATIP> entries = new List<ATIP>();
+
+			int BlockCount = 5;
+
+			int buffSize = Marshal.SizeOf<ATIP.DataHeader>() + Marshal.SizeOf<ATIP.DataBlock>() * BlockCount;
+			byte[] buff = new byte[buffSize];
+
+			ATIP.DataHeader header;
+
+			file.DeviceControlInputOutput(DeviceIoControlCode.CdRomReadTOCEx, ref readToc, buff);
+
+			fixed(byte* buffPP = buff) {
+				header = Marshal.PtrToStructure<ATIP.DataHeader>((IntPtr)buffPP);
+
+				byte* buffP = buffPP + Marshal.SizeOf<ATIP.DataHeader>();
+				byte* buffEndP = buffP + (header.Length - 2);
+				for(var entryIndex = 0; buffP < buffEndP; ++entryIndex) {
+					var entry = Marshal.PtrToStructure<ATIP.DataBlock>((IntPtr)buffP);
+					entries.Add(entry.AsManaged());
+
+					buffP += Marshal.SizeOf<ATIP.DataBlock>();
+				}
+			}
+
+			return entries;
+		}
+
+		[SecuritySafeCritical]
 		internal unsafe List<CdTextDataBlock> GetCdTextBlocks(int session=1) {
 			ReadTocEx readToc = new ReadTocEx(ReadTocFormat.CDText, true, session);
 			byte[] buff = new byte[4200];
@@ -145,6 +181,7 @@ namespace Henke37.Win32.CdAccess {
 			}
 		}
 
+		[SecuritySafeCritical]
 		public unsafe string? GetMediaCatalogNumber() {
 			SubQDataFormat dataFormat = new SubQDataFormat() {
 				Format = (byte)SubQDataFormatFormat.MediaCatalog,
@@ -161,6 +198,7 @@ namespace Henke37.Win32.CdAccess {
 			return new string((sbyte*)catNr.MediaCatalog);
 		}
 
+		[SecuritySafeCritical]
 		public unsafe string? GetTrackISRC(byte track) {
 			SubQDataFormat dataFormat = new SubQDataFormat() {
 				Format = (byte)SubQDataFormatFormat.TrackISRC,
@@ -176,12 +214,14 @@ namespace Henke37.Win32.CdAccess {
 			return new string((sbyte*)isrc.TrackIsrc);
 		}
 
+		[SecuritySafeCritical]
 		public RegionData GetRegionData() {
 			RegionData.Native native = new RegionData.Native();
 			file.DeviceControlOutput<RegionData.Native>(DeviceIoControlCode.DvdGetRegion, ref native);
 			return native.AsManaged();
 		}
 
+		[SecuritySafeCritical]
 		public string GetMountPoint() {
 			StorageDeviceNumber native=new StorageDeviceNumber();
 
@@ -190,12 +230,14 @@ namespace Henke37.Win32.CdAccess {
 			return native.GetDeviceName();
 		}
 
+		[SecuritySafeCritical]
 		public SessionData GetSessionData() {
 			SessionData.Native native=new SessionData.Native();
 			file.DeviceControlOutput<SessionData.Native>(DeviceIoControlCode.CdRomGetLastSession, ref native);
 			return native.AsManaged();
 		}
 
+		[SecuritySafeCritical]
 		public void RawRead(UInt64 diskOffset, UInt32 sectorCount, TrackReadMode readMode, byte[] buffer) {
 			RawReadInfo info = new RawReadInfo() {
 				DiskOffset = diskOffset,
