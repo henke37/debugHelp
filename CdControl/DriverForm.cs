@@ -106,7 +106,9 @@ namespace CdControl {
 						string title = "";
 						if(cdText != null) {
 							var titleInfo = cdText.infos.Find(i => (i.TrackNr == tocItem.Point) && (i.Type == CdTextBlockType.AlbumNameOrTrackTitle));
-							title = titleInfo.Text;
+							if(titleInfo != null) {
+								title = titleInfo.Text;
+							}
 						}
 
 						var item = new ListViewItem(new string[] {
