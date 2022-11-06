@@ -111,34 +111,38 @@ namespace Henke37.Win32.CdAccess {
 		}
 
 		[SecuritySafeCritical]
-		public unsafe List<ATIP> GetATIP() {
-			ReadTocEx readToc = new ReadTocEx(ReadTocFormat.ATIP, true, 0);
+		public unsafe List<ATIP>? GetATIP() {
+			try {
+				ReadTocEx readToc = new ReadTocEx(ReadTocFormat.ATIP, true, 0);
 
-			List<ATIP> entries = new List<ATIP>();
+				List<ATIP> entries = new List<ATIP>();
 
-			int BlockCount = 5;
+				int BlockCount = 5;
 
-			int buffSize = Marshal.SizeOf<ATIP.DataHeader>() + Marshal.SizeOf<ATIP.DataBlock>() * BlockCount;
-			byte[] buff = new byte[buffSize];
+				int buffSize = Marshal.SizeOf<ATIP.DataHeader>() + Marshal.SizeOf<ATIP.DataBlock>() * BlockCount;
+				byte[] buff = new byte[buffSize];
 
-			ATIP.DataHeader header;
+				ATIP.DataHeader header;
 
-			file.DeviceControlInputOutput(DeviceIoControlCode.CdRomReadTOCEx, ref readToc, buff);
+				file.DeviceControlInputOutput(DeviceIoControlCode.CdRomReadTOCEx, ref readToc, buff);
 
-			fixed(byte* buffPP = buff) {
-				header = Marshal.PtrToStructure<ATIP.DataHeader>((IntPtr)buffPP);
+				fixed(byte* buffPP = buff) {
+					header = Marshal.PtrToStructure<ATIP.DataHeader>((IntPtr)buffPP);
 
-				byte* buffP = buffPP + Marshal.SizeOf<ATIP.DataHeader>();
-				byte* buffEndP = buffP + (header.Length - 2);
-				for(var entryIndex = 0; buffP < buffEndP; ++entryIndex) {
-					var entry = Marshal.PtrToStructure<ATIP.DataBlock>((IntPtr)buffP);
-					entries.Add(entry.AsManaged());
+					byte* buffP = buffPP + Marshal.SizeOf<ATIP.DataHeader>();
+					byte* buffEndP = buffP + (header.Length - 2);
+					for(var entryIndex = 0; buffP < buffEndP; ++entryIndex) {
+						var entry = Marshal.PtrToStructure<ATIP.DataBlock>((IntPtr)buffP);
+						entries.Add(entry.AsManaged());
 
-					buffP += Marshal.SizeOf<ATIP.DataBlock>();
+						buffP += Marshal.SizeOf<ATIP.DataBlock>();
+					}
 				}
-			}
 
-			return entries;
+				return entries;
+			} catch(Win32Exception err) when ((uint)err.ErrorCode == 0x80004005) {
+				return null;
+			}
 		}
 
 		[SecuritySafeCritical]
