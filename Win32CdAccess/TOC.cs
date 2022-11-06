@@ -93,6 +93,12 @@ namespace Henke37.Win32.CdAccess {
 
 		public const int FramesPerSec = 75;
 
+		public TrackTime(byte min, byte sec, byte frames) {
+			Minutes = min;
+			Seconds = sec;
+			Frames = frames;
+		}
+
 		public static TrackTime FromFrames(int frames) {
 			int secs = frames / FramesPerSec;
 			return new TrackTime() {

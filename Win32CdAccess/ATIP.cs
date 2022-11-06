@@ -41,9 +41,13 @@ namespace Henke37.Win32.CdAccess {
 			byte UnrestrictedUseField;
 			byte TypesAndValidsField;
 			byte Reserved1;
-			TrackTime LeadIn;
+			byte LeadInMin;
+			byte LeadInSec;
+			byte LeadInFrame;
 			byte Reserved2;
-			TrackTime LeadOut;
+			byte LeadOutMin;
+			byte LeadOutSec;
+			byte LeadOutFrame;
 			byte Reserved3;
 			fixed byte A1[3];
 			byte Reserved4;
@@ -61,14 +65,26 @@ namespace Henke37.Win32.CdAccess {
 					UnrestrictedUse = (UnrestrictedUseField & 0x0040) != 0,
 					Rewriteable = (TypesAndValidsField & 0x0040) !=0,
 
-					LeadIn = LeadIn,
-					LeadOut = LeadOut,
+					LeadIn = new TrackTime(DecodeBCD(LeadInMin), DecodeBCD(LeadInSec),DecodeBCD(LeadInFrame)),
+					LeadOut = new TrackTime(DecodeBCD(LeadOutMin), DecodeBCD(LeadOutSec),DecodeBCD(LeadOutFrame)),
 
 					//A1 = (TypesAndValidsField & 0x04)!=0 ? A1 : null,
 					//A2 = (TypesAndValidsField & 0x02)!=0 ? A2 : null,
 					//A3 = (TypesAndValidsField & 0x01)!=0 ? A3 : null,
 				};
 			}
+
+			private static byte DecodeBCD(byte b) { return (byte)((b >> 4) * 10 + (b & 0x0F)); }
+		}
+
+		enum CDRDiscType {
+			CDR = 0,
+			ANeg = 0b010,
+			APos = 0b011,
+			BNeg = 0b100,
+			BPos = 0b101,
+			CNeg = 0b110,
+			cPos = 0b111
 		}
 	}
 }
