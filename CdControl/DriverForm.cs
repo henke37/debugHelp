@@ -136,7 +136,8 @@ namespace CdControl {
 		}
 
 		private void getCdTExt_Click(object sender, EventArgs e) {
-			var text=cdDrive.GetCdText();
+			var res = cdDrive.GetConfiguration(Configuration.FeatureNumber.Core, Configuration.RequestType.Current);
+
 		}
 	}
 }

@@ -10,6 +10,7 @@ using Henke37.Win32.AccessRights;
 using Henke37.Win32.DeviceEnum;
 using Henke37.Win32.Files;
 using static System.Collections.Specialized.BitVector32;
+using static Henke37.Win32.CdAccess.Configuration;
 
 namespace Henke37.Win32.CdAccess {
 	public class CdDrive {
@@ -108,6 +109,37 @@ namespace Henke37.Win32.CdAccess {
 				header.LastCompleteSession,
 				tracks
 			);
+		}
+
+		[SecuritySafeCritical]
+		public unsafe FeatureDesc GetConfiguration(FeatureNumber feature, RequestType requestType) {
+			long buffSize = sizeof(ConfigurationHeader) + sizeof(FeatureHeader) + FeatureSize(feature);
+			byte[] buff = new byte[buffSize];
+
+			GetConfigIOInput getConf = new GetConfigIOInput(feature, requestType);
+
+			var written = file.DeviceControlInputOutput(DeviceIoControlCode.CdRomGetConfiguration, ref getConf, buff);
+
+			fixed(byte* buffPP = buff) {
+				ConfigurationHeader header = Marshal.PtrToStructure<ConfigurationHeader>((IntPtr)buffPP);
+
+				uint headersSize = (uint)(Marshal.SizeOf<ConfigurationHeader>());
+				if(header.Length < headersSize) throw new Exception("Bad size!");
+
+				byte* buffP = buffPP + Marshal.SizeOf<ConfigurationHeader>();
+
+				headersSize += (uint)Marshal.SizeOf<FeatureHeader>();
+
+				if(header.Length < headersSize) throw new Exception("Bad size!");
+
+				FeatureHeader featureHeader = Marshal.PtrToStructure<FeatureHeader>((IntPtr)buffP);
+
+				if(header.Length < headersSize + featureHeader.AdditonalLength) throw new Exception("Bad size!");
+
+				var addData = buffP + sizeof(FeatureHeader);
+
+				return FeatureDesc.BuffToDesc(featureHeader, addData);
+			}
 		}
 
 		[SecuritySafeCritical]

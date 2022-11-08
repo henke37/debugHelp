@@ -31,6 +31,7 @@
   <ItemGroup>
     <PackageReference Include="PInvoke.Kernel32" Version="0.5.184" />
     <PackageReference Include="PInvoke.Windows.Core" Version="0.5.184" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Win32Base\Win32Base.csproj" />
