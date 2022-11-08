@@ -6,19 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Henke37.Win32.CdAccess {
-	public class ATIP {
+	public abstract class ATIP {
 		byte WritePower;
 		byte ReferenceSpeed;
-		public bool DDCD;
+
 		public bool UnrestrictedUse;
-		public bool Rewriteable;
+		public abstract bool Rewriteable { get; }
 
 		public TrackTime LeadIn;
 		public TrackTime LeadOut;
 
-		byte[]? A1;
-		byte[]? A2;
-		byte[]? A3;
+		internal ATIP () { }
 
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct DataHeader {
@@ -57,21 +55,33 @@ namespace Henke37.Win32.CdAccess {
 			byte Reserved6;
 
 			internal ATIP AsManaged() {
-				return new ATIP() {
-					DDCD = (RefSpeedWritePowerAndDDCDField & 0x08) != 0,
-					ReferenceSpeed = (byte)(RefSpeedWritePowerAndDDCDField & 0x07),
-					WritePower = (byte)(RefSpeedWritePowerAndDDCDField >> 4),
+				bool rewriteable = (TypesAndValidsField & 0x0040) != 0;
 
-					UnrestrictedUse = (UnrestrictedUseField & 0x0040) != 0,
-					Rewriteable = (TypesAndValidsField & 0x0040) !=0,
+				bool a1Valid = (TypesAndValidsField & 0x04) != 0;
+				bool a2Valid = (TypesAndValidsField & 0x02) != 0;
+				bool a3Valid = (TypesAndValidsField & 0x01) != 0;
 
-					LeadIn = new TrackTime(DecodeBCD(LeadInMin), DecodeBCD(LeadInSec),DecodeBCD(LeadInFrame)),
-					LeadOut = new TrackTime(DecodeBCD(LeadOutMin), DecodeBCD(LeadOutSec),DecodeBCD(LeadOutFrame)),
+				if(rewriteable) {
+					var cdrw = new ATIP.CDRW();
+					cdrw.ReferenceSpeed = (byte)(RefSpeedWritePowerAndDDCDField & 0x07);
+					cdrw.WritePower = (byte)(RefSpeedWritePowerAndDDCDField >> 4);
 
-					//A1 = (TypesAndValidsField & 0x04)!=0 ? A1 : null,
-					//A2 = (TypesAndValidsField & 0x02)!=0 ? A2 : null,
-					//A3 = (TypesAndValidsField & 0x01)!=0 ? A3 : null,
-				};
+					cdrw.UnrestrictedUse = (UnrestrictedUseField & 0x0040) != 0;
+
+					cdrw.LeadIn = new TrackTime(DecodeBCD(LeadInMin), DecodeBCD(LeadInSec), DecodeBCD(LeadInFrame));
+					cdrw.LeadOut = new TrackTime(DecodeBCD(LeadOutMin), DecodeBCD(LeadOutSec), DecodeBCD(LeadOutFrame));
+					return cdrw;
+				} else {
+					var cdr = new ATIP.CDR();
+					cdr.ReferenceSpeed = (byte)(RefSpeedWritePowerAndDDCDField & 0x07);
+					cdr.WritePower = (byte)(RefSpeedWritePowerAndDDCDField >> 4);
+
+					cdr.UnrestrictedUse = (UnrestrictedUseField & 0x0040) != 0;
+
+					cdr.LeadIn = new TrackTime(DecodeBCD(LeadInMin), DecodeBCD(LeadInSec), DecodeBCD(LeadInFrame));
+					cdr.LeadOut = new TrackTime(DecodeBCD(LeadOutMin), DecodeBCD(LeadOutSec), DecodeBCD(LeadOutFrame));
+					return cdr;
+				}
 			}
 
 			private static byte DecodeBCD(byte b) { return (byte)((b >> 4) * 10 + (b & 0x0F)); }
@@ -85,6 +95,15 @@ namespace Henke37.Win32.CdAccess {
 			BPos = 0b101,
 			CNeg = 0b110,
 			cPos = 0b111
+		}
+
+
+		public class CDR : ATIP {
+			public override bool Rewriteable => false;
+		}
+
+		public class CDRW : ATIP {
+			public override bool Rewriteable => true;
 		}
 	}
 }
