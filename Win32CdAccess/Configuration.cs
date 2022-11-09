@@ -36,6 +36,8 @@ namespace Henke37.Win32.CdAccess {
 						return new CdTrackAtOnceFeature(header, (CdTrackAtOnceFeature.Native*)additionalData);
 					case FeatureNumber.CdMastering:
 						return new CdMasteringFeature(header, (CdMasteringFeature.Native*)additionalData);
+					case FeatureNumber.EmbeddedChanger:
+						return new EmbededChangerFeature(header, (EmbededChangerFeature.Native*)additionalData);
 					case FeatureNumber.LogicalUnitSerialNumber:
 						return new DriveSerialNumberFeature(header, additionalData);
 					case FeatureNumber.FirmwareDate:
@@ -221,6 +223,8 @@ namespace Henke37.Win32.CdAccess {
 					return sizeof(MorphFeature.Native);
 				case FeatureNumber.RemovableMedium:
 					return sizeof(RemovableMediumFeature.Native);
+				case FeatureNumber.MultiRead:
+					return 0;
 				case FeatureNumber.CdRead:
 					return sizeof(CdReadFeature.Native);
 				case FeatureNumber.CdTrackAtOnce:
@@ -231,6 +235,8 @@ namespace Henke37.Win32.CdAccess {
 					return 0;
 				case FeatureNumber.PowerManagement:
 					return 0;
+				case FeatureNumber.EmbeddedChanger:
+					return sizeof(EmbededChangerFeature.Native);
 				case FeatureNumber.LogicalUnitSerialNumber:
 					return 0;
 				case FeatureNumber.MediaSerialNumber:
@@ -463,6 +469,26 @@ namespace Henke37.Win32.CdAccess {
 
 			internal unsafe DriveSerialNumberFeature(FeatureHeader header, byte* add) : base(header) {
 				Serial = new string((sbyte*)add, 0, header.AdditonalLength).TrimEnd(' ');
+			}
+		}
+
+		public class EmbededChangerFeature : FeatureDesc {
+			public bool SupportsDiscPresent;
+			public bool SideChangeCapable;
+			public uint HighestSlotNumber;
+
+			internal unsafe EmbededChangerFeature(FeatureHeader header, Native* add) : base(header) {
+				SupportsDiscPresent = (add->Flags & 0x04) != 0;
+				SideChangeCapable = (add->Flags & 0x10) != 0;
+				HighestSlotNumber = (uint)(add->HighSlot & 0b00011111);
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal struct Native {
+				internal byte Flags;
+				byte Padding1;
+				byte Padding2;
+				internal byte HighSlot;
 			}
 		}
 
