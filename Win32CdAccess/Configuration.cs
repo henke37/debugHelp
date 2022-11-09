@@ -219,6 +219,8 @@ namespace Henke37.Win32.CdAccess {
 					return sizeof(CdTrackAtOnceFeature.Native);
 				case FeatureNumber.CdMastering:
 					return sizeof(CdMasteringFeature.Native);
+				case FeatureNumber.TSR:
+					return 0;
 				default:
 					throw new NotImplementedException();
 			}
