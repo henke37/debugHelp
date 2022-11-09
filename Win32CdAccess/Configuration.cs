@@ -32,6 +32,8 @@ namespace Henke37.Win32.CdAccess {
 						return new CdReadFeature(header, (CdReadFeature.Native*)additionalData);
 					case FeatureNumber.CdTrackAtOnce:
 						return new CdTrackAtOnceFeature(header, (CdTrackAtOnceFeature.Native*)additionalData);
+					case FeatureNumber.CdMastering:
+						return new CdMasteringFeature(header, (CdMasteringFeature.Native*)additionalData);
 					default:
 						return new FeatureDesc(header);
 				}
@@ -215,6 +217,8 @@ namespace Henke37.Win32.CdAccess {
 					return sizeof(CdReadFeature.Native);
 				case FeatureNumber.CdTrackAtOnce:
 					return sizeof(CdTrackAtOnceFeature.Native);
+				case FeatureNumber.CdMastering:
+					return sizeof(CdMasteringFeature.Native);
 				default:
 					throw new NotImplementedException();
 			}
@@ -379,6 +383,38 @@ namespace Henke37.Win32.CdAccess {
 				byte Padding;
 				internal byte DataTypeSupported2;
 				internal byte DataTypeSupported1;
+			}
+		}
+
+		public class CdMasteringFeature : FeatureDesc {
+			public bool RWSubchannelsRecordable;
+			public bool CdRewritable;
+			public bool TestWriteOk;
+			public bool RawRecordingOk;
+			public bool RawMultiSessionOk;
+			public bool SessionAtOnceOk;
+			public bool BufferUnderrunFree;
+
+			public uint MaximumCueSheetLength;
+
+			internal unsafe CdMasteringFeature(FeatureHeader header, Native* add) : base(header) {
+				RWSubchannelsRecordable = (add->Flags & 0x01) != 0;
+				CdRewritable = (add->Flags & 0x02) != 0;
+				TestWriteOk = (add->Flags & 0x04) != 0;
+				RawRecordingOk = (add->Flags & 0x08) != 0;
+				RawMultiSessionOk = (add->Flags & 0x10) != 0;
+				SessionAtOnceOk = (add->Flags & 0x20) != 0;
+				BufferUnderrunFree = (add->Flags & 0x40) != 0;
+
+				MaximumCueSheetLength = (uint)((add->MaximumCueSheetLength3 << 16) | (add->MaximumCueSheetLength2 << 8) | add->MaximumCueSheetLength1);
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal struct Native {
+				internal byte Flags;
+				internal byte MaximumCueSheetLength3;
+				internal byte MaximumCueSheetLength2;
+				internal byte MaximumCueSheetLength1;
 			}
 		}
 	}
