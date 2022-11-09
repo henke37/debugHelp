@@ -278,7 +278,10 @@ namespace Henke37.Win32.CdAccess {
 				ATAPI = 2,
 				Firewire = 3,
 				FirewireA = 4,
-				FibreChannel = 5
+				FibreChannel = 5,
+				FirewireB = 6,
+				SATAPI = 7,
+				USB = 8
 			}
 		}
 
