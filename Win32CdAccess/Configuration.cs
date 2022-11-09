@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -29,6 +30,8 @@ namespace Henke37.Win32.CdAccess {
 						return new RemovableMediumFeature(header, (RemovableMediumFeature.Native*)additionalData);
 					case FeatureNumber.CdRead:
 						return new CdReadFeature(header, (CdReadFeature.Native*)additionalData);
+					case FeatureNumber.CdTrackAtOnce:
+						return new CdTrackAtOnceFeature(header, (CdTrackAtOnceFeature.Native*)additionalData);
 					default:
 						return new FeatureDesc(header);
 				}
@@ -210,6 +213,8 @@ namespace Henke37.Win32.CdAccess {
 					return sizeof(RemovableMediumFeature.Native);
 				case FeatureNumber.CdRead:
 					return sizeof(CdReadFeature.Native);
+				case FeatureNumber.CdTrackAtOnce:
+					return sizeof(CdTrackAtOnceFeature.Native);
 				default:
 					throw new NotImplementedException();
 			}
@@ -344,6 +349,36 @@ namespace Henke37.Win32.CdAccess {
 				byte Padding1;
 				byte Padding2;
 				byte Padding3;
+			}
+		}
+
+		public class CdTrackAtOnceFeature : FeatureDesc {
+			public bool RWSubchannelsRecordable;
+			public bool CdRewritable;
+			public bool TestWriteOk;
+			public bool RWSubchannelPackedOk;
+			public bool RWSubchannelRawOk;
+			public bool BufferUnderrunFree;
+
+			UInt16 DataTypesSupported;
+
+			internal unsafe CdTrackAtOnceFeature(FeatureHeader header, Native* add) : base(header) {
+				RWSubchannelsRecordable = (add->Flags & 0x01) != 0;
+				CdRewritable = (add->Flags & 0x02) != 0;
+				TestWriteOk = (add->Flags & 0x04) != 0;
+				RWSubchannelPackedOk = (add->Flags & 0x08) != 0;
+				RWSubchannelRawOk = (add->Flags & 0x10) != 0;
+				BufferUnderrunFree = (add->Flags & 0x20) != 0;
+
+				DataTypesSupported=(UInt16)((add->DataTypeSupported2 << 8) | add->DataTypeSupported1);
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal struct Native {
+				internal byte Flags;
+				byte Padding;
+				internal byte DataTypeSupported2;
+				internal byte DataTypeSupported1;
 			}
 		}
 	}
