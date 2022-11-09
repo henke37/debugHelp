@@ -34,6 +34,8 @@ namespace Henke37.Win32.CdAccess {
 						return new CdTrackAtOnceFeature(header, (CdTrackAtOnceFeature.Native*)additionalData);
 					case FeatureNumber.CdMastering:
 						return new CdMasteringFeature(header, (CdMasteringFeature.Native*)additionalData);
+					case FeatureNumber.LogicalUnitSerialNumber:
+						return new DriveSerialNumberFeature(header, additionalData);
 					default:
 						return new FeatureDesc(header);
 				}
@@ -220,6 +222,10 @@ namespace Henke37.Win32.CdAccess {
 				case FeatureNumber.CdMastering:
 					return sizeof(CdMasteringFeature.Native);
 				case FeatureNumber.TSR:
+					return 0;
+				case FeatureNumber.PowerManagement:
+					return 0;
+				case FeatureNumber.LogicalUnitSerialNumber:
 					return 0;
 				default:
 					throw new NotImplementedException();
@@ -417,6 +423,14 @@ namespace Henke37.Win32.CdAccess {
 				internal byte MaximumCueSheetLength3;
 				internal byte MaximumCueSheetLength2;
 				internal byte MaximumCueSheetLength1;
+			}
+		}
+
+		public class DriveSerialNumberFeature : FeatureDesc {
+			public string Serial;
+
+			internal unsafe DriveSerialNumberFeature(FeatureHeader header, byte* add) : base(header) {
+				Serial = new string((sbyte*)add, 0, header.AdditonalLength).TrimEnd(' ');
 			}
 		}
 	}
