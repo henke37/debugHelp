@@ -36,6 +36,8 @@ namespace Henke37.Win32.CdAccess {
 						return new CdMasteringFeature(header, (CdMasteringFeature.Native*)additionalData);
 					case FeatureNumber.LogicalUnitSerialNumber:
 						return new DriveSerialNumberFeature(header, additionalData);
+					case FeatureNumber.FirmwareDate:
+						return new FirmwareDateFeature(header, (FirmwareDateFeature.Native*)additionalData);
 					default:
 						return new FeatureDesc(header);
 				}
@@ -227,6 +229,10 @@ namespace Henke37.Win32.CdAccess {
 					return 0;
 				case FeatureNumber.LogicalUnitSerialNumber:
 					return 0;
+				case FeatureNumber.MediaSerialNumber:
+					return 0;
+				case FeatureNumber.FirmwareDate:
+					return sizeof(FirmwareDateFeature.Native);
 				default:
 					throw new NotImplementedException();
 			}
@@ -431,6 +437,33 @@ namespace Henke37.Win32.CdAccess {
 
 			internal unsafe DriveSerialNumberFeature(FeatureHeader header, byte* add) : base(header) {
 				Serial = new string((sbyte*)add, 0, header.AdditonalLength).TrimEnd(' ');
+			}
+		}
+
+		public class FirmwareDateFeature : FeatureDesc {
+			public DateTime CreationDate;
+
+			internal unsafe FirmwareDateFeature(FeatureHeader header, Native* add) : base(header) {
+				CreationDate = new DateTime(
+					int.Parse(new string(add->Year, 0, 4)),
+					int.Parse(new string(add->Month, 0, 2)),
+					int.Parse(new string(add->Day, 0, 2)),
+					int.Parse(new string(add->Hour, 0, 2)),
+					int.Parse(new string(add->Minute, 0, 2)),
+					int.Parse(new string(add->Second, 0, 2))
+				);
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal unsafe struct Native {
+				internal fixed sbyte Year[4];
+				internal fixed sbyte Month[2];
+				internal fixed sbyte Day[2];
+				internal fixed sbyte Hour[2];
+				internal fixed sbyte Minute[2];
+				internal fixed sbyte Second[2];
+				internal fixed byte Reserved[2];
+
 			}
 		}
 	}
