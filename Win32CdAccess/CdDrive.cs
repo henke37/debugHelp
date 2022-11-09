@@ -125,30 +125,30 @@ namespace Henke37.Win32.CdAccess {
 
 
 				fixed(byte* buffPP = buff) {
-					ConfigurationHeader header = Marshal.PtrToStructure<ConfigurationHeader>((IntPtr)buffPP);
+					ConfigurationHeader* header = (ConfigurationHeader*)buffPP;
 
-					uint headersSize = (uint)(Marshal.SizeOf<ConfigurationHeader>());
-					if(header.Length < headersSize) throw new Exception("Bad size!");
+					uint headersSize = (uint)sizeof(ConfigurationHeader);
+					if(header->Length < headersSize) throw new Exception("Bad size!");
 
-					byte* buffP = buffPP + Marshal.SizeOf<ConfigurationHeader>();
+					byte* buffP = buffPP + sizeof(ConfigurationHeader);
 
-					headersSize += (uint)Marshal.SizeOf<FeatureHeader>();
+					headersSize += (uint)sizeof(FeatureHeader);
 
-					if(header.Length < headersSize) throw new Exception("Bad size!");
+					if(header->Length < headersSize) throw new Exception("Bad size!");
 
-					FeatureHeader featureHeader = Marshal.PtrToStructure<FeatureHeader>((IntPtr)buffP);
+					FeatureHeader* featureHeader = (FeatureHeader*)buffP;
 
-					if(featureHeader.Feature != feature) return null;
+					if(featureHeader->Feature != feature) return null;
 
-					if(header.Length < headersSize + featureHeader.AdditonalLength) throw new Exception("Bad size!");
-					if(buffSize < headersSize + featureHeader.AdditonalLength) {
-						buffSize = headersSize + featureHeader.AdditonalLength;
+					if(header->Length < headersSize + featureHeader->AdditonalLength) throw new Exception("Bad size!");
+					if(buffSize < headersSize + featureHeader->AdditonalLength) {
+						buffSize = headersSize + featureHeader->AdditonalLength;
 						continue;
 					}
 
 					var addData = buffP + sizeof(FeatureHeader);
 
-					return FeatureDesc.BuffToDesc(featureHeader, addData);
+					return FeatureDesc.BuffToDesc(*featureHeader, addData);
 				}
 
 			}
