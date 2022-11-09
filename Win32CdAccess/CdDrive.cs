@@ -114,31 +114,41 @@ namespace Henke37.Win32.CdAccess {
 		[SecuritySafeCritical]
 		public unsafe FeatureDesc GetConfiguration(FeatureNumber feature, RequestType requestType) {
 			long buffSize = sizeof(ConfigurationHeader) + sizeof(FeatureHeader) + FeatureSize(feature);
-			byte[] buff = new byte[buffSize];
+			byte[] buff;
 
-			GetConfigIOInput getConf = new GetConfigIOInput(feature, requestType);
+			for(; ;) {
+				buff = new byte[buffSize];
 
-			var written = file.DeviceControlInputOutput(DeviceIoControlCode.CdRomGetConfiguration, ref getConf, buff);
+				GetConfigIOInput getConf = new GetConfigIOInput(feature, requestType);
 
-			fixed(byte* buffPP = buff) {
-				ConfigurationHeader header = Marshal.PtrToStructure<ConfigurationHeader>((IntPtr)buffPP);
+				var written = file.DeviceControlInputOutput(DeviceIoControlCode.CdRomGetConfiguration, ref getConf, buff);
 
-				uint headersSize = (uint)(Marshal.SizeOf<ConfigurationHeader>());
-				if(header.Length < headersSize) throw new Exception("Bad size!");
 
-				byte* buffP = buffPP + Marshal.SizeOf<ConfigurationHeader>();
+				fixed(byte* buffPP = buff) {
+					ConfigurationHeader header = Marshal.PtrToStructure<ConfigurationHeader>((IntPtr)buffPP);
 
-				headersSize += (uint)Marshal.SizeOf<FeatureHeader>();
+					uint headersSize = (uint)(Marshal.SizeOf<ConfigurationHeader>());
+					if(header.Length < headersSize) throw new Exception("Bad size!");
 
-				if(header.Length < headersSize) throw new Exception("Bad size!");
+					byte* buffP = buffPP + Marshal.SizeOf<ConfigurationHeader>();
 
-				FeatureHeader featureHeader = Marshal.PtrToStructure<FeatureHeader>((IntPtr)buffP);
+					headersSize += (uint)Marshal.SizeOf<FeatureHeader>();
 
-				if(header.Length < headersSize + featureHeader.AdditonalLength) throw new Exception("Bad size!");
+					if(header.Length < headersSize) throw new Exception("Bad size!");
 
-				var addData = buffP + sizeof(FeatureHeader);
+					FeatureHeader featureHeader = Marshal.PtrToStructure<FeatureHeader>((IntPtr)buffP);
 
-				return FeatureDesc.BuffToDesc(featureHeader, addData);
+					if(header.Length < headersSize + featureHeader.AdditonalLength) throw new Exception("Bad size!");
+					if(buffSize < headersSize + featureHeader.AdditonalLength) {
+						buffSize = headersSize + featureHeader.AdditonalLength;
+						continue;
+					}
+
+					var addData = buffP + sizeof(FeatureHeader);
+
+					return FeatureDesc.BuffToDesc(featureHeader, addData);
+				}
+
 			}
 		}
 
