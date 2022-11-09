@@ -299,7 +299,7 @@ namespace Henke37.Win32.CdAccess {
 			public bool DefaultToPrevent;
 			public bool Eject;
 			public bool Load;
-			public bool LoadingMechanism;
+			public LoadingMechanismType LoadingMechanism;
 
 			internal unsafe RemovableMediumFeature(FeatureHeader header, Native* add) : base(header) {
 				Lockable = (add->Flags & 0x01)!=0;
@@ -307,7 +307,7 @@ namespace Henke37.Win32.CdAccess {
 				DefaultToPrevent = (add->Flags & 0x04)!=0;
 				Eject = (add->Flags & 0x08)!=0;
 				Load = (add->Flags & 0x10)!=0;
-				LoadingMechanism = (add->Flags & 0x20)!=0;
+				LoadingMechanism = (LoadingMechanismType)(add->Flags >> 5);
 			}
 
 			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -316,6 +316,14 @@ namespace Henke37.Win32.CdAccess {
 				byte Padding1;
 				byte Padding2;
 				byte Padding3;
+			}
+
+			public enum LoadingMechanismType : byte {
+				CaddySlot = 0,
+				Tray = 1,
+				Popup = 2,
+				ChangerDiscs = 4,
+				ChangerMagazine = 5
 			}
 		}
 
