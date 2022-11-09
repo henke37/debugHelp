@@ -25,6 +25,8 @@ namespace Henke37.Win32.CdAccess {
 						return new ProfileListFeature(header, additionalData);
 					case FeatureNumber.Core:
 						return new CoreFeature(header, (CoreFeature.Native*)additionalData);
+					case FeatureNumber.RemovableMedium:
+						return new RemovableMediumFeature(header, (RemovableMediumFeature.Native*)additionalData);
 					default:
 						return new FeatureDesc(header);
 				}
@@ -202,6 +204,8 @@ namespace Henke37.Win32.CdAccess {
 					return 0;
 				case FeatureNumber.Core:
 					return sizeof(CoreFeature.Native);
+				case FeatureNumber.RemovableMedium:
+					return sizeof(RemovableMediumFeature.Native);
 				default:
 					throw new NotImplementedException();
 			}
@@ -251,7 +255,7 @@ namespace Henke37.Win32.CdAccess {
 
 			public List<ProfileListEntry> Profiles;
 
-			public unsafe ProfileListFeature(FeatureHeader header, byte* additionalData) : base(header) {
+			internal unsafe ProfileListFeature(FeatureHeader header, byte* additionalData) : base(header) {
 				Profiles = new List<ProfileListEntry>();
 
 				for(var entryP=(ProfileListEntry.Native*)additionalData;(header.AdditonalLength+additionalData)!=entryP;++entryP) {
@@ -263,6 +267,7 @@ namespace Henke37.Win32.CdAccess {
 				public ProfileType ProfileNumber;
 				public bool Current;
 
+				[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 				internal struct Native {
 					byte ProfileNumber2;
 					byte ProfileNumber1;
@@ -282,6 +287,32 @@ namespace Henke37.Win32.CdAccess {
 				}
 			}
 			
+		}
+
+		public class RemovableMediumFeature : FeatureDesc {
+			public bool Lockable;
+			public bool DBML;
+			public bool DefaultToPrevent;
+			public bool Eject;
+			public bool Load;
+			public bool LoadingMechanism;
+
+			internal unsafe RemovableMediumFeature(FeatureHeader header, Native* add) : base(header) {
+				Lockable = (add->Flags & 0x01)!=0;
+				DBML = (add->Flags & 0x02)!=0;
+				DefaultToPrevent = (add->Flags & 0x04)!=0;
+				Eject = (add->Flags & 0x08)!=0;
+				Load = (add->Flags & 0x10)!=0;
+				LoadingMechanism = (add->Flags & 0x20)!=0;
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal struct Native {
+				internal byte Flags;
+				byte Padding1;
+				byte Padding2;
+				byte Padding3;
+			}
 		}
 	}
 
