@@ -27,6 +27,8 @@ namespace Henke37.Win32.CdAccess {
 						return new CoreFeature(header, (CoreFeature.Native*)additionalData);
 					case FeatureNumber.RemovableMedium:
 						return new RemovableMediumFeature(header, (RemovableMediumFeature.Native*)additionalData);
+					case FeatureNumber.CdRead:
+						return new CdReadFeature(header, (CdReadFeature.Native*)additionalData);
 					default:
 						return new FeatureDesc(header);
 				}
@@ -206,6 +208,8 @@ namespace Henke37.Win32.CdAccess {
 					return sizeof(CoreFeature.Native);
 				case FeatureNumber.RemovableMedium:
 					return sizeof(RemovableMediumFeature.Native);
+				case FeatureNumber.CdRead:
+					return sizeof(CdReadFeature.Native);
 				default:
 					throw new NotImplementedException();
 			}
@@ -304,6 +308,26 @@ namespace Henke37.Win32.CdAccess {
 				Eject = (add->Flags & 0x08)!=0;
 				Load = (add->Flags & 0x10)!=0;
 				LoadingMechanism = (add->Flags & 0x20)!=0;
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal struct Native {
+				internal byte Flags;
+				byte Padding1;
+				byte Padding2;
+				byte Padding3;
+			}
+		}
+
+		public class CdReadFeature : FeatureDesc {
+			public bool CDText;
+			public bool C2ErrorData;
+			public bool DigitalAudioPlay;
+
+			internal unsafe CdReadFeature(FeatureHeader header, Native* add) : base(header) {
+				CDText = (add->Flags & 0x01) != 0;
+				C2ErrorData = (add->Flags & 0x02) != 0;
+				DigitalAudioPlay = (add->Flags & 0x80) != 0;
 			}
 
 			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
