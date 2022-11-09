@@ -112,7 +112,7 @@ namespace Henke37.Win32.CdAccess {
 		}
 
 		[SecuritySafeCritical]
-		public unsafe FeatureDesc GetConfiguration(FeatureNumber feature, RequestType requestType) {
+		public unsafe FeatureDesc? GetConfiguration(FeatureNumber feature, RequestType requestType) {
 			long buffSize = sizeof(ConfigurationHeader) + sizeof(FeatureHeader) + FeatureSize(feature);
 			byte[] buff;
 
@@ -137,6 +137,8 @@ namespace Henke37.Win32.CdAccess {
 					if(header.Length < headersSize) throw new Exception("Bad size!");
 
 					FeatureHeader featureHeader = Marshal.PtrToStructure<FeatureHeader>((IntPtr)buffP);
+
+					if(featureHeader.Feature != feature) return null;
 
 					if(header.Length < headersSize + featureHeader.AdditonalLength) throw new Exception("Bad size!");
 					if(buffSize < headersSize + featureHeader.AdditonalLength) {
