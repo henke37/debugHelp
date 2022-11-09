@@ -26,6 +26,8 @@ namespace Henke37.Win32.CdAccess {
 						return new ProfileListFeature(header, additionalData);
 					case FeatureNumber.Core:
 						return new CoreFeature(header, (CoreFeature.Native*)additionalData);
+					case FeatureNumber.Morphing:
+						return new MorphFeature(header, (MorphFeature.Native*)additionalData);
 					case FeatureNumber.RemovableMedium:
 						return new RemovableMediumFeature(header, (RemovableMediumFeature.Native*)additionalData);
 					case FeatureNumber.CdRead:
@@ -215,6 +217,8 @@ namespace Henke37.Win32.CdAccess {
 					return 0;
 				case FeatureNumber.Core:
 					return sizeof(CoreFeature.Native);
+				case FeatureNumber.Morphing:
+					return sizeof(MorphFeature.Native);
 				case FeatureNumber.RemovableMedium:
 					return sizeof(RemovableMediumFeature.Native);
 				case FeatureNumber.CdRead:
@@ -314,6 +318,25 @@ namespace Henke37.Win32.CdAccess {
 				}
 			}
 			
+		}
+
+		public class MorphFeature : FeatureDesc {
+			public bool Asynchronous;
+			public bool OCEvent;
+
+			internal unsafe MorphFeature(FeatureHeader header, Native* add) : base(header) {
+				Asynchronous = (add->Flags & 0x01) != 0;
+				OCEvent = (add->Flags & 0x02) != 0;
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal struct Native {
+				internal byte Flags;
+
+				byte Padding1;
+				byte Padding2;
+				byte Padding3;
+			}
 		}
 
 		public class RemovableMediumFeature : FeatureDesc {
