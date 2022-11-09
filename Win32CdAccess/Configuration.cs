@@ -21,6 +21,8 @@ namespace Henke37.Win32.CdAccess {
 
 			internal static unsafe FeatureDesc BuffToDesc(FeatureHeader header, byte* additionalData) {
 				switch(header.Feature) {
+					case FeatureNumber.ProfileList:
+						return new ProfileListFeature(header, additionalData);
 					case FeatureNumber.Core:
 						return new CoreFeature(header, (CoreFeature.Native*)additionalData);
 					default:
@@ -196,6 +198,8 @@ namespace Henke37.Win32.CdAccess {
 
 		internal unsafe static int FeatureSize(FeatureNumber feature) {
 			switch(feature) {
+				case FeatureNumber.ProfileList:
+					return 0;
 				case FeatureNumber.Core:
 					return sizeof(CoreFeature.Native);
 				default:
@@ -242,5 +246,44 @@ namespace Henke37.Win32.CdAccess {
 				FibreChannel = 5
 			}
 		}
+
+		public class ProfileListFeature : FeatureDesc {
+
+			public List<ProfileListEntry> Profiles;
+
+			public unsafe ProfileListFeature(FeatureHeader header, byte* additionalData) : base(header) {
+				Profiles = new List<ProfileListEntry>();
+
+				for(var entryP=(ProfileListEntry.Native*)additionalData;(header.AdditonalLength+additionalData)!=entryP;++entryP) {
+					Profiles.Add(entryP->AsManaged());
+				}
+			}
+
+			public class ProfileListEntry {
+				public ProfileType ProfileNumber;
+				public bool Current;
+
+				internal struct Native {
+					byte ProfileNumber2;
+					byte ProfileNumber1;
+					byte Flags;
+					byte Padding;
+
+					public ProfileListEntry AsManaged() {
+						return new ProfileListEntry() {
+							ProfileNumber = (ProfileType)((ProfileNumber2 << 8) | ProfileNumber1),
+							Current = (Flags & 0x01) != 0
+						};
+					}
+				}
+
+				public override string ToString() {
+					return $"{ProfileNumber} {Current}";
+				}
+			}
+			
+		}
 	}
+
+	
 }
