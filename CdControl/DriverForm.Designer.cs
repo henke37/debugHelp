@@ -32,9 +32,9 @@
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.listIcons = new System.Windows.Forms.ImageList(this.components);
-			this.getCdTExt = new System.Windows.Forms.Button();
 			this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.listIcons = new System.Windows.Forms.ImageList(this.components);
+			this.getConfig = new System.Windows.Forms.Button();
 			this.AlbumTitle = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
@@ -97,6 +97,11 @@
 			// 
 			this.columnHeader3.Text = "Start Time";
 			// 
+			// columnHeader4
+			// 
+			this.columnHeader4.Text = "Title";
+			this.columnHeader4.Width = 390;
+			// 
 			// listIcons
 			// 
 			this.listIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("listIcons.ImageStream")));
@@ -104,20 +109,15 @@
 			this.listIcons.Images.SetKeyName(0, "data");
 			this.listIcons.Images.SetKeyName(1, "audio");
 			// 
-			// getCdTExt
+			// getConfig
 			// 
-			this.getCdTExt.Location = new System.Drawing.Point(256, 12);
-			this.getCdTExt.Name = "getCdTExt";
-			this.getCdTExt.Size = new System.Drawing.Size(75, 23);
-			this.getCdTExt.TabIndex = 4;
-			this.getCdTExt.Text = "GetCdText";
-			this.getCdTExt.UseVisualStyleBackColor = true;
-			this.getCdTExt.Click += new System.EventHandler(this.getCdTExt_Click);
-			// 
-			// columnHeader4
-			// 
-			this.columnHeader4.Text = "Title";
-			this.columnHeader4.Width = 390;
+			this.getConfig.Location = new System.Drawing.Point(256, 12);
+			this.getConfig.Name = "getConfig";
+			this.getConfig.Size = new System.Drawing.Size(75, 23);
+			this.getConfig.TabIndex = 4;
+			this.getConfig.Text = "GetConfig";
+			this.getConfig.UseVisualStyleBackColor = true;
+			this.getConfig.Click += new System.EventHandler(this.getConfig_Click);
 			// 
 			// AlbumTitle
 			// 
@@ -134,7 +134,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(599, 450);
 			this.Controls.Add(this.AlbumTitle);
-			this.Controls.Add(this.getCdTExt);
+			this.Controls.Add(this.getConfig);
 			this.Controls.Add(this.track_lst);
 			this.Controls.Add(this.GetTOC_btn);
 			this.Controls.Add(this.eject_btn);
@@ -156,7 +156,7 @@
 		private System.Windows.Forms.ColumnHeader columnHeader2;
 		private System.Windows.Forms.ColumnHeader columnHeader3;
 		private System.Windows.Forms.ImageList listIcons;
-		private System.Windows.Forms.Button getCdTExt;
+		private System.Windows.Forms.Button getConfig;
 		private System.Windows.Forms.ColumnHeader columnHeader4;
 		private System.Windows.Forms.Label AlbumTitle;
 	}

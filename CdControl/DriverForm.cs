@@ -135,9 +135,8 @@ namespace CdControl {
 			track_lst.Enabled = false;
 		}
 
-		private void getCdTExt_Click(object sender, EventArgs e) {
-			var res = cdDrive.GetConfiguration(Configuration.FeatureNumber.Core, Configuration.RequestType.Current);
-
+		private void getConfig_Click(object sender, EventArgs e) {
+			new GetConfigForm(cdDrive).ShowDialog(this);
 		}
 	}
 }
