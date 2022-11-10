@@ -36,6 +36,8 @@ namespace Henke37.Win32.CdAccess {
 						return new RandomReadableFeature(header, (RandomReadableFeature.Native*)additionalData);
 					case FeatureNumber.CdRead:
 						return new CdReadFeature(header, (CdReadFeature.Native*)additionalData);
+					case FeatureNumber.WriteOnce:
+						return new WriteOnceFeature(header, (WriteOnceFeature.Native*)additionalData);
 					case FeatureNumber.CdTrackAtOnce:
 						return new CdTrackAtOnceFeature(header, (CdTrackAtOnceFeature.Native*)additionalData);
 					case FeatureNumber.CdMastering:
@@ -237,6 +239,8 @@ namespace Henke37.Win32.CdAccess {
 					return 0;
 				case FeatureNumber.CdRead:
 					return sizeof(CdReadFeature.Native);
+				case FeatureNumber.WriteOnce:
+					return sizeof(WriteOnceFeature.Native);
 				case FeatureNumber.SectorErasable:
 					return 0;
 				case FeatureNumber.RestrictedOverwrite:
@@ -476,6 +480,43 @@ namespace Henke37.Win32.CdAccess {
 				byte Padding1;
 				byte Padding2;
 				byte Padding3;
+			}
+		}
+
+		public class WriteOnceFeature : FeatureDesc {
+			public UInt32 LogicalBlockSize;
+			public UInt16 Blocking;
+
+			public bool PagePresent;
+
+			internal unsafe WriteOnceFeature(FeatureHeader header, Native* add) : base(header) {
+				LogicalBlockSize = (uint)(
+					(add->LogicalBlockSize4 << 24) |
+					(add->LogicalBlockSize3 << 16) |
+					(add->LogicalBlockSize2 << 8) |
+					(add->LogicalBlockSize4)
+					);
+
+				Blocking = (UInt16)(
+					(add->Blocking2 << 8) |
+					(add->Blocking1)
+					);
+
+				PagePresent = (add->Flags & 0x01) != 0;
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal struct Native {
+				internal byte LogicalBlockSize4;
+				internal byte LogicalBlockSize3;
+				internal byte LogicalBlockSize2;
+				internal byte LogicalBlockSize1;
+
+				internal byte Blocking2;
+				internal byte Blocking1;
+
+				internal byte Flags;
+				byte Padding;
 			}
 		}
 
