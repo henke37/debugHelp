@@ -40,6 +40,8 @@ namespace Henke37.Win32.CdAccess {
 						return new CdMasteringFeature(header, (CdMasteringFeature.Native*)additionalData);
 					case FeatureNumber.EmbeddedChanger:
 						return new EmbededChangerFeature(header, (EmbededChangerFeature.Native*)additionalData);
+					case FeatureNumber.CDAudioAnalogPlay:
+						return new CdAudioAnalogPlayFeature(header, (CdAudioAnalogPlayFeature.Native*)additionalData);
 					case FeatureNumber.LogicalUnitSerialNumber:
 						return new DriveSerialNumberFeature(header, additionalData);
 					case FeatureNumber.FirmwareDate:
@@ -249,6 +251,8 @@ namespace Henke37.Win32.CdAccess {
 					return 0;
 				case FeatureNumber.EmbeddedChanger:
 					return sizeof(EmbededChangerFeature.Native);
+				case FeatureNumber.CDAudioAnalogPlay:
+					return sizeof(CdAudioAnalogPlayFeature.Native);
 				case FeatureNumber.LogicalUnitSerialNumber:
 					return 0;
 				case FeatureNumber.MediaSerialNumber:
@@ -560,6 +564,34 @@ namespace Henke37.Win32.CdAccess {
 				byte Padding1;
 				byte Padding2;
 				internal byte HighSlot;
+			}
+		}
+
+		public class CdAudioAnalogPlayFeature : FeatureDesc {
+			public bool SeparateVolumes;
+			public bool SeparateChannelMute;
+			public bool Scan;
+
+			public UInt16 VolumeLevels;
+
+			internal unsafe CdAudioAnalogPlayFeature(FeatureHeader header,Native *add) : base(header) {
+				SeparateVolumes = (add->Flags & 0x01) != 0;
+				SeparateChannelMute = (add->Flags & 0x02) != 0;
+				Scan = (add->Flags & 0x04) != 0;
+
+				VolumeLevels = (UInt16)(
+					(add->VolumeLevels2 << 8) |
+					(add->VolumeLevels1)
+					);
+			}
+
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal struct Native {
+				internal byte Flags;
+				byte Padding;
+				internal byte VolumeLevels2;
+				internal byte VolumeLevels1;
 			}
 		}
 
