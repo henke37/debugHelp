@@ -229,11 +229,17 @@ namespace Henke37.Win32.CdAccess {
 					return 0;
 				case FeatureNumber.CdRead:
 					return sizeof(CdReadFeature.Native);
+				case FeatureNumber.SectorErasable:
+					return 0;
+				case FeatureNumber.RestrictedOverwrite:
+					return 0;
 				case FeatureNumber.CdTrackAtOnce:
 					return sizeof(CdTrackAtOnceFeature.Native);
 				case FeatureNumber.CdMastering:
 					return sizeof(CdMasteringFeature.Native);
 				case FeatureNumber.TSR:
+					return 0;
+				case FeatureNumber.HybridDisc:
 					return 0;
 				case FeatureNumber.PowerManagement:
 					return 0;
