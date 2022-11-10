@@ -437,7 +437,7 @@ namespace Henke37.Win32.CdAccess {
 					(add->LogicalBlockSize4 << 24) |
 					(add->LogicalBlockSize3 << 16) |
 					(add->LogicalBlockSize2 << 8) |
-					(add->LogicalBlockSize4)
+					(add->LogicalBlockSize1)
 					);
 
 				Blocking = (UInt16)(
