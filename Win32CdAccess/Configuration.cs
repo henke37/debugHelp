@@ -223,6 +223,8 @@ namespace Henke37.Win32.CdAccess {
 					return sizeof(MorphFeature.Native);
 				case FeatureNumber.RemovableMedium:
 					return sizeof(RemovableMediumFeature.Native);
+				case FeatureNumber.WriteProtect:
+					return sizeof(WriteProtectFeature.Native);
 				case FeatureNumber.MultiRead:
 					return 0;
 				case FeatureNumber.CdRead:
@@ -379,6 +381,28 @@ namespace Henke37.Win32.CdAccess {
 				Popup = 2,
 				ChangerDiscs = 4,
 				ChangerMagazine = 5
+			}
+		}
+
+		public class WriteProtectFeature : FeatureDesc {
+			public bool SupportsSWPPBit;
+			public bool SupportsPersistentWriteProtect;
+			public bool WriteInhibitDCB;
+			public bool DiscWriteProtectPAC;
+
+			internal unsafe WriteProtectFeature(FeatureHeader header, Native*add) : base(header) {
+				SupportsSWPPBit = (add->Flags & 0x01) != 0;
+				SupportsPersistentWriteProtect = (add->Flags & 0x02) != 0;
+				WriteInhibitDCB = (add->Flags & 0x04) != 0;
+				DiscWriteProtectPAC = (add->Flags & 0x08) != 0;
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal struct Native {
+				internal byte Flags;
+				byte Padding1;
+				byte Padding2;
+				byte Padding3;
 			}
 		}
 
