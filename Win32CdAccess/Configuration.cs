@@ -30,6 +30,8 @@ namespace Henke37.Win32.CdAccess {
 						return new MorphFeature(header, (MorphFeature.Native*)additionalData);
 					case FeatureNumber.RemovableMedium:
 						return new RemovableMediumFeature(header, (RemovableMediumFeature.Native*)additionalData);
+					case FeatureNumber.WriteProtect:
+						return new WriteProtectFeature(header, (WriteProtectFeature.Native*)additionalData);
 					case FeatureNumber.RandomReadable:
 						return new RandomReadableFeature(header, (RandomReadableFeature.Native*)additionalData);
 					case FeatureNumber.CdRead:
