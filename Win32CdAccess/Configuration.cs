@@ -249,6 +249,8 @@ namespace Henke37.Win32.CdAccess {
 					return 0;
 				case FeatureNumber.RestrictedOverwrite:
 					return 0;
+				case FeatureNumber.CdrwCAVWrite:
+					return 4;
 				case FeatureNumber.CdTrackAtOnce:
 					return sizeof(CdTrackAtOnceFeature.Native);
 				case FeatureNumber.CdMastering:
