@@ -154,6 +154,37 @@ namespace Henke37.Win32.CdAccess {
 			}
 		}
 
+		public unsafe CdLockToken Lock(string callerName, bool ignoreMount) {
+			ExclusiveAccessLockRequest request = new ExclusiveAccessLockRequest() {
+				Access = new ExcusiveAccessRequest() { 
+					RequestType= ExclusiveAccessRequestType.LockDevice, 
+					Flags = ignoreMount?ExclusiveAccessRequestFlags.IgnoreVolume:0
+				},
+			};
+
+			if(callerName.Length > 63) throw new ArgumentOutOfRangeException(nameof(callerName), "Name is too long!");
+
+			fixed(char* charsP= callerName.ToCharArray()) {
+				Encoding.ASCII.GetBytes(
+					charsP,
+					callerName.Length,
+					request.CallerName,
+					64);
+			}
+
+			file.DeviceControlInput(DeviceIoControlCode.CdRomExclusiveAccess, ref request);
+
+			return new CdLockToken(this);
+		}
+
+		internal unsafe void Unlock(bool noNotifications) {
+			ExcusiveAccessRequest request = new ExcusiveAccessRequest() {
+				RequestType = ExclusiveAccessRequestType.UnlockDevice,
+				Flags = noNotifications ? ExclusiveAccessRequestFlags.NoMediaNotifications : 0
+			};
+			file.DeviceControlInput(DeviceIoControlCode.CdRomExclusiveAccess, ref request);
+		}
+
 		[SecuritySafeCritical]
 		public unsafe List<ATIP>? GetATIP() {
 			try {
