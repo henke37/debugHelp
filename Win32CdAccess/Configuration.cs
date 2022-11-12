@@ -38,6 +38,8 @@ namespace Henke37.Win32.CdAccess {
 						return new CdReadFeature(header, (CdReadFeature.Native*)additionalData);
 					case FeatureNumber.RandomWritable:
 						return new RandomWriteableFeature(header, (RandomWriteableFeature.Native*)additionalData);
+					case FeatureNumber.IncrementalStreamingWritable:
+						return new IncrementalStreamingWriteFeature(header, (IncrementalStreamingWriteFeature.NativeHeader*)additionalData);
 					case FeatureNumber.WriteOnce:
 						return new WriteOnceFeature(header, (WriteOnceFeature.Native*)additionalData);
 					case FeatureNumber.CdTrackAtOnce:
@@ -245,6 +247,8 @@ namespace Henke37.Win32.CdAccess {
 					return sizeof(RandomWriteableFeature.Native);
 				case FeatureNumber.WriteOnce:
 					return sizeof(WriteOnceFeature.Native);
+				case FeatureNumber.IncrementalStreamingWritable:
+					return 0;
 				case FeatureNumber.SectorErasable:
 					return 0;
 				case FeatureNumber.RestrictedOverwrite:
@@ -536,6 +540,41 @@ namespace Henke37.Win32.CdAccess {
 
 				internal byte Flags;
 				byte Padding;
+			}
+		}
+
+		public class IncrementalStreamingWriteFeature : FeatureDesc {
+
+			public UInt16 DataBlockTypesSupported;
+			public bool BufferUnderrunFree;
+			public bool AddressModeReservation;
+			public bool TrackRessourceInformation;
+
+			public byte[] LinkSizes;
+
+			internal unsafe IncrementalStreamingWriteFeature(FeatureHeader header, NativeHeader *add) : base(header) {
+				DataBlockTypesSupported = (UInt16)(
+					(add->DataBlockTypesSupported2 << 8) |
+					(add->DataBlockTypesSupported1)
+					);
+
+				BufferUnderrunFree = (add->Flags & 0x01) != 0;
+				AddressModeReservation = (add->Flags & 0x02) != 0;
+				TrackRessourceInformation = (add->Flags & 0x04) != 0;
+
+				byte* linksP = (byte*)(add + 1);
+				LinkSizes = new byte[add->NumLinkSizes];
+				for(byte linkIndex=0;linkIndex< add->NumLinkSizes; ++linkIndex) {
+					LinkSizes[linkIndex] = linksP[linkIndex];
+				}
+			}
+
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			internal struct NativeHeader {
+				internal byte DataBlockTypesSupported2;
+				internal byte DataBlockTypesSupported1;
+				internal byte Flags;
+				internal byte NumLinkSizes;
 			}
 		}
 
