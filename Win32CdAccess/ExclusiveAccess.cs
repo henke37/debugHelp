@@ -26,11 +26,13 @@ namespace Henke37.Win32.CdAccess {
 		NoMediaNotifications = 1 << 1
 	}
 
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	internal struct ExcusiveAccessRequest {
 		public ExclusiveAccessRequestType RequestType;
 		public ExclusiveAccessRequestFlags Flags;
 	}
 
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	internal unsafe struct ExclusiveAccessLockRequest {
 		public ExcusiveAccessRequest Access;
 		public fixed byte CallerName[64];
