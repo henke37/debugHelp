@@ -177,6 +177,14 @@ namespace Henke37.Win32.CdAccess {
 			return new CdLockToken(this);
 		}
 
+		public InqueryData GetInqueryData() {
+			InqueryData.Native native=new InqueryData.Native();
+
+			file.DeviceControlOutput(DeviceIoControlCode.CdRomGetInqueryData, ref native);
+
+			return new InqueryData(native);
+		}
+
 		internal unsafe void Unlock(bool noNotifications) {
 			ExcusiveAccessRequest request = new ExcusiveAccessRequest() {
 				RequestType = ExclusiveAccessRequestType.UnlockDevice,
