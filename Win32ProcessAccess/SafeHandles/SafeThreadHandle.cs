@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security;
 using System.Security.Permissions;
 
 namespace Henke37.Win32.SafeHandles {
@@ -19,6 +20,7 @@ namespace Henke37.Win32.SafeHandles {
 			}
 		}
 
+		[SecuritySafeCritical]
 		public bool Equals(SafeThreadHandle other) {
 			if(other.handle == handle) return true;
 			return CompareObjectHandles(other.handle, handle);

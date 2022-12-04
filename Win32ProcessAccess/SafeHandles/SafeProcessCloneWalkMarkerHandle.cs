@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Henke37.Win32.SafeHandles {
 	class SafeProcessCloneWalkMarkerHandle : SafeHandleZeroOrMinusOneIsInvalid {
@@ -18,6 +19,7 @@ namespace Henke37.Win32.SafeHandles {
 			base.SetHandle(h);
 		}
 
+		[SecuritySafeCritical]
 		protected override bool ReleaseHandle() {
 			var ret = PssWalkMarkerFree(handle);
 			return ret == 0;

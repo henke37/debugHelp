@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security;
 using System.Security.Permissions;
 
 namespace Henke37.Win32.SafeHandles {
@@ -22,6 +23,7 @@ namespace Henke37.Win32.SafeHandles {
 			return new SafeJobHandle(DuplicateHandleLocal(handle, accessRights, false, DuplicateOptions.None), true);
 		}
 
+		[SecuritySafeCritical]
 		public bool Equals(SafeJobHandle other) {
 			if(other.handle == handle) return true;
 			return CompareObjectHandles(other.handle, handle);

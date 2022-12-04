@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security;
 using System.Security.Permissions;
 
 namespace Henke37.Win32.SafeHandles {
@@ -34,26 +35,31 @@ namespace Henke37.Win32.SafeHandles {
 #if NETFRAMEWORK
 		[HostProtection(MayLeakOnAbort = true)]
 #endif
+		[SecuritySafeCritical]
 		public static SafeProcessHandle DuplicateFrom(Microsoft.Win32.SafeHandles.SafeProcessHandle safeHandle) {
 			return new SafeProcessHandle(DuplicateHandleLocal(safeHandle.DangerousGetHandle(), 0, false, DuplicateOptions.SameAccess), true);
 		}
 #if NETFRAMEWORK
 		[HostProtection(MayLeakOnAbort = true)]
 #endif
+		[SecuritySafeCritical]
 		public static SafeProcessHandle DuplicateFrom(Microsoft.Win32.SafeHandles.SafeProcessHandle safeHandle, uint accessRights) {
 			return new SafeProcessHandle(DuplicateHandleLocal(safeHandle.DangerousGetHandle(), accessRights, false, DuplicateOptions.None), true);
 		}
 
+		[SecuritySafeCritical]
 		public bool Equals(SafeProcessHandle other) {
 			if(other.handle == handle) return true;
 			return CompareObjectHandles(other.handle, handle);
 		}
 
+		[SecuritySafeCritical]
 		public bool Equals(IntPtr other) {
 			if(other == handle) return true;
 			return CompareObjectHandles(other, handle);
 		}
 
+		[SecuritySafeCritical]
 		public bool Equals(Microsoft.Win32.SafeHandles.SafeProcessHandle other) {
 			return CompareObjectHandles(other.DangerousGetHandle(), handle);
 		}
