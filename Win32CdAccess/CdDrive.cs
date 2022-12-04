@@ -30,14 +30,17 @@ namespace Henke37.Win32.CdAccess {
 			return devInfo.GetDevices();
 		}
 
+		[SecuritySafeCritical]
 		public void Eject() {
 			file.DeviceControl(DeviceIoControlCode.DiskEjectMedia);
 		}
 
+		[SecuritySafeCritical]
 		public void Load() {
 			file.DeviceControl(DeviceIoControlCode.DiskLoadMedia);
 		}
 
+		[SecuritySafeCritical]
 		public void VerifyMedia() {
 			try {
 				file.DeviceControl(DeviceIoControlCode.CdRomCheckVerify);
@@ -154,6 +157,7 @@ namespace Henke37.Win32.CdAccess {
 			}
 		}
 
+		[SecuritySafeCritical]
 		public unsafe CdLockToken Lock(string callerName, bool ignoreMount) {
 			ExclusiveAccessLockRequest request = new ExclusiveAccessLockRequest() {
 				Access = new ExcusiveAccessRequest() { 
@@ -177,6 +181,7 @@ namespace Henke37.Win32.CdAccess {
 			return new CdLockToken(this);
 		}
 
+		[SecuritySafeCritical]
 		public InqueryData GetInqueryData() {
 			InqueryData.Native native=new InqueryData.Native();
 
@@ -185,6 +190,7 @@ namespace Henke37.Win32.CdAccess {
 			return new InqueryData(native);
 		}
 
+		[SecuritySafeCritical]
 		internal unsafe void Unlock(bool noNotifications) {
 			ExcusiveAccessRequest request = new ExcusiveAccessRequest() {
 				RequestType = ExclusiveAccessRequestType.UnlockDevice,

@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 
 namespace Henke37.Win32.Files {
@@ -66,11 +67,13 @@ namespace Henke37.Win32.Files {
 			if(!success) throw new Win32Exception();
 		}
 
+		[SecurityCritical]
 		internal unsafe void DeviceControl(DeviceIoControlCode controlCode) {
 			bool success = DeviceIoControl(handle, controlCode, null, 0, null, 0, out _, null);
 			if(!success) throw new Win32Exception();
 		}
 
+		[SecurityCritical]
 		internal unsafe void DeviceControlInput<TIn>(DeviceIoControlCode controlCode, ref TIn inBuff) where TIn : unmanaged {
 			fixed (void* inBuffP = &inBuff) {
 				bool success = DeviceIoControl(handle, controlCode,inBuffP,(uint)Marshal.SizeOf<TIn>(),null,0,out _ ,null);
@@ -78,17 +81,20 @@ namespace Henke37.Win32.Files {
 			}
 		}
 
+		[SecurityCritical]
 		internal unsafe TOut DeviceControlOutput<TOut>(DeviceIoControlCode controlCode) where TOut : unmanaged {
 			TOut outBuff=new TOut();
 			DeviceControlOutput(controlCode, ref outBuff);
 			return outBuff;
 		}
+		[SecurityCritical]
 		internal unsafe void DeviceControlOutput<TOut>(DeviceIoControlCode controlCode, ref TOut outBuff) where TOut : unmanaged {
 			fixed (void* outBuffP = &outBuff) {
 				bool success = DeviceIoControl(handle, controlCode, null, 0, outBuffP, (uint)Marshal.SizeOf<TOut>(), out _, null);
 				if(!success) throw new Win32Exception();
 			}
 		}
+		[SecurityCritical]
 		internal unsafe uint DeviceControlOutput(DeviceIoControlCode controlCode, byte[] outBuff) {
 			uint written = 0;
 			fixed (void* outBuffP = outBuff) {
@@ -98,6 +104,7 @@ namespace Henke37.Win32.Files {
 			return written;
 		}
 
+		[SecurityCritical]
 		internal unsafe uint DeviceControlInputOutput<TIn>(DeviceIoControlCode controlCode, ref TIn inBuff, byte[] outBuff) where TIn : unmanaged  {
 			uint written = 0;
 			fixed(void* inBuffP = &inBuff) {
@@ -109,12 +116,14 @@ namespace Henke37.Win32.Files {
 
 			return written;
 		}
+		[SecurityCritical]
 		internal unsafe void DeviceControlInputOutput<TIn, TOut>(DeviceIoControlCode controlCode, ref TIn inBuff, ref TOut outBuff) where TIn : unmanaged where TOut : unmanaged {
 			fixed (void* inBuffP = &inBuff, outBuffP = &outBuff) {
 				bool success = DeviceIoControl(handle, controlCode, inBuffP, (uint)Marshal.SizeOf<TIn>(), outBuffP, (uint)Marshal.SizeOf<TOut>(), out _, null);
 				if(!success) throw new Win32Exception();
 			}
 		}
+		[SecurityCritical]
 		internal unsafe TOut DeviceControlInputOutput<TIn, TOut>(DeviceIoControlCode controlCode, ref TIn inBuff) where TIn : unmanaged where TOut : unmanaged {
 			TOut outBuff = new TOut();
 			DeviceControlInputOutput(controlCode, ref inBuff, ref outBuff);
