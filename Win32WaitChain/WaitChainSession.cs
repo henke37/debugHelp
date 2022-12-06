@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Threading.Tasks;
 
 namespace Henke37.Win32.WaitChain {
+	[SuppressUnmanagedCodeSecurity]
 	public class WaitChainSession {
 		internal SafeWaitChainSessionHandle handle;
 

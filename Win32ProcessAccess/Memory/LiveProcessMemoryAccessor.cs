@@ -25,7 +25,6 @@ namespace Henke37.Win32.Memory {
 
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		[SuppressUnmanagedCodeSecurity]
 		public unsafe override void ReadBytes(IntPtr addr, uint size, byte[] buff) {
 			int readC;
 			try {
@@ -42,7 +41,6 @@ namespace Henke37.Win32.Memory {
 
 		[SecurityCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		[SuppressUnmanagedCodeSecurity]
 		public unsafe override void ReadBytes(IntPtr addr, uint size, void* buff) {
 			try {
 				bool success = ReadProcessMemory(handle, addr, buff, size, out int readC);
@@ -55,7 +53,6 @@ namespace Henke37.Win32.Memory {
 
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		[SuppressUnmanagedCodeSecurity]
 		public override unsafe void WriteBytes(byte[] srcBuff, IntPtr dstAddr, uint size) {
 			try {
 				fixed (byte* buffP = srcBuff) {
@@ -69,7 +66,6 @@ namespace Henke37.Win32.Memory {
 
 		[SecurityCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		[SuppressUnmanagedCodeSecurity]
 		public override unsafe void WriteBytes(void* srcBuff, IntPtr dstAddr, uint size) {
 			try {
 				bool success = WriteProcessMemory(handle, (IntPtr)dstAddr, (byte*)srcBuff, size, out var written);
@@ -80,6 +76,7 @@ namespace Henke37.Win32.Memory {
 		}
 
 		[DllImport("kernel32.dll", SetLastError = true)]
+		[SuppressUnmanagedCodeSecurity]
 		internal static unsafe extern bool WriteProcessMemory(
 		  SafeProcessHandle hProcess,
 		  IntPtr lpBaseAddress,
@@ -89,6 +86,7 @@ namespace Henke37.Win32.Memory {
 		);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
+		[SuppressUnmanagedCodeSecurity]
 		internal unsafe static extern bool ReadProcessMemory(
 			SafeProcessHandle hProcess,
 			IntPtr lpBaseAddress,

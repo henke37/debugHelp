@@ -5,8 +5,10 @@ using System.Runtime.InteropServices;
 
 using Henke37.Win32.SafeHandles;
 using Henke37.DebugHelp;
+using System.Security;
 
 namespace Henke37.Win32.Snapshots {
+	[SuppressUnmanagedCodeSecurity]
 	public class Toolhelp32Snapshot : IDisposable {
 		internal SafeToolhelp32SnapshotHandle handle;
 		private const int ErrNoMoreFiles = 18;

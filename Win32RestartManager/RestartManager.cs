@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Henke37.Win32.Restart {
+	[SuppressUnmanagedCodeSecurity]
 	public class RestartManager : IDisposable {
 
 		private UIntPtr handle;

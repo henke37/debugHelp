@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Henke37.Win32.Windows {
+	[SuppressUnmanagedCodeSecurity]
 	public class NativeWindow : IWin32Window {
 		private IntPtr handle;
 

@@ -8,6 +8,7 @@ using System.Security;
 using System.Text;
 
 namespace Henke37.Win32.Files {
+	[SuppressUnmanagedCodeSecurity]
 	public class NativeFileObject : IDisposable {
 		internal SafeFileObjectHandle handle;
 		private const int NoError=0;

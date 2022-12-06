@@ -2,11 +2,13 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Henke37.Win32.Threads {
 	public abstract class ThreadContext {
 	}
 
+	[SuppressUnmanagedCodeSecurity]
 	public class ThreadContext32 : ThreadContext {
 
 		public UInt32 SegDs;
@@ -150,7 +152,8 @@ namespace Henke37.Win32.Threads {
 		internal void WriteToHandle(SafeThreadHandle handle) {
 			throw new NotImplementedException();
 		}
-
+		
+		[SuppressUnmanagedCodeSecurity]
 		internal unsafe struct Native {
 
 			[DllImport("kernel32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
@@ -164,6 +167,7 @@ namespace Henke37.Win32.Threads {
 
 
 #if arm64
+	[SuppressUnmanagedCodeSecurity]
 	public class ThreadContextArm64 : ThreadContext {
 
 		public UInt32 ContextFlags;

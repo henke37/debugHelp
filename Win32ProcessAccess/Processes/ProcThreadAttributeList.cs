@@ -16,7 +16,6 @@ namespace Henke37.Win32.Processes {
 
 		public bool IsDisposed { get => disposedValue; }
 
-		[SuppressUnmanagedCodeSecurity]
 		private unsafe void Init(uint count) {
 			uint size =0;
 			InitializeProcThreadAttributeList(lpAttributeList, count, 0, ref size);
@@ -35,7 +34,6 @@ namespace Henke37.Win32.Processes {
 			}
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		public unsafe void AddAttribute<T>(ProcThreadAttribute att, T* val) where T : unmanaged {
 			if(disposedValue) throw new ObjectDisposedException("ProcThreadAttributeList");
 
@@ -54,6 +52,7 @@ namespace Henke37.Win32.Processes {
 #pragma warning restore CS0169
 
 		[DllImport("Kernel32.dll", SetLastError = true)]
+		[SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern unsafe bool InitializeProcThreadAttributeList(
 			ProcThreadAttributeList.Native* lpAttributeList,
@@ -63,6 +62,7 @@ namespace Henke37.Win32.Processes {
 		);
 
 		[DllImport("Kernel32.dll", SetLastError = true)]
+		[SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern unsafe bool UpdateProcThreadAttribute(
 			ProcThreadAttributeList.Native* lpAttributeList,
@@ -77,7 +77,6 @@ namespace Henke37.Win32.Processes {
 		[DllImport("Kernel32.dll", SetLastError = true)]
 		static extern unsafe void DeleteProcThreadAttributeList(ProcThreadAttributeList.Native* lpAttributeList);
 
-		[SuppressUnmanagedCodeSecurity]
 		protected virtual unsafe void Dispose(bool disposing) {
 			if(!disposedValue) {
 				if(disposing) {

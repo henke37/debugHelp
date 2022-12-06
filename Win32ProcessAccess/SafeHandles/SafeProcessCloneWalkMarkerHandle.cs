@@ -27,6 +27,7 @@ namespace Henke37.Win32.SafeHandles {
 
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		[SuppressUnmanagedCodeSecurity]
 		public static extern Int32 PssWalkMarkerFree(IntPtr handle);
 	}
 }

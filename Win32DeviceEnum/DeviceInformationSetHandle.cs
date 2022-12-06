@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace Henke37.Win32.DeviceEnum {
 
 
 		[DllImport("Setupapi.dll", ExactSpelling = true, SetLastError = true)]
+		[SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool SetupDiDestroyDeviceInfoList(IntPtr handle);
 	}

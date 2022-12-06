@@ -2,9 +2,11 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Threading;
 
 namespace Henke37.Win32.Debug {
+	[SuppressUnmanagedCodeSecurity]
 	public class Debugger {
 
 		private static readonly object instanceLock= new object();

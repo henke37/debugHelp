@@ -25,6 +25,7 @@ namespace Henke37.Win32.Processes {
 #if NETFRAMEWORK
 	[HostProtection(ExternalProcessMgmt = true)]
 #endif
+	[SuppressUnmanagedCodeSecurity]
 	public class NativeProcess : IDisposable {
 		internal SafeProcessHandle handle;
 		private const int ERROR_BAD_LENGTH = 24;

@@ -12,6 +12,7 @@ namespace Henke37.Win32.Jobs {
 #if NETFRAMEWORK
 	[HostProtection(ExternalProcessMgmt=true)]
 #endif
+	[SuppressUnmanagedCodeSecurity]
 	public class NativeJob : IDisposable {
 
 		private SafeJobHandle handle;
@@ -21,7 +22,6 @@ namespace Henke37.Win32.Jobs {
 		}
 
 		[SecuritySafeCritical]
-		[SuppressUnmanagedCodeSecurity]
 		public static unsafe NativeJob Create() {
 			SafeJobHandle handle = CreateJobObjectW(null, null);
 			if(handle.IsInvalid) throw new Win32Exception();
@@ -29,7 +29,6 @@ namespace Henke37.Win32.Jobs {
 		}
 
 		[SecuritySafeCritical]
-		[SuppressUnmanagedCodeSecurity]
 		public static unsafe NativeJob Create(string jobName) {
 			SafeJobHandle handle = CreateJobObjectW(null, jobName);
 			if(handle.IsInvalid) throw new Win32Exception();
@@ -37,7 +36,6 @@ namespace Henke37.Win32.Jobs {
 		}
 
 		[SecuritySafeCritical]
-		[SuppressUnmanagedCodeSecurity]
 		public static unsafe NativeJob Open(string jobName, JobAccessRights accessRights = JobAccessRights.All, bool inheritHandle=false) {
 			SafeJobHandle handle = OpenJobObjectW((uint)accessRights, inheritHandle, jobName);
 			if(handle.IsInvalid) throw new Win32Exception();
@@ -51,13 +49,11 @@ namespace Henke37.Win32.Jobs {
 		}
 
 		[SecuritySafeCritical]
-		[SuppressUnmanagedCodeSecurity]
 		internal void AttachProcess(SafeProcessHandle processHandle) {
 			bool success = AssignProcessToJobObject(handle, processHandle);
 			if(!success) throw new Win32Exception();
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		internal unsafe T QueryInformationJob<T>(JobInformationClass infoClass, out T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				bool success = QueryInformationJobObject(handle, infoClass, buffP, (uint)sizeof(T), out _);
@@ -66,7 +62,6 @@ namespace Henke37.Win32.Jobs {
 			}
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		internal unsafe void SetInformationJob<T>(JobInformationClass infoClass, ref T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				bool success = SetInformationJobObject(handle, infoClass, buffP, (uint)sizeof(T));
@@ -75,7 +70,6 @@ namespace Henke37.Win32.Jobs {
 		}
 
 		[SecuritySafeCritical]
-		[SuppressUnmanagedCodeSecurity]
 		void Terminate(UInt32 exitCode) {
 			TerminateJobObject(handle, exitCode);
 		}
@@ -151,7 +145,6 @@ namespace Henke37.Win32.Jobs {
 			}
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		public bool IsProcessInJob(NativeProcess process) {
 			bool success = IsProcessInJobNative(process.handle, handle, out bool result);
 			if(!success) throw new Win32Exception();

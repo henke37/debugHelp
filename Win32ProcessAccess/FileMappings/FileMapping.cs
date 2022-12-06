@@ -4,8 +4,10 @@ using Henke37.Win32.SafeHandles;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Henke37.Win32.FileMappings {
+	[SuppressUnmanagedCodeSecurity]
 	public class FileMapping : IDisposable {
 		internal SafeFileMappingHandle handle;
 

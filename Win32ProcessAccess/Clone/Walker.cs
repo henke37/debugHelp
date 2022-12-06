@@ -26,14 +26,12 @@ namespace Henke37.Win32.Clone {
 			markerHandle=CreateMarker(processClone);
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		private SafeProcessCloneWalkMarkerHandle CreateMarker(ProcessClone processClone) {
 			var ret = PssWalkMarkerCreate(IntPtr.Zero, processClone.Handle, out var markerHandle);
 			if(ret != 0) throw new Win32Exception(ret);
 			return markerHandle;
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		[SecuritySafeCritical]
 		private unsafe bool Walk(ref T buff) {
 			fixed(void* buffP = &buff) {
@@ -44,7 +42,6 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		public void Reset() {
 			PssWalkMarkerSeekToBeginning(markerHandle);
 		}
@@ -58,6 +55,7 @@ namespace Henke37.Win32.Clone {
 		}
 	}
 
+	[SuppressUnmanagedCodeSecurity]
 	static class WalkerNativeMethods {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
 		internal static extern Int32 PssWalkMarkerCreate(IntPtr allocator, SafeProcessCloneHandle cloneHandle, out SafeProcessCloneWalkMarkerHandle walkerHandle);

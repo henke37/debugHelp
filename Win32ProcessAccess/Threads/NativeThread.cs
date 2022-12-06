@@ -19,6 +19,7 @@ namespace Henke37.Win32.Threads {
 #if NETFRAMEWORK
 	[HostProtection(ExternalThreading = true)]
 #endif
+	[SuppressUnmanagedCodeSecurity]
 	public sealed class NativeThread : IDisposable {
 		readonly SafeThreadHandle handle;
 

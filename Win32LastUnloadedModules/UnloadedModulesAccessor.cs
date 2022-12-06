@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Henke37.Win32.LastUnloadedModules {
 	public class UnloadedModulesAccessor {
@@ -50,6 +51,7 @@ namespace Henke37.Win32.LastUnloadedModules {
 		}
 
 		[DllImport("Ntdll.dll", SetLastError = true)]
+		[SuppressUnmanagedCodeSecurity]
 		static extern void RtlGetUnloadEventTraceEx(
 		  out IntPtr ElementSize,
 		  out IntPtr ElementCount,

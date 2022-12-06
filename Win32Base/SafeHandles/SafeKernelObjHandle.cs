@@ -10,6 +10,7 @@ using System.Security.Permissions;
 using System.Threading;
 
 namespace Henke37.Win32.SafeHandles {
+	[SuppressUnmanagedCodeSecurity]
 	public abstract class SafeKernelObjHandle : SafeHandleZeroOrMinusOneIsInvalid {
 		private const uint FlagInherit = 0x00000001;
 		private const uint FlagProtectFromClose = 0x00000002;
@@ -27,7 +28,6 @@ namespace Henke37.Win32.SafeHandles {
 			base.SetHandle(h);
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		[SecuritySafeCritical]
 		override protected bool ReleaseHandle() {
 			return CloseHandle(handle);

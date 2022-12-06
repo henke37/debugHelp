@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Henke37.Win32.WaitChain {
 	internal class SafeWaitChainSessionHandle : SafeHandle {
@@ -16,6 +17,7 @@ namespace Henke37.Win32.WaitChain {
 		}
 
 		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = false)]
+		[SuppressUnmanagedCodeSecurity]
 		internal static extern void CloseThreadWaitChainSession(IntPtr handle);
 	}
 }

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Henke37.Win32.DeviceEnum {
+	[SuppressUnmanagedCodeSecurity]
 	public class DeviceInformationSet {
 
 		private DeviceInformationSetHandle handle;

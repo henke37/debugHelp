@@ -18,7 +18,6 @@ namespace Henke37.Win32.SafeHandles {
 			base.SetHandle(h);
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		[SecuritySafeCritical]
 		override protected bool ReleaseHandle() {
 			var ret=PssFreeSnapshot(SafeProcessHandle.CurrentProcess,handle);
@@ -27,6 +26,7 @@ namespace Henke37.Win32.SafeHandles {
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		[SuppressUnmanagedCodeSecurity]
 		public static extern Int32 PssFreeSnapshot(SafeProcessHandle ownerProcess, IntPtr handle);
 	}
 }

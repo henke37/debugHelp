@@ -17,7 +17,6 @@ namespace Henke37.Win32.Clone {
 			this.Handle = Handle;
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		public static ProcessClone CloneProcess(NativeProcess proc, CloneFlags flags, ContextFlags contextFlags = 0) {
 			var ret = PssCaptureSnapshot(proc.handle, flags, contextFlags, out SafeProcessCloneHandle clonedProc);
 			if(ret != 0) throw new Win32Exception(ret);
@@ -73,7 +72,6 @@ namespace Henke37.Win32.Clone {
 			}
 		}
 
-		[SuppressUnmanagedCodeSecurity]
 		[SecuritySafeCritical]
 		internal unsafe T QueryInformation<T>(QueryInformationClass infoClass, out T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
@@ -120,9 +118,11 @@ namespace Henke37.Win32.Clone {
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		[SuppressUnmanagedCodeSecurity]
 		internal static extern Int32 PssCaptureSnapshot(SafeProcessHandle originalProcess, CloneFlags flags, ContextFlags contextFlags, out SafeProcessCloneHandle clonedProc);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = false)]
+		[SuppressUnmanagedCodeSecurity]
 		internal static unsafe extern Int32 PssQuerySnapshot(SafeProcessCloneHandle clonedProc, QueryInformationClass informationClass, void * buffer, UInt32 buffSize);
 
 	}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 
 namespace Henke37.Win32.Files {
@@ -47,6 +48,7 @@ namespace Henke37.Win32.Files {
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
+		[SuppressUnmanagedCodeSecurity]
 		internal static extern UInt32 QueryDosDeviceW([MarshalAs(UnmanagedType.LPWStr)] string deviceName, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder targetPath, UInt32 targetPathBufferLen);
 	}
 }

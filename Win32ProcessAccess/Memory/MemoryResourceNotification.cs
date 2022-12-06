@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Henke37.Win32.Memory {
 	public class MemoryResourceNotification : IDisposable {
@@ -21,9 +22,11 @@ namespace Henke37.Win32.Memory {
 		}
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[SuppressUnmanagedCodeSecurity]
 		internal static unsafe extern SafeMemoryResourceNotificationHandle CreateMemoryResourceNotification(uint type);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static unsafe extern bool QueryMemoryResourceNotification(SafeMemoryResourceNotificationHandle handle, [MarshalAs(UnmanagedType.Bool)] out bool status);
 

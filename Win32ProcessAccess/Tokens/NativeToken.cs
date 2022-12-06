@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Security.Permissions;
 using System.Security.Principal;
 
@@ -11,6 +12,7 @@ namespace Henke37.Win32.Tokens {
 #if NETFRAMEWORK
 	[HostProtection(SecurityInfrastructure = true)]
 #endif
+	[SuppressUnmanagedCodeSecurity]
 	public class NativeToken : IDisposable, IEquatable<NativeToken> {
 		private SafeTokenHandle tokenHandle;
 

@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Henke37.Win32.Tokens {
+	[SuppressUnmanagedCodeSecurity]
 	public static class Privilege {
 
 		public static UInt64 AssignPrimaryToken => LookupPrivilege("SeAssignPrimaryTokenPrivilege");
