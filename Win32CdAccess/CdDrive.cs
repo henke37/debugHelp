@@ -9,13 +9,14 @@ using System.Text;
 using Henke37.Win32.AccessRights;
 using Henke37.Win32.DeviceEnum;
 using Henke37.Win32.Files;
-using static System.Collections.Specialized.BitVector32;
 using static Henke37.Win32.CdAccess.Configuration;
 
 namespace Henke37.Win32.CdAccess {
 	public class CdDrive {
 		internal NativeFileObject file;
 		private const int TOCTrackCount = 100;
+
+		private const int STATUS_BUFFER_OVERFLOW = unchecked((int)0x80000005);
 
 		private readonly static Guid CdDriveGuid = new Guid("53F56308-B6BF-11D0-94F2-00A0C91EFB8B");
 
@@ -351,6 +352,30 @@ namespace Henke37.Win32.CdAccess {
 					return false;
 				} catch (Win32Exception ex) when (ex.NativeErrorCode==19) {
 					return true;
+				}
+			}
+		}
+
+		public string DeviceName => GetDeviceName();
+
+		[SecuritySafeCritical]
+		internal string GetDeviceName() {
+
+			int len = 200;
+
+			for(; ; ) {
+				try {
+					var buff = new byte[len];
+
+					try {
+						file.DeviceControlOutput(DeviceIoControlCode.MountDevQueryDeviceName, buff);
+					} finally {
+						len = buff[0] | (buff[1] << 8);
+					}
+
+					return Encoding.Unicode.GetString(buff, 2, len);
+				} catch(Win32Exception err) when(err.NativeErrorCode == STATUS_BUFFER_OVERFLOW) {
+					//nop
 				}
 			}
 		}
