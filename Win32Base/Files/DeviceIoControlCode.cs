@@ -32,6 +32,18 @@
 		BatteryQueryInformation= 0x294044,
 		BatteryQueryStatus= 0x29404c,
 		BatterySetInformation = 0x298048,
-		IdePassThrough = 0x4d028
+		IdePassThrough = 0x4d028,
+		MountDevQueryDeviceName = 0x4d0008,
+		MountDevQueryStableGUID = 0x4d0018,
+		MountDevQuerySuggestedLinkName = 0x4d000c,
+		MountDevQueryUniqueId = 0x4d0000,
+		MountMgrChangeNotify = 0x6d4020,
+		MountMgrCheckUnprocessedVolumes = 0x6d4028,
+		MountMgrCreatePoint = 0x6dc000,
+		MountMgrDeletePoints = 0x6dc004,
+		MountMgrDeletePointsDbOnly = 0x6dc00c,
+		MountMgrKeepLinksWhenOffline = 0x6dc024,
+		MountMgrQueryAutoMount = 0x6d003c,
+		MountMgrQueryPoints = 0x6d0008,
 	}
 }
