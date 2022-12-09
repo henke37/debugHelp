@@ -1,9 +1,7 @@
 ﻿using Henke37.Win32.Files;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Henke37.Win32.MountPointManager {
 	public class MountPointManager {
@@ -20,6 +18,7 @@ namespace Henke37.Win32.MountPointManager {
 		}
 
 		public List<MountPoint> QueryPoints(MountPoint needle) {
+			var buff=needle.ToBuff();
 			throw new NotImplementedException();
 		}
 	}
