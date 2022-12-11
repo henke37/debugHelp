@@ -7,3 +7,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Henke37.Win32.CdAccess")]
 [assembly: InternalsVisibleTo("Henke37.Win32.BatteryAccess")]
 [assembly: InternalsVisibleTo("Henke37.Win32.Debug")]
+[assembly: InternalsVisibleTo("Henke37.Win32.MountPointManager")]
