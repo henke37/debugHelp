@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net462;netstandard20</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageId>Henke37.Win32.MountPointManager</PackageId>
@@ -15,6 +14,7 @@
     <Platforms>x86;x64</Platforms>
     <LangVersion>8.0</LangVersion>
     <RootNamespace>Henke37.Win32.MountPointManager</RootNamespace>
+    <AssemblyName>Henke37.Win32.MountPointManager</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>TRACE;x64</DefineConstants>

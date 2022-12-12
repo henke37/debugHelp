@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Henke37.Win32.MountPointManager {
 	public class MountPoint {
@@ -29,13 +32,13 @@ namespace Henke37.Win32.MountPointManager {
 
 				w.Seek(0, SeekOrigin.Begin);
 				w.Write(linkOffset);
-				w.Write(SymbolicLinkName?.Length??0);
+				w.Write((UInt16)(SymbolicLinkName?.Length*2??0));
 				w.Seek(2, SeekOrigin.Current);
 				w.Write(uidOffset);
-				w.Write(UniqueId?.Length ?? 0);
+				w.Write((UInt16)(UniqueId?.Length*2 ?? 0));
 				w.Seek(2, SeekOrigin.Current);
 				w.Write(devNameOffset);
-				w.Write(DeviceName?.Length ?? 0);
+				w.Write((UInt16)(DeviceName?.Length*2 ?? 0));
 				w.Seek(2, SeekOrigin.Current);
 
 			}
@@ -43,6 +46,11 @@ namespace Henke37.Win32.MountPointManager {
 			return ms.GetBuffer();
 		}
 
+		public override string ToString() {
+			return $"{SymbolicLinkName??"null"} {DeviceName ?? "null"}";
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
 		internal struct Header {
 			internal UInt32 SymLinkNameOffset;
 			internal UInt16 SymLinkNameLength;
@@ -56,5 +64,11 @@ namespace Henke37.Win32.MountPointManager {
 			internal UInt16 DeviceNameLength;
 			internal UInt16 Padding3;
 		}
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	internal struct MountPointListHeader {
+		internal UInt32 Size;
+		internal UInt32 NumberOfMountPoints;
 	}
 }
