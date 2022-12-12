@@ -131,6 +131,17 @@ namespace Henke37.Win32.Files {
 			return outBuff;
 		}
 
+		[SecurityCritical]
+		internal unsafe uint DeviceControlInputOutput(DeviceIoControlCode controlCode, byte[] inBuff, byte[] outBuff) {
+			fixed(void* inBuffP = inBuff) {
+				fixed(void* outBuffP = outBuff) {
+					bool success = DeviceIoControl(handle, controlCode, inBuffP, (uint)inBuff.Length, outBuffP, (uint)outBuff.Length, out uint written, null);
+					if(!success) throw new Win32Exception();
+					return written;
+				} 
+			}
+		}
+
 		[DllImport("Kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool DeviceIoControl(SafeFileObjectHandle handle, DeviceIoControlCode controlCode, void* inBuffer, uint inBufferLength, void* outBuffer, uint outBufferLength, out uint returnSize, void *lpOverlapped);
