@@ -65,7 +65,7 @@ namespace Henke37.Win32.CdAccess {
 			}
 		}
 
-		public DevBroadcastVolume(uint unitMask, ushort flags) {
+		internal DevBroadcastVolume(uint unitMask, ushort flags) {
 			UnitMask = unitMask;
 			Flags = (DeviceBroadcastFlag)flags;
 		}
