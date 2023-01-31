@@ -45,5 +45,10 @@
 		MountMgrKeepLinksWhenOffline = 0x6dc024,
 		MountMgrQueryAutoMount = 0x6d003c,
 		MountMgrQueryPoints = 0x6d0008,
+		FileDeleteObjectId = 0x980A0,
+		FileCreateOrGetObjectId = 0x900c0,
+		FileGetObjectId = 0x9009C,
+		FileSetObjectId = 0x90098,
+		FileSetObjectIdExtended = 0x900BC,
 	}
 }
