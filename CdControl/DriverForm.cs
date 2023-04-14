@@ -80,7 +80,6 @@ namespace CdControl {
 
 		private void RebuildTrackList() {
 			FullToc toc;
-			int session = 1;
 
 			cdDrive.VerifyMedia();
 
@@ -91,37 +90,35 @@ namespace CdControl {
 				track_lst.BeginUpdate();
 				track_lst.Items.Clear();
 
-				do {
-					toc = cdDrive.GetFullTOC(session);
-					var cdText = cdDrive.GetCdText(session);
+				toc = cdDrive.GetFullTOC(1);
+				var cdText = cdDrive.GetCdText(1);
 
-					if(cdText!=null) {
-						var titleInfo = cdText.infos.Find(i => (i.TrackNr == 0) && (i.Type == CdTextBlockType.AlbumNameOrTrackTitle));
-						if(titleInfo != null) AlbumTitle.Text = titleInfo.Text;
-					}
+				if(cdText!=null) {
+					var titleInfo = cdText.infos.Find(i => (i.TrackNr == 0) && (i.Type == CdTextBlockType.AlbumNameOrTrackTitle));
+					if(titleInfo != null) AlbumTitle.Text = titleInfo.Text;
+				}
 
-					foreach(var tocItem in toc.Entries) {
-						if(tocItem.Point > 99) continue;
+				foreach(var tocItem in toc.Entries) {
+					if(tocItem.Point > 99) continue;
 
-						string title = "";
-						if(cdText != null) {
-							var titleInfo = cdText.infos.Find(i => (i.TrackNr == tocItem.Point) && (i.Type == CdTextBlockType.AlbumNameOrTrackTitle));
-							if(titleInfo != null) {
-								title = titleInfo.Text;
-							}
+					string title = "";
+					if(cdText != null) {
+						var titleInfo = cdText.infos.Find(i => (i.TrackNr == tocItem.Point) && (i.Type == CdTextBlockType.AlbumNameOrTrackTitle));
+						if(titleInfo != null) {
+							title = titleInfo.Text;
 						}
-
-						var item = new ListViewItem(new string[] {
-							tocItem.SessionNumber.ToString(),
-							tocItem.Point.ToString(),
-							tocItem.StartPosition.ToString(),
-							title
-						});
-						item.ImageKey = (tocItem.IsAudio ? "audio" : "data");
-						item.Tag = tocItem;
-						track_lst.Items.Add(item);
 					}
-				} while(session < sessions.LastCompleteSession);
+
+					var item = new ListViewItem(new string[] {
+						tocItem.SessionNumber.ToString(),
+						tocItem.Point.ToString(),
+						tocItem.StartPosition.ToString(),
+						title
+					});
+					item.ImageKey = (tocItem.IsAudio ? "audio" : "data");
+					item.Tag = tocItem;
+					track_lst.Items.Add(item);
+				}
 
 			} finally {
 				track_lst.EndUpdate();
