@@ -54,7 +54,8 @@ namespace Henke37.Win32.Jobs {
 			if(!success) throw new Win32Exception();
 		}
 
-		internal unsafe T QueryInformationJob<T>(JobInformationClass infoClass, out T buff) where T : unmanaged {
+        [SecurityCritical]
+        internal unsafe T QueryInformationJob<T>(JobInformationClass infoClass, out T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				bool success = QueryInformationJobObject(handle, infoClass, buffP, (uint)sizeof(T), out _);
 				if(!success) throw new Win32Exception();
@@ -62,7 +63,8 @@ namespace Henke37.Win32.Jobs {
 			}
 		}
 
-		internal unsafe void SetInformationJob<T>(JobInformationClass infoClass, ref T buff) where T : unmanaged {
+        [SecurityCritical]
+        internal unsafe void SetInformationJob<T>(JobInformationClass infoClass, ref T buff) where T : unmanaged {
 			fixed(void* buffP = &buff) {
 				bool success = SetInformationJobObject(handle, infoClass, buffP, (uint)sizeof(T));
 				if(!success) throw new Win32Exception();
@@ -75,77 +77,90 @@ namespace Henke37.Win32.Jobs {
 		}
 
 		public BasicLimitInformation BasicLimitInformation {
-			get {
+            [SecuritySafeCritical]
+            get {
 				BasicLimitInformation.Native native;
 				QueryInformationJob(JobInformationClass.BasicLimitInformation, out native);
 				return native.AsManaged();
 			}
-			set {
+            [SecuritySafeCritical]
+            set {
 				BasicLimitInformation.Native native = new BasicLimitInformation.Native(value);
 				SetInformationJob(JobInformationClass.BasicLimitInformation, ref native);
 			}
 		}
 
 		public ExtendedLimitInformation ExtendedLimitInformation {
-			get {
+            [SecuritySafeCritical]
+            get {
 				ExtendedLimitInformation.Native native;
 				QueryInformationJob(JobInformationClass.ExtendedLimitInformation, out native);
 				return native.AsManaged();
 			}
-			set {
+            [SecuritySafeCritical]
+            set {
 				ExtendedLimitInformation.Native native = new ExtendedLimitInformation.Native(value);
 				SetInformationJob(JobInformationClass.ExtendedLimitInformation, ref native);
 			}
 		}
 
 		public BasicUIRestrictions BasicUIRestrictions {
-			get {
+            [SecuritySafeCritical]
+            get {
 				BasicUIRestrictionsStruct native;
 				QueryInformationJob(JobInformationClass.BasicUIRestrictions, out native);
 				return native.restrictions;
 			}
-			set {
+            [SecuritySafeCritical]
+            set {
 				BasicUIRestrictionsStruct native=new BasicUIRestrictionsStruct(value);
 				SetInformationJob(JobInformationClass.BasicUIRestrictions, ref native);
 			}
 		}
 
 		public EndOfJobTimeAction EndOfJobTimeAction {
-			get {
+            [SecuritySafeCritical]
+            get {
 				EndOfJobTimeActionStruct native;
 				QueryInformationJob(JobInformationClass.EndOfJobTimeInformation, out native);
 				return native.endOfJobTimeAction;
 			}
-			set {
+            [SecuritySafeCritical]
+            set {
 				EndOfJobTimeActionStruct native=new EndOfJobTimeActionStruct(value);
 				SetInformationJob(JobInformationClass.EndOfJobTimeInformation, ref native);
 			}
 		}
 
 		public NetRateControlInformation NetRateControlInformation {
-			get {
+            [SecuritySafeCritical]
+            get {
 				NetRateControlInformation native;
 				QueryInformationJob(JobInformationClass.NetRateControlInformation, out native);
 				return native;
 			}
-			set {
+            [SecuritySafeCritical]
+            set {
 				SetInformationJob(JobInformationClass.NetRateControlInformation, ref value);
 			}
 		}
 
 		public CpuRateControlInformation CpuRateControlInformation {
-			get {
+            [SecuritySafeCritical]
+            get {
 				CpuRateControlInformation.Native native;
 				QueryInformationJob(JobInformationClass.CpuRateControlInformation, out native);
 				return new CpuRateControlInformation(native);
 			}
-			set {
+            [SecuritySafeCritical]
+            set {
 				CpuRateControlInformation.Native native = new CpuRateControlInformation.Native(value);
 				SetInformationJob(JobInformationClass.CpuRateControlInformation, ref native);
 			}
 		}
 
-		public bool IsProcessInJob(NativeProcess process) {
+        [SecuritySafeCritical]
+        public bool IsProcessInJob(NativeProcess process) {
 			bool success = IsProcessInJobNative(process.handle, handle, out bool result);
 			if(!success) throw new Win32Exception();
 			return result;
