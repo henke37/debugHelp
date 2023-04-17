@@ -588,7 +588,11 @@ namespace Henke37.Win32.Processes {
 			return new SafeThreadHandle(DuplicateHandleFrom(sourceHandle, (uint)desiredAccess, inherit, options));
 		}
 
-		private void DuplicateHandleInto(IntPtr sourceHandle, IntPtr destinationAddr, uint desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+        internal SafeJobHandle DuplicateKobHandleFrom(IntPtr sourceHandle, JobAccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+            return new SafeJobHandle(DuplicateHandleFrom(sourceHandle, (uint)desiredAccess, inherit, options));
+        }
+
+        private void DuplicateHandleInto(IntPtr sourceHandle, IntPtr destinationAddr, uint desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
 			bool success = SafeKernelObjHandle.DuplicateHandle(SafeProcessHandle.CurrentProcess, sourceHandle, handle, destinationAddr, desiredAccess, inherit, options);
 			if(!success) throw new Win32Exception();
 		}
