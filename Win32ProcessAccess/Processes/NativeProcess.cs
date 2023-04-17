@@ -609,7 +609,11 @@ namespace Henke37.Win32.Processes {
 			DuplicateHandleInto(sourceHandle.DangerousGetHandle(), destinationAddr, (uint)desiredAccess, inherit, options);
 		}
 
-		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        internal void DuplicateHandleInto(SafeJobHandle sourceHandle, IntPtr destinationAddr, JobAccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+            DuplicateHandleInto(sourceHandle.DangerousGetHandle(), destinationAddr, (uint)desiredAccess, inherit, options);
+        }
+
+        [SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Terminate(UInt32 exitCode) {
 			bool success = TerminateProcess(handle, exitCode);
 			if(!success) throw new Win32Exception();
