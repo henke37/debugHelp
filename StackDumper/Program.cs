@@ -41,7 +41,7 @@ namespace StackDumper {
 		}
 
 		private void DumpThread(ThreadEntry threadEntry) {
-			using(NativeThread thread=threadEntry.Open(ThreadAcccessRights.GetContext|ThreadAcccessRights.SuspendResume|ThreadAcccessRights.QueryInformation)) {
+			using(NativeThread thread=threadEntry.Open(ThreadAccessRights.GetContext|ThreadAccessRights.SuspendResume|ThreadAccessRights.QueryInformation)) {
 				walker = new StackWalker(thread, memoryReader, resolver);
 
 				try {

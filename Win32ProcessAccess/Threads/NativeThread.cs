@@ -24,7 +24,7 @@ namespace Henke37.Win32.Threads {
 		readonly SafeThreadHandle handle;
 
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public static NativeThread Open(UInt32 threadId, ThreadAcccessRights access = ThreadAcccessRights.All, bool inheritable = false) {
+		public static NativeThread Open(UInt32 threadId, ThreadAccessRights access = ThreadAccessRights.All, bool inheritable = false) {
 			SafeThreadHandle handle = OpenThread((UInt32)access, inheritable, threadId);
 			if(handle.IsInvalid) throw new Win32Exception();
 			return new NativeThread(handle);
@@ -39,7 +39,7 @@ namespace Henke37.Win32.Threads {
 #endif
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
-		public NativeThread Reopen(ThreadAcccessRights rights = ThreadAcccessRights.All, bool inheritable = false) {
+		public NativeThread Reopen(ThreadAccessRights rights = ThreadAccessRights.All, bool inheritable = false) {
 			var rawHandle = SafeKernelObjHandle.DuplicateHandleLocal(handle.DangerousGetHandle(), (uint)rights, inheritable, SafeKernelObjHandle.DuplicateOptions.None);
 			return new NativeThread(new SafeThreadHandle(rawHandle));
 		}

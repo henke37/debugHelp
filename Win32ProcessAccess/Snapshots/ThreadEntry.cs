@@ -26,7 +26,7 @@ namespace Henke37.Win32.Snapshots {
 			}
 		}
 
-		public NativeThread Open(ThreadAcccessRights rights = ThreadAcccessRights.All, bool inheritable = false) {
+		public NativeThread Open(ThreadAccessRights rights = ThreadAccessRights.All, bool inheritable = false) {
 			return NativeThread.Open(ThreadId, rights, inheritable);
 		}
 

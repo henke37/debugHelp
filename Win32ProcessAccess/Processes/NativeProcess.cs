@@ -584,7 +584,7 @@ namespace Henke37.Win32.Processes {
 			return new SafeProcessHandle(DuplicateHandleFrom(sourceHandle, (uint)desiredAccess, inherit, options));
 		}
 
-		internal SafeThreadHandle DuplicateThreadHandleFrom(IntPtr sourceHandle, ThreadAcccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+		internal SafeThreadHandle DuplicateThreadHandleFrom(IntPtr sourceHandle, ThreadAccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
 			return new SafeThreadHandle(DuplicateHandleFrom(sourceHandle, (uint)desiredAccess, inherit, options));
 		}
 
@@ -605,7 +605,7 @@ namespace Henke37.Win32.Processes {
 			DuplicateHandleInto(sourceHandle.DangerousGetHandle(), destinationAddr, (uint)desiredAccess, inherit, options);
 		}
 
-		internal void DuplicateHandleInto(SafeThreadHandle sourceHandle, IntPtr destinationAddr, ThreadAcccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+		internal void DuplicateHandleInto(SafeThreadHandle sourceHandle, IntPtr destinationAddr, ThreadAccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
 			DuplicateHandleInto(sourceHandle.DangerousGetHandle(), destinationAddr, (uint)desiredAccess, inherit, options);
 		}
 

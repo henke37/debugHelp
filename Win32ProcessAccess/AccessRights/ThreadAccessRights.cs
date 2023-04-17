@@ -2,7 +2,7 @@
 
 namespace Henke37.Win32.AccessRights {
 	[Flags]
-	public enum ThreadAcccessRights : UInt32 {
+	public enum ThreadAccessRights : UInt32 {
 		None = 0,
 		Terminate = 0x0001,
 		SuspendResume = 0x0002,
