@@ -24,5 +24,9 @@ namespace Henke37.Win32.Tokens {
 
 		}
 #pragma warning restore CS0649
+
+		public override string ToString() {
+			return SourceName.Trim();
+		}
 	}
 }
