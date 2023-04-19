@@ -92,12 +92,6 @@ namespace Henke37.Win32.Tokens {
 			oldState = outBuff.Privilege.Attributes;
 		}
 
-		public LuidAndAttributes[] Privileges {
-			get {
-				return GetPrivileges();
-			}
-		}
-
         [SecuritySafeCritical]
         private unsafe LuidAndAttributes[] GetPrivileges() {
 			UInt32 size = (UInt32)(4 + sizeof(LuidAndAttributes) * 36);
@@ -121,26 +115,19 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
-        #region Token Information
 
-		public SecurityIdentifier User => GetSingleSIDAndAtts(TokenInformationClass.User);
-		public GroupEntry[] Groups => GetGroups(TokenInformationClass.Groups);
-		public SecurityIdentifier Owner => GetSIDInfo(TokenInformationClass.Owner);
-		public SecurityIdentifier PrimaryGroup => GetSIDInfo(TokenInformationClass.PrimaryGroup);
-		public SecurityIdentifier IntegrityLevel => GetSingleSIDAndAtts(TokenInformationClass.IntegrityLevel);
-		public GroupEntry[] Capabilities => GetGroups(TokenInformationClass.Capabilities);
-		public GroupEntry[] DeviceGroups => GetGroups(TokenInformationClass.DeviceGroups);
-
+        [SecurityCritical]
         private unsafe SecurityIdentifier GetSingleSIDAndAtts(TokenInformationClass infoClass) {
-			byte[] buff = GetTokenInformation(infoClass);
+            byte[] buff = GetTokenInformation(infoClass);
 
-			fixed (byte* buffP = buff) {
-				var sidAtts = (SID_AND_ATTRIBUTES *) buffP;
-				return new SecurityIdentifier(sidAtts->pSid);
-			}
-		}
+            fixed (byte* buffP = buff) {
+                var sidAtts = (SID_AND_ATTRIBUTES*)buffP;
+                return new SecurityIdentifier(sidAtts->pSid);
+            }
+        }
 
-		private unsafe SecurityIdentifier GetSIDInfo(TokenInformationClass infoClass) {
+        [SecurityCritical]
+        private unsafe SecurityIdentifier GetSIDInfo(TokenInformationClass infoClass) {
             byte[] buff = GetTokenInformation(infoClass);
 
             fixed (byte* buffP = buff) {
@@ -148,22 +135,74 @@ namespace Henke37.Win32.Tokens {
             }
         }
 
-		private unsafe GroupEntry[] GetGroups(TokenInformationClass infoClass) {
-			byte[] buff = GetTokenInformation(infoClass);
+        [SecurityCritical]
+        private unsafe GroupEntry[] GetGroups(TokenInformationClass infoClass) {
+            byte[] buff = GetTokenInformation(infoClass);
 
-			fixed (byte* buffP = buff) {
-				uint entryC = *(UInt32*)buffP;
+            fixed (byte* buffP = buff) {
+                uint entryC = *(UInt32*)buffP;
 
-				var entryP = (SID_AND_ATTRIBUTES*)(buffP + sizeof(UInt32));
-				var entries = new GroupEntry[entryC];
-				for(var entryI=0; entryI<entryC; entryI++, entryP++) {
-					entries[entryI]=new GroupEntry() {
-						SID = new SecurityIdentifier(entryP->pSid),
-						Flags = (GroupAttributeFlags)entryP->dwAttributes
-					};
+                var entryP = (SID_AND_ATTRIBUTES*)(buffP + sizeof(UInt32));
+                var entries = new GroupEntry[entryC];
+                for (var entryI = 0; entryI < entryC; entryI++, entryP++) {
+                    entries[entryI] = new GroupEntry() {
+                        SID = new SecurityIdentifier(entryP->pSid),
+                        Flags = (GroupAttributeFlags)entryP->dwAttributes
+                    };
                 }
 
-				return entries;
+                return entries;
+            }
+        }
+
+        #region Token Information
+
+        public SecurityIdentifier User {
+            [SecuritySafeCritical]
+            get {
+				return GetSingleSIDAndAtts(TokenInformationClass.User);
+			}
+		}
+
+		public GroupEntry[] Groups {
+            [SecuritySafeCritical]
+            get {
+				return GetGroups(TokenInformationClass.Groups);
+			}
+		}
+
+		public SecurityIdentifier Owner {
+            [SecuritySafeCritical]
+            get {
+				return GetSIDInfo(TokenInformationClass.Owner);
+			}
+		}
+
+		public SecurityIdentifier PrimaryGroup {
+            [SecuritySafeCritical]
+            get {
+				return GetSIDInfo(TokenInformationClass.PrimaryGroup);
+			}
+		}
+
+		public SecurityIdentifier IntegrityLevel {
+            [SecuritySafeCritical]
+            get {
+				return GetSingleSIDAndAtts(TokenInformationClass.IntegrityLevel);
+			}
+		}
+
+		public GroupEntry[] Capabilities {
+            [SecuritySafeCritical]
+            get {
+				return GetGroups(TokenInformationClass.Capabilities);
+			}
+		}
+
+		public GroupEntry[] DeviceGroups {
+            [SecuritySafeCritical]
+            get {
+				return GetGroups(TokenInformationClass.DeviceGroups);
 			}
 		}
 
@@ -172,6 +211,12 @@ namespace Henke37.Win32.Tokens {
             get {
                 GetTokenInformation(TokenInformationClass.ElevationType, out TokenElevationType elevationType);
                 return elevationType;
+            }
+        }
+
+        public LuidAndAttributes[] Privileges {
+            get {
+                return GetPrivileges();
             }
         }
 
