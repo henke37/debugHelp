@@ -27,7 +27,8 @@ namespace Henke37.Win32.Tokens {
 #endif
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
-		public NativeToken Reopen(TokenAccessLevels rights = TokenAccessLevels.AllAccess, bool inheritable = false) {
+        [SecuritySafeCritical]
+        public NativeToken Reopen(TokenAccessLevels rights = TokenAccessLevels.AllAccess, bool inheritable = false) {
 			var rawHandle = SafeKernelObjHandle.DuplicateHandleLocal(tokenHandle.DangerousGetHandle(), (uint)rights, inheritable, SafeKernelObjHandle.DuplicateOptions.None);
 			return new NativeToken(new SafeTokenHandle(rawHandle));
 		}
@@ -35,7 +36,8 @@ namespace Henke37.Win32.Tokens {
 		public void Dispose() => tokenHandle.Dispose();
 		public void Close() => tokenHandle.Close();
 
-		public bool Equals(NativeToken other) {
+        [SecuritySafeCritical]
+        public bool Equals(NativeToken other) {
 			var status = NtCompareTokens(tokenHandle, other.tokenHandle, out bool equal);
 			if(status.Severity != PInvoke.NTSTATUS.SeverityCode.STATUS_SEVERITY_SUCCESS) {
 				throw new PInvoke.NTStatusException(status);
@@ -44,7 +46,8 @@ namespace Henke37.Win32.Tokens {
 		}
 
 		public TokenElevationType ElevationType {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.ElevationType, out TokenElevationType elevationType);
 				return elevationType;
 			}
@@ -53,19 +56,22 @@ namespace Henke37.Win32.Tokens {
 #if NETFRAMEWORK
 		[HostProtection(MayLeakOnAbort = true)]
 #endif
-		public NativeToken GetLinkedToken() {
+        [SecuritySafeCritical]
+        public NativeToken GetLinkedToken() {
 			GetTokenInformation(TokenInformationClass.LinkedToken, out IntPtr newHandle);
 			return new NativeToken(new SafeTokenHandle(newHandle));
 		}
 
-		internal unsafe void GetTokenInformation<T>(TokenInformationClass infoClass, out T buff) where T : unmanaged {
+        [SecurityCritical]
+        internal unsafe void GetTokenInformation<T>(TokenInformationClass infoClass, out T buff) where T : unmanaged {
 			fixed (void* buffP = &buff) {
 				bool success = GetTokenInformation(tokenHandle, infoClass, buffP, (uint)sizeof(T), out _);
 				if(!success) throw new Win32Exception();
 			}
 		}
 
-		public unsafe void AdjustPrivilege(UInt64 priv, PrivilegeAttributes newState, out PrivilegeAttributes oldState) {
+        [SecuritySafeCritical]
+        public unsafe void AdjustPrivilege(UInt64 priv, PrivilegeAttributes newState, out PrivilegeAttributes oldState) {
 			TokenPrivilege inBuff = new TokenPrivilege(priv, newState);
 			void* inBuffP = (void*)&inBuff;
 			TokenPrivilege outBuff = new TokenPrivilege();
@@ -90,7 +96,8 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
-		private unsafe LuidAndAttributes[] GetPrivileges() {
+        [SecuritySafeCritical]
+        private unsafe LuidAndAttributes[] GetPrivileges() {
 			UInt32 size = (UInt32)(4 + sizeof(LuidAndAttributes) * 36);
 			byte[] buff = new byte[size];
 			buff[0] = 36;
@@ -113,91 +120,104 @@ namespace Henke37.Win32.Tokens {
 		}
 		#region Information properties
 		public TokenType TokenType {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.Type, out TokenType type);
 				return type;
 			}
 		}
 
 		public UInt32 SessionId {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.SessionId, out UInt32 sessionId);
 				return sessionId;
 			}
 		}
 
 		public bool HasRestrictions {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.HasRestrictions, out UInt32 result);
 				return result != 0;
 			}
 		}
 
 		public bool VirtualizationAllowed {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.VirtualizationAllowed, out UInt32 result);
 				return result != 0;
 			}
 		}
 
 		public bool VirtualizationEnabled {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.VirtualizationEnabled, out UInt32 result);
 				return result != 0;
 			}
 		}
 
 		public bool UIAccess {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.UIAccess, out UInt32 result);
 				return result != 0;
 			}
 		}
 
 		public bool SandBoxInert {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.SandBoxInert, out UInt32 result);
 				return result != 0;
 			}
 		}
 
 		public bool IsElevated {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.Elevation, out UInt32 result);
 				return result != 0;
 			}
 		}
 
 		public MandatoryPolicy MandatoryPolicy {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.MandatoryPolicy, out MandatoryPolicy policy);
 				return policy;
 			}
 		}
 
 		public ImpersonationLevel ImpersonationLevel {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.ImpersonationLevel, out ImpersonationLevel level);
 				return level;
 			}
 		}
 
 		public bool IsAppContainer {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.IsAppContainer, out UInt32 result);
 				return result != 0;
 			}
 		}
 
 		public UInt32 AppContainerNumber {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.AppContainerNumber, out UInt32 result);
 				return result;
 			}
 		}
 
 		public TokenSource TokenSource {
-			get {
+            [SecuritySafeCritical]
+            get {
 				TokenSource.Native native;
 				GetTokenInformation(TokenInformationClass.Source, out native);
 				return new TokenSource(native);
@@ -205,7 +225,8 @@ namespace Henke37.Win32.Tokens {
 		}
 
 		public TokenStatistics TokenStatistics {
-			get {
+            [SecuritySafeCritical]
+            get {
 				TokenStatistics native;
 				GetTokenInformation(TokenInformationClass.Statistics, out native);
 				return native;
@@ -213,14 +234,16 @@ namespace Henke37.Win32.Tokens {
 		}
 
 		public UInt64 OriginatingLogonSession {
-			get {
+            [SecuritySafeCritical]
+            get {
 				GetTokenInformation(TokenInformationClass.Origin, out UInt64 result);
 				return result;
 			}
 		}
-		#endregion
+        #endregion
 
-		public NativeToken Duplicate(ImpersonationLevel impersonation) {
+        [SecuritySafeCritical]
+        public NativeToken Duplicate(ImpersonationLevel impersonation) {
 			var success = DuplicateToken(tokenHandle, impersonation, out var newToken);
 			if(!success) throw new Win32Exception();
 			return new NativeToken(newToken);
