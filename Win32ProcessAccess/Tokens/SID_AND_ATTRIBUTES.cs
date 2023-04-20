@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
@@ -9,13 +10,10 @@ namespace Henke37.Win32.Tokens {
         internal UInt32 dwAttributes;
 	}
 
-    public class GroupEntry {
+    public struct GroupEntry {
+        [DebuggerDisplay("{SID} {Flags}")]
         public SecurityIdentifier SID;
         public GroupAttributeFlags Flags;
-
-        public override string ToString() {
-            return $"{SID} {Flags}";
-        }
     }
 
     [Flags]
