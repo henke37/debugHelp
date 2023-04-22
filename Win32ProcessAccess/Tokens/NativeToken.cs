@@ -53,7 +53,7 @@ namespace Henke37.Win32.Tokens {
 			}
 		}
 
-		[SecurityCritical]
+		[SecuritySafeCritical]
 		internal unsafe byte[] GetTokenInformation(TokenInformationClass infoClass) {
 			uint retLen=0;
 
