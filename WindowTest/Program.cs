@@ -1,15 +1,18 @@
 ﻿using Henke37.Win32.Windows;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WindowTest {
 	class Program {
 		static void Main(string[] args) {
 			var windows = NativeWindow.GetTopWindows();
 
-			windows.Sort(wndCmp);
+			var visibleWnds = windows.Where(w => w.IsVisible).ToList();
 
-			foreach(var window in windows) {
+			visibleWnds.Sort(wndCmp);
+
+			foreach(var window in visibleWnds) {
 				Console.WriteLine($"{window.ProcessId} {window.ClassName}");
 			}
 		}
