@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Henke37.Win32.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,6 +14,7 @@ using System.Windows.Forms;
 
 namespace Henke37.Win32.Windows {
 	[SuppressUnmanagedCodeSecurity]
+	[DebuggerDisplay("{Text} {ClassName}")]
 	public class NativeWindow : IWin32Window {
 		private IntPtr handle;
 
@@ -119,6 +122,15 @@ namespace Henke37.Win32.Windows {
 		}
 		public IntPtr RemoveProp(IntPtr atom) {
 			return RemovePropWAtom(Handle, atom);
+		}
+
+		[Undocumented]
+		public WindowBand WindowBand {
+			get {
+				var success = GetWindowBand(Handle, out uint pdwBand);
+				if(!success) throw new Win32Exception();
+				return (WindowBand)pdwBand;
+			}
 		}
 
 		private static bool windPropEnumCallback(IntPtr hwnd, string name, IntPtr handle, IntPtr lParam) {
@@ -234,6 +246,10 @@ namespace Henke37.Win32.Windows {
 
 		[DllImport("User32.dll", SetLastError = true)]
 		static extern UInt32 GetWindowThreadProcessId(IntPtr hWnd, out UInt32 ProcessId);
+
+		[DllImport("User32.dll", SetLastError = true)]
+		[return:MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetWindowBand(IntPtr hWnd, out UInt32 pdwBand);
 
 		[DllImport("User32.dll", SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
