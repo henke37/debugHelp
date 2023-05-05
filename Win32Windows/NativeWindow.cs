@@ -74,6 +74,13 @@ namespace Henke37.Win32.Windows {
 			}
 		}
 
+		public bool IsHung {
+			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
+			get {
+				return IsHungAppWindow(handle);
+			}
+		}
+
 		public DwmCloakReason CloakReason {
 			[SecuritySafeCritical]
 			get {
@@ -284,6 +291,10 @@ namespace Henke37.Win32.Windows {
 		[DllImport("User32.dll", SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool IsWindowUnicode(IntPtr hWnd);
+
+		[DllImport("User32.dll", SetLastError = false)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool IsHungAppWindow(IntPtr hWnd);
 
 
 		[DllImport("User32.dll", SetLastError = false, EntryPoint = "MoveWindow")]
