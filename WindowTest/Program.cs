@@ -8,7 +8,7 @@ namespace WindowTest {
 		static void Main(string[] args) {
 			var windows = NativeWindow.GetTopWindows();
 
-			var visibleWnds = windows.Where(w => w.IsVisible).ToList();
+			var visibleWnds = windows.Where(w => w.IsVisible && w.CloakReason==DwmCloakReason.None).ToList();
 
 			visibleWnds.Sort(wndCmp);
 
