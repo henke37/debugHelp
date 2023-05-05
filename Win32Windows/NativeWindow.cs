@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
@@ -70,6 +71,13 @@ namespace Henke37.Win32.Windows {
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				return IsWindowUnicode(handle);
+			}
+		}
+
+		public DwmCloakReason CloakReason {
+			[SecuritySafeCritical]
+			get {
+				return GetDwnAttribute<DwmCloakReason>(DwmAttribute.Cloaked);
 			}
 		}
 
@@ -162,11 +170,21 @@ namespace Henke37.Win32.Windows {
 				throw new Win32Exception();
 			}
 			var buff = new char[buffSize];
-			fixed(char* buffp=buff) {
+			fixed(char* buffp = buff) {
 				var len = GetWindowTextW(handle, buffp, buffSize);
 
-				return new string(buffp,0,(int)len);
+				return new string(buffp, 0, (int)len);
 			}
+		}
+
+
+		[SecurityCritical]
+		internal unsafe T GetDwnAttribute<T>(DwmAttribute attribute) where T : unmanaged {
+			T buff;
+			var success = DwmGetWindowAttributeNative(handle, (UInt32)attribute, &buff, (uint)sizeof(T));
+			if(success.Failed) throw success.GetException();
+
+			return buff;
 		}
 
 		public static List<NativeWindow> GetTopWindows() {
@@ -229,7 +247,7 @@ namespace Henke37.Win32.Windows {
 			PInvoke.POINT p2;
 			p2.x = p1.X;
 			p2.y = p1.Y;
-			IntPtr hwnd=WindowFromPointNative(p2);
+			IntPtr hwnd = WindowFromPointNative(p2);
 			if(hwnd == IntPtr.Zero) return null;
 			return new NativeWindow(hwnd);
 		}
@@ -320,5 +338,9 @@ namespace Henke37.Win32.Windows {
 
 		[DllImport("user32.dll", EntryPoint = "WindowFromPoint")]
 		static extern IntPtr WindowFromPointNative(PInvoke.POINT point);
+
+
+		[DllImport("Dwmapi.dll", SetLastError = false, EntryPoint = "DwmGetWindowAttribute")]
+		static unsafe extern PInvoke.HResult DwmGetWindowAttributeNative(IntPtr hwnd, UInt32 attribute, void* buff, UInt32 buffSize);
 	}
 }
