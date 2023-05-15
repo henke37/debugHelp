@@ -148,6 +148,14 @@ namespace Henke37.Win32.Windows {
 			}
 		}
 
+		public DisplayAffinity DisplayAffinity {
+			get {
+				var success = GetWindowDisplayAffinity(Handle, out uint affinity);
+				if(!success) throw new Win32Exception();
+				return (DisplayAffinity)affinity;
+			}
+		}
+
 		private static bool windPropEnumCallback(IntPtr hwnd, string name, IntPtr handle, IntPtr lParam) {
 			GCHandle gch = GCHandle.FromIntPtr(lParam);
 			var list = (Dictionary<string, IntPtr>)gch.Target;
@@ -275,6 +283,10 @@ namespace Henke37.Win32.Windows {
 		[DllImport("User32.dll", SetLastError = true)]
 		[return:MarshalAs(UnmanagedType.Bool)]
 		static extern bool GetWindowBand(IntPtr hWnd, out UInt32 pdwBand);
+
+		[DllImport("User32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetWindowDisplayAffinity(IntPtr hWnd, out UInt32 pdwBand);
 
 		[DllImport("User32.dll", SetLastError = false)]
 		[return: MarshalAs(UnmanagedType.Bool)]
