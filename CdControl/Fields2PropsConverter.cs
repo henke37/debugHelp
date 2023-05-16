@@ -35,7 +35,7 @@ namespace CdControl {
 		private class DummyPropDescriptor : PropertyDescriptor {
 			private FieldInfo fieldInfo;
 
-			public DummyPropDescriptor(FieldInfo fieldInfo) : base(fieldInfo.Name, fieldInfo.GetCustomAttributes(true) as Attribute[]) {
+			public DummyPropDescriptor(FieldInfo fieldInfo) : base(fieldInfo.Name, fieldInfo.GetCustomAttributes() as Attribute[]) {
 				this.fieldInfo = fieldInfo;
 			}
 
