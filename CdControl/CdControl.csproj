@@ -52,6 +52,7 @@
     <Compile Include="DriverForm.Designer.cs">
       <DependentUpon>DriverForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Fields2PropsConverter.cs" />
     <Compile Include="GetConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>

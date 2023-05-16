@@ -34,12 +34,21 @@ namespace CdControl {
 				props.SelectedObject = null;
 				return;
 			}
-			Configuration.FeatureNumber feature = (Configuration.FeatureNumber) Enum.Parse(typeof(Configuration.FeatureNumber), (string)featureSelect.SelectedItem);
-			Configuration.RequestType requestType = (Configuration.RequestType) Enum.Parse(typeof(Configuration.RequestType), (string)requestTypeSelect.SelectedItem);
+			Configuration.FeatureNumber feature = (Configuration.FeatureNumber)Enum.Parse(typeof(Configuration.FeatureNumber), (string)featureSelect.SelectedItem);
+			Configuration.RequestType requestType = (Configuration.RequestType)Enum.Parse(typeof(Configuration.RequestType), (string)requestTypeSelect.SelectedItem);
 
-			var res=cdDrive.GetConfiguration(feature, requestType);
+			try {
+				var res = cdDrive.GetConfiguration(feature, requestType);
 
-			props.SelectedObject=res;
+				if(res == null) {
+					props.SelectedObject = null;
+				} else {
+					props.SelectedObject = new Fields2PropsConverter(res);
+				}
+			} catch (NotImplementedException) {
+				props.SelectedObject = null;
+			}
+
 		}
 	}
 }
