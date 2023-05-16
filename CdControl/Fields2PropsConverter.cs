@@ -17,6 +17,9 @@ namespace CdControl {
 
 			List<PropertyDescriptor> props = new List<PropertyDescriptor>();
 
+			foreach(var propInfo in realType.GetProperties()) {
+				props.Add(TypeDescriptor.GetProperties(realObj)[propInfo.Name]);
+			}
 
 			foreach(var fieldInfo in realType.GetFields()) {
 				props.Add(new DummyPropDescriptor(fieldInfo));
@@ -25,51 +28,32 @@ namespace CdControl {
 			return new PropertyDescriptorCollection(props.ToArray());
 		}
 
-		public override object GetPropertyOwner(PropertyDescriptor pd) {
-			return realObj;
-		}
+		public override string GetClassName() => realObj.GetType().FullName;
+
+		public override object GetPropertyOwner(PropertyDescriptor pd) => realObj;
 
 		private class DummyPropDescriptor : PropertyDescriptor {
 			private FieldInfo fieldInfo;
 
-			public DummyPropDescriptor(FieldInfo fieldInfo) : base(fieldInfo.Name, MakeAtts(fieldInfo)) {
+			public DummyPropDescriptor(FieldInfo fieldInfo) : base(fieldInfo.Name, fieldInfo.GetCustomAttributes(true) as Attribute[]) {
 				this.fieldInfo = fieldInfo;
 			}
 
-			private static Attribute[] MakeAtts(FieldInfo fieldInfo) {
-				return null;
-				foreach(var att in fieldInfo.CustomAttributes) {
-					//att.Constructor.Invoke(att.ConstructorArguments.);
-				}
-			}
-
-			public override Type ComponentType => throw new NotImplementedException();
+			public override Type ComponentType => fieldInfo.DeclaringType;
 
 			public override bool IsReadOnly => fieldInfo.IsInitOnly;
 
 			public override Type PropertyType => fieldInfo.FieldType;
 
-			public override bool CanResetValue(object component) {
-				throw new NotImplementedException();
-			}
+			public override bool CanResetValue(object component) => false;
 
-			public override object GetValue(object component) {
-				return fieldInfo.GetValue(component);
-			}
+			public override object GetValue(object component) => fieldInfo.GetValue(component);
 
-			public override void ResetValue(object component) {
-				throw new NotImplementedException();
-			}
+			public override void ResetValue(object component) => throw new NotImplementedException();
 
-			public override void SetValue(object component, object value) {
-				fieldInfo.SetValue(component, value);
-			}
+			public override void SetValue(object component, object value) => fieldInfo.SetValue(component, value);
 
-			public override bool ShouldSerializeValue(object component) {
-				DefaultValueAttribute defValAtt = (DefaultValueAttribute)fieldInfo.GetCustomAttribute(typeof(DefaultValueAttribute));
-				if(defValAtt == null) return true;
-				return defValAtt.Value == GetValue(component);
-			}
+			public override bool ShouldSerializeValue(object component) => false;
 		}
 	}
 }
