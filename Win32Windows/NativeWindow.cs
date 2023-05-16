@@ -202,6 +202,14 @@ namespace Henke37.Win32.Windows {
 			return buff;
 		}
 
+		public unsafe WindowInfo GetWindowInfo() {
+			WindowInfo.Native info=new WindowInfo.Native() { cbSize = (uint)sizeof(WindowInfo.Native) };
+			var success = GetWindowInfo(handle, ref info);
+			if(!success) throw new Win32Exception();
+
+			return new WindowInfo(info);
+		}
+
 		public static List<NativeWindow> GetTopWindows() {
 			var list = new List<NativeWindow>();
 
@@ -361,6 +369,11 @@ namespace Henke37.Win32.Windows {
 
 		[DllImport("user32.dll", EntryPoint = "WindowFromPoint")]
 		static extern IntPtr WindowFromPointNative(PInvoke.POINT point);
+
+
+		[DllImport("user32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetWindowInfo(IntPtr hwnd, ref WindowInfo.Native windowInfo);
 
 
 		[DllImport("Dwmapi.dll", SetLastError = false, EntryPoint = "DwmGetWindowAttribute")]
