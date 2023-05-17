@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,7 +11,9 @@ namespace Henke37.Win32.CdAccess {
 	public class Configuration {
 
 		public class FeatureDesc {
+			[Description("If the feature is currently present")]
 			public bool Current;
+			[Description("If the feature is always present")]
 			public bool Persistent;
 			byte Version;
 
@@ -282,7 +285,7 @@ namespace Henke37.Win32.CdAccess {
 		}
 
 		public class CoreFeature : FeatureDesc {
-
+			[Description("The interface used to communicate with the host")]
 			public PhysicalInterface Interface;
 
 			public bool DeviceBusyEvent;
@@ -381,11 +384,14 @@ namespace Henke37.Win32.CdAccess {
 		}
 
 		public class RemovableMediumFeature : FeatureDesc {
+			[Description("The drive is capable of locking the medium into the drive")]
 			public bool Lockable;
 			public bool DBML;
+			[Description("The drive defaults to locking the medium into the drive")]
 			public bool DefaultToPrevent;
 			public bool Eject;
 			public bool Load;
+			[Description("The physical mechanism used to load medium into the drive")]
 			public LoadingMechanismType LoadingMechanism;
 
 			internal unsafe RemovableMediumFeature(FeatureHeader header, Native* add) : base(header) {
@@ -474,6 +480,7 @@ namespace Henke37.Win32.CdAccess {
 		}
 
 		public class CdReadFeature : FeatureDesc {
+			[Description("The drive supports reading CD-TEXT data")]
 			public bool CDText;
 			public bool C2ErrorData;
 			public bool DigitalAudioPlay;
@@ -734,6 +741,7 @@ namespace Henke37.Win32.CdAccess {
 		}
 
 		public class FirmwareDateFeature : FeatureDesc {
+			[Description("The date the firmware was built on")]
 			public DateTime CreationDate;
 
 			internal unsafe FirmwareDateFeature(FeatureHeader header, Native* add) : base(header) {
