@@ -393,6 +393,11 @@ namespace Henke37.Win32.Windows {
 		static extern bool GetWindowInfo(IntPtr hwnd, ref WindowInfo.Native windowInfo);
 
 
+		[DllImport("user32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetClassInfoExW(IntPtr hinstance, [MarshalAs(UnmanagedType.LPWStr)] string className, ref ClassInfo.Native classInfo);
+
+
 		[DllImport("Dwmapi.dll", SetLastError = false, EntryPoint = "DwmGetWindowAttribute")]
 		static unsafe extern PInvoke.HResult DwmGetWindowAttributeNative(IntPtr hwnd, UInt32 attribute, void* buff, UInt32 buffSize);
 	}
