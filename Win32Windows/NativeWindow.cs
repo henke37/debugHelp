@@ -96,6 +96,16 @@ namespace Henke37.Win32.Windows {
 			if(!success) throw new Win32Exception();
 		}
 
+		public void Minimize() {
+			var success = CloseWindowNative(handle);
+			if(!success) throw new Win32Exception();
+		}
+
+		public void Restore() {
+			var success = OpenIconNative(handle);
+			if(!success) throw new Win32Exception();
+		}
+
 		public NativeWindow GetParent() {
 			return new NativeWindow(GetAncestor(Handle, 1));
 		}
@@ -322,6 +332,13 @@ namespace Henke37.Win32.Windows {
 		static extern bool MoveWindowNative(IntPtr hWnd, Int32 x, Int32 y, Int32 width, Int32 height, [MarshalAs(UnmanagedType.Bool)] bool repaint);
 
 
+		[DllImport("User32.dll", SetLastError = false, EntryPoint = "CloseWindow")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool CloseWindowNative(IntPtr hWnd);
+
+		[DllImport("User32.dll", SetLastError = false, EntryPoint = "OpenIcon")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool OpenIconNative(IntPtr hWnd);
 
 		private delegate bool EnumWindowDelegate(IntPtr hwnd, IntPtr lParam);
 
