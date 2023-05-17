@@ -12,7 +12,7 @@
 		<Authors>Henke37</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Description>Support for accessing the restart manager.</Description>
-		<Version>1.0.0</Version>
+		<Version>1.1.0</Version>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/henke37/debugHelp</PackageProjectUrl>

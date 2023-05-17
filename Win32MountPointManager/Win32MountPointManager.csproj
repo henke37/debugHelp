@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net462;netstandard20</TargetFrameworks>
@@ -15,6 +15,7 @@
     <LangVersion>8.0</LangVersion>
     <RootNamespace>Henke37.Win32.MountPointManager</RootNamespace>
     <AssemblyName>Henke37.Win32.MountPointManager</AssemblyName>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>TRACE;x64</DefineConstants>
