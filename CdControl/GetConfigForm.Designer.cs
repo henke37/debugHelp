@@ -32,6 +32,7 @@
 			// 
 			this.props.Location = new System.Drawing.Point(12, 39);
 			this.props.Name = "props";
+			this.props.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
 			this.props.Size = new System.Drawing.Size(297, 426);
 			this.props.TabIndex = 0;
 			this.props.ToolbarVisible = false;
