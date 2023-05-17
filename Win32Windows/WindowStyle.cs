@@ -59,7 +59,9 @@ namespace Henke37.Win32.Windows {
 		Active = 1
 	}
 
+	[Flags]
 	public enum ClassStyle : UInt32 {
+		None = 0,
 		ByteAlignClient = 0x1000,
 		ByteAlignWindow = 0x2000,
 		ClassDC         = 0x0040,
@@ -72,5 +74,19 @@ namespace Henke37.Win32.Windows {
 		ParentDC        = 0x0080,
 		SaveBits        = 0x0800,
 		VRedraw         = 0x0001
+	}
+
+	internal enum GetClassLongNum : Int32 {
+		Atom = -32,
+		CBCLSExtra = -20,
+		CBWNDExtra = -18,
+		HBRBackground = -10,
+		HCursor = -12,
+		HIcon = -14,
+		HIconSmall = -34,
+		HModule = -16,
+		MenuName = -8,
+		Style = -26,
+		WndProc = -24
 	}
 }
