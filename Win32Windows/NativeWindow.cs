@@ -169,7 +169,7 @@ namespace Henke37.Win32.Windows {
 		public ClassStyle ClassStyle {
 			get {
 				var ret = GetClassLongW(handle, (Int32)GetClassLongNum.Style);
-				if(ret==(IntPtr)0  && Marshal.GetLastWin32Error() != 0) throw new Win32Exception();
+				if(ret==0  && Marshal.GetLastWin32Error() != 0) throw new Win32Exception();
 				return (ClassStyle)ret;
 			}
 		}
@@ -405,11 +405,16 @@ namespace Henke37.Win32.Windows {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool GetClassInfoExW(IntPtr hinstance, [MarshalAs(UnmanagedType.LPWStr)] string className, ref ClassInfo.Native classInfo);
 
+#if x86
 		[DllImport("user32.dll", SetLastError = true, EntryPoint = "GetClassLongW")]
 		static extern IntPtr GetClassLongPtrW(IntPtr hwnd, Int32 nindex);
+#elif x64
+		[DllImport("user32.dll", SetLastError = true, EntryPoint = "GetClassLongPtrW")]
+		static extern IntPtr GetClassLongPtrW(IntPtr hwnd, Int32 nindex);
+#endif
 
 		[DllImport("user32.dll", SetLastError = true, EntryPoint = "GetClassLongW")]
-		static extern IntPtr GetClassLongW(IntPtr hwnd, Int32 nindex);
+		static extern UInt32 GetClassLongW(IntPtr hwnd, Int32 nindex);
 
 
 		[DllImport("Dwmapi.dll", SetLastError = false, EntryPoint = "DwmGetWindowAttribute")]
