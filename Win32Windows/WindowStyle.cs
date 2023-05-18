@@ -3,25 +3,25 @@
 namespace Henke37.Win32.Windows {
 	[Flags]
 	public enum WindowStyle : UInt32 {
-		Border = 0x00800000,
-		Caption = 0x00C00000,
-		Child = 0x40000000,
+		Border      = 0x00800000,
+		Caption     = 0x00C00000,
+		Child       = 0x40000000,
 		ClipChildren= 0x02000000,
 		ClipSiblings= 0x04000000,
-		Disabled = 0x08000000,
+		Disabled    = 0x08000000,
 		DialogFrame = 0x00400000,
-		Group = 0x00020000,
-		HScroll = 0x00100000,
-		Maximize = 0x01000000,
+		Group       = 0x00020000,
+		HScroll     = 0x00100000,
+		Maximize    = 0x01000000,
 		MaximizeBox = 0x00010000,
-		Minimize = 0x20000000,
+		Minimize    = 0x20000000,
 		MinimizeBox = 0x00020000,
-		Popup = 0x80000000,
-		SysMenu = 0x00080000,
-		TabStop = 0x00010000,
-		ThickFrame = 0x00040000,
-		Visible = 0x10000000,
-		VScroll = 0x00200000,
+		Popup       = 0x80000000,
+		SysMenu     = 0x00080000,
+		TabStop     = 0x00010000,
+		ThickFrame  = 0x00040000,
+		Visible     = 0x10000000,
+		VScroll     = 0x00200000,
 		TiledWindow = Caption | SysMenu | ThickFrame | MinimizeBox | MaximizeBox,
 		PopupWindow = Popup | Border | SysMenu
 	}
@@ -88,5 +88,20 @@ namespace Henke37.Win32.Windows {
 		MenuName = -8,
 		Style = -26,
 		WndProc = -24
+	}
+
+	public enum ShowWindowMode : UInt32 {
+		Hide = 0,
+		ShowNormal = 1,
+		ShowMinimized = 2,
+		Maximize = 3,
+		ShowNoActivate = 4,
+		Show = 5,
+		Minimize = 6,
+		ShowMinimizeNoActive = 7,
+		ShowNoActivate2 = 8,
+		Restore = 9,
+		ShowDefault = 10,
+		ForceMinimize = 11
 	}
 }

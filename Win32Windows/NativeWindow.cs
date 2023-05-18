@@ -106,6 +106,10 @@ namespace Henke37.Win32.Windows {
 			if(!success) throw new Win32Exception();
 		}
 
+		public void ShowWindow(ShowWindowMode mode) {
+			ShowWindowNative(handle, (UInt32)mode);
+		}
+
 		public NativeWindow GetParent() {
 			return new NativeWindow(GetAncestor(Handle, 1));
 		}
@@ -347,6 +351,11 @@ namespace Henke37.Win32.Windows {
 		[DllImport("User32.dll", SetLastError = false, EntryPoint = "OpenIcon")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool OpenIconNative(IntPtr hWnd);
+
+
+		[DllImport("User32.dll", SetLastError = false, EntryPoint = "ShowWindow")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool ShowWindowNative(IntPtr hWnd, UInt32 mode);
 
 		private delegate bool EnumWindowDelegate(IntPtr hwnd, IntPtr lParam);
 
