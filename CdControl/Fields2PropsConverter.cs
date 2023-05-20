@@ -57,7 +57,7 @@ namespace CdControl {
 
 			public override object GetValue(object component) => fieldInfo.GetValue(component);
 
-			public override void ResetValue(object component) => throw new NotImplementedException();
+			public override void ResetValue(object component) => throw new NotSupportedException();
 
 			public override void SetValue(object component, object value) => fieldInfo.SetValue(component, value);
 
