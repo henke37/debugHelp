@@ -478,6 +478,16 @@ namespace Henke37.Win32.Processes {
 		}
 
 		[Undocumented]
+		public bool IsWSL {
+			get {
+				SubSystemInformation subSystem = new SubSystemInformation();
+				QueryInformationProcess<SubSystemInformation>(ProcessInformationClass.SubsystemInformation, ref subSystem, out _);
+
+				return subSystem == SubSystemInformation.WSL;
+			}
+		}
+
+		[Undocumented]
 		internal IntPtr[] QueryInformationProcessArray<T>(ProcessInformationClass infoClass) {
 			uint validItems=1;
 			IntPtr[] buff;
