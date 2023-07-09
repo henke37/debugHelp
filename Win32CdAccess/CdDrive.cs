@@ -345,6 +345,30 @@ namespace Henke37.Win32.CdAccess {
 			file.DeviceControlInputOutput(DeviceIoControlCode.CdRomRawRead, ref info, buffer);
 		}
 
+		private void ReadSubcodeData(uint sectorNr, byte[] outBuff) {
+			byte[] buff = new byte[(uint)RawReadSize.SectorWithSubcode];
+
+			RawReadInfo info = new RawReadInfo() {
+				ReadMode=TrackReadMode.RawWithSubCode,
+				SectorCount=1
+			};
+
+			info.DiskOffset = 2048 * sectorNr;
+			RawRead(info, buff);
+
+			//trim off the userdata
+			Array.Copy(buff, 2352, outBuff, 0, 96);
+		}
+
+		private static void ParseSubcode(byte[] inBuff, int subcodeIndex, byte[] outBuff) {
+			Array.Clear(outBuff, 0, 12);
+			int bitMask = 1 << subcodeIndex;
+			for(int i = 0;i < 96; i++) {
+				bool subBit = (inBuff[i] & bitMask) == bitMask;
+				outBuff[i / 8] |= (byte)(subBit?(1 << (8-(i%8))):0);
+			}
+		}
+
 		public bool DiskIsReadOnly {
 			get {
 				try {

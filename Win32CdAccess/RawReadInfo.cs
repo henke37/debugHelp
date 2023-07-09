@@ -22,4 +22,11 @@ namespace Henke37.Win32.CdAccess {
 		RawWithC2,
 		RawWithSubCode
 	}
+
+	internal enum RawReadSize : UInt32 {
+		SectorWithC2           = 2352 + 296,
+		SectorWithSubcode      = 2352       +96,
+		SectorWithSubcodeAndC2 = 2352 + 296 + 96
+
+	}
 }
