@@ -1,4 +1,5 @@
 ﻿using Henke37.Win32.AccessRights;
+using Henke37.Win32.Base;
 using Henke37.Win32.Processes;
 using Henke37.Win32.SafeHandles;
 using Henke37.Win32.Tokens;
@@ -287,6 +288,29 @@ namespace Henke37.Win32.Threads {
 			if(!success) throw new Win32Exception();
 		}
 
+		[Undocumented]
+		internal unsafe T QueryInformationThread<T>(ThreadInformationClass infoClass, ref T buff, out uint returnSize) where T : unmanaged {
+			fixed(void* buffP = &buff) {
+				PInvoke.NTSTATUS status = NtQueryInformationThread(handle, infoClass, buffP, (uint)sizeof(T), out returnSize);
+				if(status.Severity != PInvoke.NTSTATUS.SeverityCode.STATUS_SEVERITY_SUCCESS) throw new PInvoke.NTStatusException(status);
+				return buff;
+			}
+		}
+
+		[Undocumented]
+		internal unsafe T[] QueryInformationThreadArrayInternal<T>(ThreadInformationClass infoClass, ref T[] buff, ref uint validItemCount) where T : unmanaged {
+			uint returnSize = 0;
+			fixed(void* buffP = buff) {
+				try {
+					PInvoke.NTSTATUS status = NtQueryInformationThread(handle, infoClass, buffP, (uint)sizeof(T) * validItemCount, out returnSize);
+					if(status.Severity != PInvoke.NTSTATUS.SeverityCode.STATUS_SEVERITY_SUCCESS) throw new PInvoke.NTStatusException(status);
+					return buff;
+				} finally {
+					validItemCount = returnSize / ((uint)sizeof(T));
+				}
+			}
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern SafeThreadHandle OpenThread(UInt32 access, [MarshalAs(UnmanagedType.Bool)] bool inheritable, UInt32 threadId);
 
@@ -357,5 +381,9 @@ namespace Henke37.Win32.Threads {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true, EntryPoint = "QueueUserAPC2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool QueueUserAPC2Native(IntPtr pfnAPC, SafeThreadHandle procHandle, IntPtr dwData, QueueAPC2Flags flags);
+
+		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
+		internal static extern unsafe PInvoke.NTSTATUS NtQueryInformationThread(SafeThreadHandle handle, ThreadInformationClass informationClass, void* buffer, uint bufferLength, out uint returnLength);
+
 	}
 }
