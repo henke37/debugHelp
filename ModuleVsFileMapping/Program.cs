@@ -7,6 +7,7 @@ using Henke37.Win32.Files;
 using Henke37.Win32.Memory;
 using Henke37.Win32.Processes;
 using Henke37.Win32.Snapshots;
+using Henke37.Win32;
 
 namespace ModuleVsFileMapping {
 	class Program {
@@ -44,7 +45,8 @@ namespace ModuleVsFileMapping {
 		}
 
 		private void CheckMappedImages() {
-			var ranges=process.QueryMemoryRangeInformation(IntPtr.Zero, 0x7FFFFFFF);
+			var sysInfo = SystemInfo.Data;
+			var ranges=process.QueryMemoryRangeInformation(sysInfo.MinimumApplicationAddress, (int)sysInfo.MaximumApplicationAddress - (int)sysInfo.MinimumApplicationAddress);
 			foreach(var range in ranges) {
 				if(!range.Protect.IsExecutable()) continue;
 				if(range.Type != MemoryBackingType.Private) {
