@@ -45,8 +45,7 @@ namespace ModuleVsFileMapping {
 		}
 
 		private void CheckMappedImages() {
-			var sysInfo = SystemInfo.Data;
-			var ranges=process.QueryMemoryRangeInformation(sysInfo.MinimumApplicationAddress, (int)sysInfo.MaximumApplicationAddress - (int)sysInfo.MinimumApplicationAddress);
+			var ranges=process.QueryMemoryRangeInformation();
 			foreach(var range in ranges) {
 				if(!range.Protect.IsExecutable()) continue;
 				if(range.Type != MemoryBackingType.Private) {

@@ -383,6 +383,10 @@ namespace Henke37.Win32.Processes {
 			return blocks;
 		}
 #endif
+		public IList<MemoryBasicInformation> QueryMemoryRangeInformation() {
+			var sysInfo = SystemInfo.Data;
+			return QueryMemoryRangeInformation(sysInfo.MinimumApplicationAddress, (int)sysInfo.MaximumApplicationAddress - (int)sysInfo.MinimumApplicationAddress);
+		}
 		public IList<MemoryBasicInformation> QueryMemoryRangeInformation(IntPtr baseAddress, int size) {
 			var ret = new List<MemoryBasicInformation>();
 			IntPtr endAdd = baseAddress + size;
