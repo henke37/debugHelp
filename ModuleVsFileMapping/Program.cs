@@ -57,7 +57,7 @@ namespace ModuleVsFileMapping {
 						Console.WriteLine("Unlisted!");
 					}
 				} else {
-					Console.WriteLine("{0,8:X} {1}", (int)range.BaseAddress, range.Protect.ToString());
+					Console.WriteLine("{0,8:X8} {1}", (int)range.BaseAddress, range.Protect.ToString());
 				}
 			}
 		}
