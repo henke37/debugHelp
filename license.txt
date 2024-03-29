@@ -19,6 +19,7 @@ The projects (as indicated by the folder names) have separate licenses:
 * CdControl: Public domain
 * JobTest: Public domain
 * ModuleVsFileMapping: Public domain
+* ReadProcEnvVars: Public domain
 * RestartTest: Public domain
 * StackDumper: Public domain
 * TokenTest: Public domain
