@@ -377,5 +377,22 @@ namespace Henke37.Win32.Tokens {
 		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool AdjustTokenGroups(SafeTokenHandle handle, [MarshalAs(UnmanagedType.Bool)] bool resetToDefault, void* newState, UInt32 outBuffLen, void* oldState, out UInt32 retLen);
+		
+		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = false)]
+		internal static extern unsafe PInvoke.NTSTATUS NtCreateLowBoxToken(
+  out SafeTokenHandle NewTokenHandle,
+  SafeTokenHandle ExistingTokenHandle,
+  UInt32 DesiredAccess,
+  //_in_ POBJECT_ATTRIBUTES  ObjectAttributes,
+  IntPtr ObjectAttributes,
+  //_in_ PSID                PackageSid,
+  IntPtr PackageSid,
+  UInt32 CapabilityCount,
+  SID_AND_ATTRIBUTES* Capabilities,
+  UInt32 HandleCount,
+  //_in_ HANDLE*             Handles
+  IntPtr Handles
+);
+
 	}
 }
