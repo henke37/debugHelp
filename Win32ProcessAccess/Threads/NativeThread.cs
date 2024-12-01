@@ -385,5 +385,16 @@ namespace Henke37.Win32.Threads {
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern unsafe PInvoke.NTSTATUS NtQueryInformationThread(SafeThreadHandle handle, ThreadInformationClass informationClass, void* buffer, uint bufferLength, out uint returnLength);
 
+		//QueryThreadCycleTime
+		//GetThreadGroupAffinity
+		//SetThreadGroupAffinity
+		//SetThreadIdealProcessorEx
+		//GetThreadIdealProcessorEx
+		//GetThreadSelectedCpuSets
+		//SetThreadSelectedCpuSets
+		//GetThreadSelectedCpuSetMasks
+		//SetThreadSelectedCpuSetMasks
+		//SetThreadDescription
+
 	}
 }

@@ -428,5 +428,8 @@ namespace Henke37.Win32.Windows {
 
 		[DllImport("Dwmapi.dll", SetLastError = false, EntryPoint = "DwmGetWindowAttribute")]
 		static unsafe extern PInvoke.HResult DwmGetWindowAttributeNative(IntPtr hwnd, UInt32 attribute, void* buff, UInt32 buffSize);
+
+		//SetUserObjectSecurity
+		//GetUserObjectSecurity
 	}
 }

@@ -394,5 +394,6 @@ namespace Henke37.Win32.Tokens {
   IntPtr Handles
 );
 
+		//IsTokenUntrusted
 	}
 }

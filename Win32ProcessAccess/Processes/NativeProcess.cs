@@ -433,7 +433,7 @@ namespace Henke37.Win32.Processes {
 			get {
 				UInt32 size = 200;
 				var sb = new StringBuilder((int)size);
-				var success = QueryFullProcessImageName(handle, 0, sb, ref size);
+				var success = QueryFullProcessImageNameW(handle, 0, sb, ref size);
 				if(!success) throw new Win32Exception();
 				return sb.ToString();
 			}
@@ -782,7 +782,7 @@ namespace Henke37.Win32.Processes {
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool QueryFullProcessImageName(SafeProcessHandle hProcess, Int32 flags, StringBuilder exename, ref UInt32 size);
+		static extern bool QueryFullProcessImageNameW(SafeProcessHandle hProcess, Int32 flags, StringBuilder exename, ref UInt32 size);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -834,5 +834,38 @@ namespace Henke37.Win32.Processes {
 			ProcessInformation *processInfo
 		);
 
+
+		//GetSystemDpiForProcess
+		//GetDpiAwarenessContextForProcess
+		//WaitForInputIdle
+		//SetProcessAffinityMask
+		//GetProcessDEPPolicy
+		//DebugBreakProcess
+		//CreateProcessWithTokenW
+		//GetApplicationRecoveryCallback
+		//GetApplicationRestartSettings
+		//RegisterAppInstance
+		//SetAppInstanceCsvFlags
+		//QueryProcessCycleTime
+		//EmptyWorkingSet
+		//InitializeProcessForWsWatch
+		//GetWsChanges
+		//GetProcessImageFileNameW
+		//GetProcessGroupAffinity
+		//MiniDumpWriteDump
+		//SetProcessWorkingSetSize
+		//PrefetchVirtualMemory
+		//AllocateUserPhysicalPages
+		//CreateEnclave
+		//SetProcessDynamicEHContinuationTargets
+		//SetProcessDynamicEnforcedCetCompatibleRanges
+		//SetProcessAffinityUpdateMode
+		//QueryProcessAffinityUpdateMode
+		//GetProcessMitigationPolicy
+		//GetSystemCpuSetInformation
+		//GetProcessDefaultCpuSets
+		//SetProcessDefaultCpuSets
+		//GetProcessDefaultCpuSetMasks
+		//SetProcessDefaultCpuSetMasks
 	}
 }
