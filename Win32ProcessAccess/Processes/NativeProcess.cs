@@ -581,6 +581,14 @@ namespace Henke37.Win32.Processes {
 			}
 		}
 
+		public bool AffinityUpdateMode {
+			get {
+				bool success = QueryProcessAffinityUpdateMode(handle, out UInt32 flags);
+				if(!success) throw new Win32Exception();
+				return (flags & 1)==1;
+			}
+		}
+
 		public IntPtr MapFileView(FileMapping fileMapping, UInt64 offset, MemoryProtection memoryProtection, uint size = 0, MemoryAllocationType allocationType = MemoryAllocationType.None) {
 			return MapFileView(fileMapping, offset, IntPtr.Zero, memoryProtection, size, allocationType);
 		}
@@ -894,6 +902,10 @@ namespace Henke37.Win32.Processes {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool DebugBreakProcess(SafeProcessHandle procHandle);
 
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool QueryProcessAffinityUpdateMode(SafeProcessHandle procHandle, out UInt32 flags);
+
 		//GetDpiAwarenessContextForProcess
 		//WaitForInputIdle
 		//SetProcessAffinityMask
@@ -915,7 +927,6 @@ namespace Henke37.Win32.Processes {
 		//SetProcessDynamicEHContinuationTargets
 		//SetProcessDynamicEnforcedCetCompatibleRanges
 		//SetProcessAffinityUpdateMode
-		//QueryProcessAffinityUpdateMode
 		//GetProcessMitigationPolicy
 		//GetSystemCpuSetInformation
 		//GetProcessDefaultCpuSets
