@@ -664,6 +664,11 @@ namespace Henke37.Win32.Processes {
 			if(!success) throw new Win32Exception();
 		}
 
+		public void DebugBreak() {
+			bool success = DebugBreakProcess(handle);
+			if(!success) throw new Win32Exception();
+		}
+
 		private Action<NativeProcess>? exitedListeners;
 		private WaitHandle? exitedWaitHandle;
 		private RegisteredWaitHandle? exitWaitRegistered;
@@ -885,10 +890,13 @@ namespace Henke37.Win32.Processes {
 		[DllImport("User32.dll", ExactSpelling = true, SetLastError = false)]
 		static extern UInt32 GetSystemDpiForProcess(SafeProcessHandle procHandle);
 
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool DebugBreakProcess(SafeProcessHandle procHandle);
+
 		//GetDpiAwarenessContextForProcess
 		//WaitForInputIdle
 		//SetProcessAffinityMask
-		//DebugBreakProcess
 		//CreateProcessWithTokenW
 		//GetApplicationRestartSettings
 		//RegisterAppInstance
