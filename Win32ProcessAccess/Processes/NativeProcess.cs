@@ -575,6 +575,12 @@ namespace Henke37.Win32.Processes {
 			}
 		}
 
+		public UInt32 SystemDpi {
+			get {
+				return GetSystemDpiForProcess(handle);
+			}
+		}
+
 		public IntPtr MapFileView(FileMapping fileMapping, UInt64 offset, MemoryProtection memoryProtection, uint size = 0, MemoryAllocationType allocationType = MemoryAllocationType.None) {
 			return MapFileView(fileMapping, offset, IntPtr.Zero, memoryProtection, size, allocationType);
 		}
@@ -876,7 +882,9 @@ namespace Henke37.Win32.Processes {
 			out UInt32 pdwFlags
 		);
 
-		//GetSystemDpiForProcess
+		[DllImport("User32.dll", ExactSpelling = true, SetLastError = false)]
+		static extern UInt32 GetSystemDpiForProcess(SafeProcessHandle procHandle);
+
 		//GetDpiAwarenessContextForProcess
 		//WaitForInputIdle
 		//SetProcessAffinityMask

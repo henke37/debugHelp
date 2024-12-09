@@ -178,6 +178,12 @@ namespace Henke37.Win32.Windows {
 			}
 		}
 
+		public UInt32 DPI {
+			get {
+				return GetDpiForWindow(Handle);
+			}
+		}
+
 		private static bool windPropEnumCallback(IntPtr hwnd, string name, IntPtr handle, IntPtr lParam) {
 			GCHandle gch = GCHandle.FromIntPtr(lParam);
 			var list = (Dictionary<string, IntPtr>)gch.Target;
@@ -428,6 +434,9 @@ namespace Henke37.Win32.Windows {
 
 		[DllImport("Dwmapi.dll", SetLastError = false, EntryPoint = "DwmGetWindowAttribute")]
 		static unsafe extern PInvoke.HResult DwmGetWindowAttributeNative(IntPtr hwnd, UInt32 attribute, void* buff, UInt32 buffSize);
+
+		[DllImport("user32.dll", SetLastError = true)]
+		static unsafe extern UInt32 GetDpiForWindow(IntPtr hwnd);
 
 		//SetUserObjectSecurity
 		//GetUserObjectSecurity
