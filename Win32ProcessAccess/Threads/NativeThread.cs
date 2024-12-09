@@ -211,6 +211,14 @@ namespace Henke37.Win32.Threads {
 			}
 		}
 
+		public ProcessorNumber IdealProcessor {
+			get {
+				bool success = GetThreadIdealProcessorEx(handle, out ProcessorNumber number);
+				if(!success) throw new Win32Exception();
+				return number;
+			}
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public ProcessTimes GetThreadTimes() {
@@ -385,11 +393,14 @@ namespace Henke37.Win32.Threads {
 		[DllImport("Ntdll.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern unsafe PInvoke.NTSTATUS NtQueryInformationThread(SafeThreadHandle handle, ThreadInformationClass informationClass, void* buffer, uint bufferLength, out uint returnLength);
 
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool GetThreadIdealProcessorEx(SafeThreadHandle handle, out ProcessorNumber number);
+
 		//QueryThreadCycleTime
 		//GetThreadGroupAffinity
 		//SetThreadGroupAffinity
 		//SetThreadIdealProcessorEx
-		//GetThreadIdealProcessorEx
 		//GetThreadSelectedCpuSets
 		//SetThreadSelectedCpuSets
 		//GetThreadSelectedCpuSetMasks
