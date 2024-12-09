@@ -217,6 +217,11 @@ namespace Henke37.Win32.Threads {
 				if(!success) throw new Win32Exception();
 				return number;
 			}
+
+			set {
+				bool success = SetThreadIdealProcessorEx(handle, value, out ProcessorNumber _);
+				if(!success) throw new Win32Exception();
+			}
 		}
 
 		[SecuritySafeCritical]
@@ -396,6 +401,10 @@ namespace Henke37.Win32.Threads {
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool GetThreadIdealProcessorEx(SafeThreadHandle handle, out ProcessorNumber number);
+
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool SetThreadIdealProcessorEx(SafeThreadHandle handle, ProcessorNumber newProc, out ProcessorNumber oldProc);
 
 		//QueryThreadCycleTime
 		//GetThreadGroupAffinity
