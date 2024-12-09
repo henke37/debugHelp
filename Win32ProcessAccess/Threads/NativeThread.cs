@@ -365,7 +365,7 @@ namespace Henke37.Win32.Threads {
 		);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = false)]
-		internal static extern unsafe UInt32 GetThreadDescription(SafeThreadHandle handle, Char** exitCode);
+		internal static extern unsafe UInt32 GetThreadDescription(SafeThreadHandle handle, Char** description);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern Int32 SuspendThread(SafeThreadHandle handle);
