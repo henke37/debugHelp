@@ -20,6 +20,7 @@ using Henke37.Win32.Base;
 using System.Threading;
 using System.Collections.Specialized;
 using System.Collections;
+using System.Security.Cryptography;
 
 namespace Henke37.Win32.Processes {
 #if NETFRAMEWORK
@@ -559,6 +560,21 @@ namespace Henke37.Win32.Processes {
 			}
 		}
 
+		public ApplicationRecoveryCallback ApplicationRecoveryCallback {
+			get {
+				var success = GetApplicationRecoveryCallback(handle, out UIntPtr callback, out UIntPtr pvoidParam, out UInt32 pingInterval, out UInt32 flags);
+				if(success.Value == PInvoke.HResult.Code.S_FALSE) return null;
+				success.ThrowOnFailure();
+
+				return new ApplicationRecoveryCallback() {
+					callback = callback,
+					pvoidParam = pvoidParam,
+					pingInterval = pingInterval,
+					flags = flags
+				};
+			}
+		}
+
 		public IntPtr MapFileView(FileMapping fileMapping, UInt64 offset, MemoryProtection memoryProtection, uint size = 0, MemoryAllocationType allocationType = MemoryAllocationType.None) {
 			return MapFileView(fileMapping, offset, IntPtr.Zero, memoryProtection, size, allocationType);
 		}
@@ -851,13 +867,21 @@ namespace Henke37.Win32.Processes {
 		  [MarshalAs(UnmanagedType.Bool)] out bool lpPermanent
 		);
 
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		static extern PInvoke.HResult GetApplicationRecoveryCallback(
+			SafeProcessHandle procHandle,
+			out UIntPtr pRecoveryCallback,
+			out UIntPtr ppvParameter,
+			out UInt32 pdwPingInterval,
+			out UInt32 pdwFlags
+		);
+
 		//GetSystemDpiForProcess
 		//GetDpiAwarenessContextForProcess
 		//WaitForInputIdle
 		//SetProcessAffinityMask
 		//DebugBreakProcess
 		//CreateProcessWithTokenW
-		//GetApplicationRecoveryCallback
 		//GetApplicationRestartSettings
 		//RegisterAppInstance
 		//SetAppInstanceCsvFlags
