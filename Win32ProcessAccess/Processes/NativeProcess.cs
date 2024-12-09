@@ -550,6 +550,15 @@ namespace Henke37.Win32.Processes {
 			}
 		}
 
+		public ProcessDEPPolicy DEPPolicy {
+			get {
+				bool success = GetProcessDEPPolicy(handle, out UInt32 flags, out bool permanent);
+				if(!success) throw new Win32Exception();
+				flags |= permanent ? 0x80000000 : 0;
+				return (ProcessDEPPolicy)flags;
+			}
+		}
+
 		public IntPtr MapFileView(FileMapping fileMapping, UInt64 offset, MemoryProtection memoryProtection, uint size = 0, MemoryAllocationType allocationType = MemoryAllocationType.None) {
 			return MapFileView(fileMapping, offset, IntPtr.Zero, memoryProtection, size, allocationType);
 		}
@@ -834,12 +843,18 @@ namespace Henke37.Win32.Processes {
 			ProcessInformation *processInfo
 		);
 
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetProcessDEPPolicy(
+		  SafeProcessHandle procHandle,
+		  out UInt32 lpFlags,
+		  [MarshalAs(UnmanagedType.Bool)] out bool lpPermanent
+		);
 
 		//GetSystemDpiForProcess
 		//GetDpiAwarenessContextForProcess
 		//WaitForInputIdle
 		//SetProcessAffinityMask
-		//GetProcessDEPPolicy
 		//DebugBreakProcess
 		//CreateProcessWithTokenW
 		//GetApplicationRecoveryCallback
