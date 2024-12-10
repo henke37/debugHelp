@@ -834,7 +834,7 @@ namespace Henke37.Win32.Processes {
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool QueryFullProcessImageNameW(SafeProcessHandle hProcess, Int32 flags, StringBuilder exename, ref UInt32 size);
+		static extern bool QueryFullProcessImageNameW(SafeProcessHandle hProcess, Int32 flags, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder exename, ref UInt32 size);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
