@@ -589,6 +589,14 @@ namespace Henke37.Win32.Processes {
 			}
 		}
 
+		public UInt64 CycleTime {
+			get {
+				bool success = QueryProcessCycleTime(handle, out UInt64 cycles);
+				if(!success) throw new Win32Exception();
+				return cycles;
+			}
+		}
+
 		public IntPtr MapFileView(FileMapping fileMapping, UInt64 offset, MemoryProtection memoryProtection, uint size = 0, MemoryAllocationType allocationType = MemoryAllocationType.None) {
 			return MapFileView(fileMapping, offset, IntPtr.Zero, memoryProtection, size, allocationType);
 		}
@@ -906,6 +914,10 @@ namespace Henke37.Win32.Processes {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool QueryProcessAffinityUpdateMode(SafeProcessHandle procHandle, out UInt32 flags);
 
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool QueryProcessCycleTime(SafeProcessHandle procHandle, out UInt64 cycles);
+
 		//GetDpiAwarenessContextForProcess
 		//WaitForInputIdle
 		//SetProcessAffinityMask
@@ -913,7 +925,6 @@ namespace Henke37.Win32.Processes {
 		//GetApplicationRestartSettings
 		//RegisterAppInstance
 		//SetAppInstanceCsvFlags
-		//QueryProcessCycleTime
 		//EmptyWorkingSet
 		//InitializeProcessForWsWatch
 		//GetWsChanges

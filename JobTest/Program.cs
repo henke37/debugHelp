@@ -30,7 +30,7 @@ namespace JobTest {
 
 				atts.AddAttribute<IntPtr>(ProcThreadAttribute.ParentProcess, &shellHandle);
 
-				using(NativeProcess natProcess = NativeProcess.CreateProcess(args[0], null, CreateProcessFlags.None, StartupInfoFlags.None, atts, null, out _)) {
+				using(NativeProcess natProcess = NativeProcess.CreateProcess(args[0], null, CreateProcessFlags.None, StartupInfoFlags.None, atts, null, out var thread)) {
 					job.AttachProcess(natProcess);
 				}
 			}			
