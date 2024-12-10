@@ -224,6 +224,14 @@ namespace Henke37.Win32.Threads {
 			}
 		}
 
+		public UInt64 CycleTime {
+			get {
+				bool success = QueryThreadCycleTime(handle, out UInt64 cycles);
+				if(!success) throw new Win32Exception();
+				return cycles;
+			}
+		}
+
 		[SecuritySafeCritical]
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public ProcessTimes GetThreadTimes() {
@@ -406,7 +414,10 @@ namespace Henke37.Win32.Threads {
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool SetThreadIdealProcessorEx(SafeThreadHandle handle, ProcessorNumber newProc, out ProcessorNumber oldProc);
 
-		//QueryThreadCycleTime
+		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern bool QueryThreadCycleTime(SafeThreadHandle handle, out UInt64 cycles);
+
 		//GetThreadGroupAffinity
 		//SetThreadGroupAffinity
 		//SetThreadIdealProcessorEx
