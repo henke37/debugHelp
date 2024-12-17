@@ -20,8 +20,8 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			classDescriptorMap = new Dictionary<IntPtr, ClassHierarchyDescriptor>();
 		}
 
-		private CompleteObjectLocator readObjPtr(IntPtr objAddr) {
-			IntPtr vtblPtrVal = processMemoryReader.ReadIntPtr(objAddr);
+		private CompleteObjectLocator readObjPtr(IntPtr objAddr, int vtblPtrOffset) {
+			IntPtr vtblPtrVal = processMemoryReader.ReadIntPtr(objAddr) + vtblPtrOffset;
 			IntPtr metaPtrVal = processMemoryReader.ReadIntPtr(vtblPtrVal - 4);
 
 			if(completeObjectLocatorMap.TryGetValue(metaPtrVal, out CompleteObjectLocator objectLocator)) {
@@ -114,18 +114,18 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			);
 		}
 
-		public string GetMangledClassNameFromObjPtr(IntPtr objAddr) {
-			var col = readObjPtr(objAddr);
+		public string GetMangledClassNameFromObjPtr(IntPtr objAddr, int vtblPtrOffset = 0) {
+			var col = readObjPtr(objAddr, vtblPtrOffset);
 			return col.TypeDescriptor.MangledName;
 		}
 
-		public ClassHierarchyDescriptor GetMangledHeirarchyFromObjPtr(IntPtr objAddr) {
-			var col = readObjPtr(objAddr);
+		public ClassHierarchyDescriptor GetMangledHeirarchyFromObjPtr(IntPtr objAddr, int vtblPtrOffset = 0) {
+			var col = readObjPtr(objAddr, vtblPtrOffset);
 			return col.ClassHierarchyDescriptor;
 		}
 
-		public IntPtr DynamicCast(IntPtr objAddr, string mangledBaseClassName) {
-			var col = readObjPtr(objAddr);
+		public IntPtr DynamicCast(IntPtr objAddr, string mangledBaseClassName, int vtblPtrOffset = 0) {
+			var col = readObjPtr(objAddr, vtblPtrOffset);
 			var baseClass = GetBaseClass(col, mangledBaseClassName);
 			if(baseClass == null) throw new InvalidCastException(string.Format(Resources.BadDynamicCast_NoSuchBase, mangledBaseClassName));
 
@@ -133,8 +133,8 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			return baseClass.DisplacementData.LocateBaseObject(completeObjAddr, processMemoryReader);
 		}
 
-		public bool TryDynamicCast(IntPtr objAddr, string mangledBaseClassName, out IntPtr resAddr) {
-			var col = readObjPtr(objAddr);
+		public bool TryDynamicCast(IntPtr objAddr, string mangledBaseClassName, out IntPtr resAddr, int vtblPtrOffset = 0) {
+			var col = readObjPtr(objAddr, vtblPtrOffset);
 			var baseClass = GetBaseClass(col, mangledBaseClassName);
 			if(baseClass == null) { resAddr = IntPtr.Zero; return false; }
 
