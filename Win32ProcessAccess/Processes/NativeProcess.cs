@@ -649,7 +649,7 @@ namespace Henke37.Win32.Processes {
 			return new SafeThreadHandle(DuplicateHandleFrom(sourceHandle, (uint)desiredAccess, inherit, options));
 		}
 
-        internal SafeJobHandle DuplicateKobHandleFrom(IntPtr sourceHandle, JobAccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
+		internal SafeJobHandle DuplicateJobHandleFrom(IntPtr sourceHandle, JobAccessRights desiredAccess, bool inherit, SafeKernelObjHandle.DuplicateOptions options) {
             return new SafeJobHandle(DuplicateHandleFrom(sourceHandle, (uint)desiredAccess, inherit, options));
         }
 
