@@ -560,7 +560,7 @@ namespace Henke37.Win32.Processes {
 			}
 		}
 
-		public ApplicationRecoveryCallback ApplicationRecoveryCallback {
+		public ApplicationRecoveryCallback? ApplicationRecoveryCallback {
 			get {
 				var success = GetApplicationRecoveryCallback(handle, out UIntPtr callback, out UIntPtr pvoidParam, out UInt32 pingInterval, out UInt32 flags);
 				if(success.Value == PInvoke.HResult.Code.S_FALSE) return null;

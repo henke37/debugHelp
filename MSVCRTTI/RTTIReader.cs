@@ -85,7 +85,7 @@ namespace Henke37.DebugHelp.RTTI.MSVC {
 			BaseClassDescriptor.MemoryStruct memoryStruct = new BaseClassDescriptor.MemoryStruct();
 			processMemoryReader.ReadStruct(baseClassDescriptorPointer, ref memoryStruct);
 
-			ClassHierarchyDescriptor hierarchy = null;
+			ClassHierarchyDescriptor? hierarchy = null;
 			if((memoryStruct.Flags & BaseClassDescriptor.BCDFlags.HasPCHD) != 0) {
 				hierarchy = GetClassHierarchyDescriptor(memoryStruct.pClassDescriptor);
 			}
