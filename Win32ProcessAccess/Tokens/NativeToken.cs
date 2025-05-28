@@ -1,4 +1,5 @@
 ﻿using Henke37.Win32.SafeHandles;
+using PInvoke;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Principal;
+using Win32Exception = System.ComponentModel.Win32Exception;
 
 namespace Henke37.Win32.Tokens {
 #if NETFRAMEWORK
@@ -49,6 +51,27 @@ namespace Henke37.Win32.Tokens {
         internal unsafe void GetTokenInformation<T>(TokenInformationClass infoClass, out T buff) where T : unmanaged {
 			fixed (void* buffP = &buff) {
 				bool success = GetTokenInformation(tokenHandle, infoClass, buffP, (uint)sizeof(T), out _);
+				if(!success) throw new Win32Exception();
+			}
+		}
+
+		[SecurityCritical]
+		internal unsafe void SetTokenInformation<T>(TokenInformationClass infoClass, T buff) where T : unmanaged {
+			void* buffP = &buff;
+			bool success = SetTokenInformation(tokenHandle, infoClass, buffP, (uint)sizeof(T));
+			if(!success) throw new Win32Exception();
+		}
+
+		[SecurityCritical]
+		internal unsafe void SetTokenInformation<T>(TokenInformationClass infoClass, T* buffP) where T : unmanaged {
+			bool success = SetTokenInformation(tokenHandle, infoClass, buffP, (uint)sizeof(T));
+			if(!success) throw new Win32Exception();
+		}
+
+		[SecurityCritical]
+		internal unsafe void SetTokenInformation<T>(TokenInformationClass infoClass, ref T buff) where T : unmanaged {
+			fixed(void* buffP = &buff) {
+				bool success = SetTokenInformation(tokenHandle, infoClass, buffP, (uint)sizeof(T));
 				if(!success) throw new Win32Exception();
 			}
 		}
@@ -369,6 +392,10 @@ namespace Henke37.Win32.Tokens {
 		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		internal static extern unsafe bool GetTokenInformation(SafeTokenHandle handle, TokenInformationClass informationClass, void* outBuff, UInt32 outBuffLen, out UInt32 retLen);
+
+		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		internal static extern unsafe bool SetTokenInformation(SafeTokenHandle handle, TokenInformationClass informationClass, void* inBuff, UInt32 inBuffLen);
 
 		[DllImport("Advapi32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
