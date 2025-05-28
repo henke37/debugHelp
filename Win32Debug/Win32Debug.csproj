@@ -40,5 +40,4 @@
       <Name>Win32ProcessAccess</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
