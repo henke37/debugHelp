@@ -290,6 +290,12 @@ namespace Henke37.Win32.Tokens {
 				GetTokenInformation(TokenInformationClass.VirtualizationEnabled, out UInt32 result);
 				return result != 0;
 			}
+
+			[SecuritySafeCritical]
+			set {
+				UInt32 internalVal = (uint)(value ? 1 : 0);
+				SetTokenInformation(TokenInformationClass.VirtualizationEnabled, internalVal);
+			}
 		}
 
 		public bool UIAccess {
