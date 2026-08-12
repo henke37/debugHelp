@@ -898,7 +898,7 @@ namespace Henke37.Win32.Processes {
 		  [MarshalAs(UnmanagedType.Bool)] out bool lpPermanent
 		);
 
-		[DllImport("Kernel32.dll", SetLastError = true)]
+		[DllImport("Kernel32.dll", SetLastError = false)]
 		static extern PInvoke.HResult GetApplicationRecoveryCallback(
 			SafeProcessHandle procHandle,
 			out UIntPtr pRecoveryCallback,

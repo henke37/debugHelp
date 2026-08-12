@@ -92,8 +92,8 @@ namespace Henke37.Win32.Threads {
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
 				char* descPtr;
-				UInt32 status = GetThreadDescription(handle, &descPtr);
-				if((status & 0x80000000) == 0x80000000) throw new Exception();
+				var success = GetThreadDescription(handle, &descPtr);
+				success.ThrowOnFailure();
 				string desc = new string(descPtr);
 				Marshal.FreeHGlobal((IntPtr)descPtr);
 
@@ -257,7 +257,7 @@ namespace Henke37.Win32.Threads {
 			remove {
 				exitedListeners -= value;
 
-				if(exitedListeners!.GetInvocationList().Length == 0) {
+				if((exitedListeners is null || exitedListeners.GetInvocationList().Length == 0)) {
 					UnregisterExitedWait();
 				}
 			}
@@ -373,7 +373,7 @@ namespace Henke37.Win32.Threads {
 		);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = false)]
-		internal static extern unsafe UInt32 GetThreadDescription(SafeThreadHandle handle, Char** description);
+		internal static extern unsafe PInvoke.HResult GetThreadDescription(SafeThreadHandle handle, Char** description);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		internal static extern Int32 SuspendThread(SafeThreadHandle handle);
