@@ -400,7 +400,7 @@ namespace Henke37.Win32.Processes {
 				var result = VirtualQueryEx(handle, baseAddress, out native, (uint)Marshal.SizeOf<MemoryBasicInformation.Native>());
 				if(result == 0) throw new Win32Exception();
 				ret.Add(native.AsManaged());
-				baseAddress += (int)native.RegionSize;
+				baseAddress = (IntPtr)((ulong)baseAddress + (ulong)native.RegionSize);
 				if((ulong)baseAddress >= (ulong)endAdd) break;
 			}
 			return ret;
@@ -706,7 +706,7 @@ namespace Henke37.Win32.Processes {
 			remove {
 				exitedListeners -= value;
 
-				if(exitedListeners!.GetInvocationList().Length==0) {
+				if((exitedListeners is null || exitedListeners.GetInvocationList().Length==0)) {
 					UnregisterExitedWait();
 				}
 			}
