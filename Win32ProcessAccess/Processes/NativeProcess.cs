@@ -125,6 +125,8 @@ namespace Henke37.Win32.Processes {
 		private static unsafe NativeProcess CreateProcessInternal(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoW startupInfo, char[]? envData, string currentDirectory, out NativeThread firstThread) {
 			ProcessInformation processInfo;
 
+			flags |= CreateProcessFlags.UnicodeEnvironment;
+
 			fixed(char* envDataP = envData) {
 				bool success = CreateProcessW(applicationName, commandLine, null, null, false, (UInt32)flags, envDataP, currentDirectory, &startupInfo, &processInfo);
 				if(!success) throw new Win32Exception();
@@ -140,6 +142,8 @@ namespace Henke37.Win32.Processes {
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		private static unsafe NativeProcess CreateProcessInternal(string applicationName, string commandLine, CreateProcessFlags flags, StartupInfoExW startupInfo, char[]? envData, string currentDirectory, out NativeThread firstThread) {
 			ProcessInformation processInfo;
+
+			flags |= CreateProcessFlags.UnicodeEnvironment;
 
 			fixed(char* envDataP = envData) {
 				bool success = CreateProcessW(applicationName, commandLine, null, null, false, (UInt32)flags, envDataP, currentDirectory, &startupInfo.StartupInfo, &processInfo);
