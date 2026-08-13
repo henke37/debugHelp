@@ -103,10 +103,19 @@ namespace Henke37.Win32.SafeHandles {
 		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
 		internal static unsafe IntPtr DuplicateHandleLocal(IntPtr sourceHandle, uint desiredAccess, bool inheritHandle, DuplicateOptions options) {
 			IntPtr newHandle = IntPtr.Zero;
-			bool success = DuplicateHandle(SafeProcessHandle.CurrentProcess, sourceHandle, SafeProcessHandle.CurrentProcess, (IntPtr)(int)&newHandle, desiredAccess, inheritHandle, options);
+			bool success = DuplicateHandle(SafeProcessHandle.CurrentProcess, sourceHandle, SafeProcessHandle.CurrentProcess, (IntPtr)(long)&newHandle, desiredAccess, inheritHandle, options);
 
 			if(!success) throw new Win32Exception();
 			return newHandle;
+		}
+
+#if NETFRAMEWORK
+		[HostProtection(MayLeakOnAbort = true)]
+#endif
+		[SecurityCritical]
+		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
+		internal static unsafe IntPtr DuplicateHandleLocal(IntPtr sourceHandle, bool inheritHandle, DuplicateOptions options) {
+			return DuplicateHandleLocal(sourceHandle, 0, inheritHandle, options | DuplicateOptions.SameAccess);
 		}
 
 		[SecuritySafeCritical]
