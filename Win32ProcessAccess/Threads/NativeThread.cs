@@ -78,8 +78,7 @@ namespace Henke37.Win32.Threads {
 			[SecuritySafeCritical]
 			[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 			get {
-				UInt32 exitCode;
-				bool success = GetExitCodeThread(handle, &exitCode);
+				bool success = GetExitCodeThread(handle, out UInt32 exitCode);
 				if(!success) throw new Win32Exception();
 
 				return exitCode;
@@ -341,7 +340,7 @@ namespace Henke37.Win32.Threads {
 		internal static extern UInt32 GetProcessIdOfThread(SafeThreadHandle handle);
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		internal static extern unsafe bool GetExitCodeThread(SafeThreadHandle handle, UInt32* exitCode);
+		internal static extern unsafe bool GetExitCodeThread(SafeThreadHandle handle, out UInt32 exitCode);
 
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
