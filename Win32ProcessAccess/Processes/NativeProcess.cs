@@ -362,39 +362,43 @@ namespace Henke37.Win32.Processes {
 		[ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
 #endif
 		public WorkingSetBlock[] QueryWorkingSet() {
-			int numEntries = 1;
-			int headerSize = Marshal.SizeOf<UInt32>();
-			int blockSize = Marshal.SizeOf<UInt32>();
-			int buffSize = headerSize + blockSize * numEntries;
-			IntPtr buffer = Marshal.AllocHGlobal(buffSize);
-			for(; ; ) {
-				Marshal.WriteInt32(buffer, numEntries);
-				var success = QueryWorkingSetNative(handle, buffer, buffSize);
-				if(success) break;
-				var err = Marshal.GetLastWin32Error();
-				if(err != ERROR_BAD_LENGTH) throw new Win32Exception(err);
+			IntPtr buffer = IntPtr.Zero;
+			try {
+				int numEntries = 1;
+				int headerSize = Marshal.SizeOf<UInt32>();
+				int blockSize = Marshal.SizeOf<UInt32>();
+				int buffSize = headerSize + blockSize * numEntries;
+				buffer = Marshal.AllocHGlobal(buffSize);
+				for(; ; ) {
+					Marshal.WriteInt32(buffer, numEntries);
+					var success = QueryWorkingSetNative(handle, buffer, buffSize);
+					if(success) break;
+					var err = Marshal.GetLastWin32Error();
+					if(err != ERROR_BAD_LENGTH) throw new Win32Exception(err);
+					numEntries = Marshal.ReadInt32(buffer);
+					buffSize = headerSize + blockSize * numEntries;
+					buffer = Marshal.ReAllocHGlobal(buffer, (IntPtr)buffSize);
+				}
 				numEntries = Marshal.ReadInt32(buffer);
-				buffSize = headerSize + blockSize * numEntries;
-				buffer = Marshal.ReAllocHGlobal(buffer, (IntPtr)buffSize);
+				WorkingSetBlock[] blocks = new WorkingSetBlock[numEntries];
+				for(int blockIndex = 0; blockIndex < numEntries; ++blockIndex) {
+					blocks[blockIndex] = new WorkingSetBlock(
+						Marshal.ReadInt32(buffer + headerSize + blockSize * blockIndex)
+					);
+				}
+				return blocks;
+			} finally {
+				Marshal.FreeHGlobal(buffer);
 			}
-			numEntries = Marshal.ReadInt32(buffer);
-			WorkingSetBlock[] blocks = new WorkingSetBlock[numEntries];
-			for(int blockIndex = 0; blockIndex < numEntries; ++blockIndex) {
-				blocks[blockIndex] = new WorkingSetBlock(
-					Marshal.ReadInt32(buffer + headerSize + blockSize * blockIndex)
-				);
-			}
-			Marshal.FreeHGlobal(buffer);
-			return blocks;
 		}
 #endif
 		public IList<MemoryBasicInformation> QueryMemoryRangeInformation() {
 			var sysInfo = SystemInfo.Data;
-			return QueryMemoryRangeInformation(sysInfo.MinimumApplicationAddress, (int)sysInfo.MaximumApplicationAddress - (int)sysInfo.MinimumApplicationAddress);
+			return QueryMemoryRangeInformation(sysInfo.MinimumApplicationAddress, (long)sysInfo.MaximumApplicationAddress - (long)sysInfo.MinimumApplicationAddress);
 		}
-		public IList<MemoryBasicInformation> QueryMemoryRangeInformation(IntPtr baseAddress, int size) {
+		public IList<MemoryBasicInformation> QueryMemoryRangeInformation(IntPtr baseAddress, long size) {
 			var ret = new List<MemoryBasicInformation>();
-			IntPtr endAdd = baseAddress + size;
+			IntPtr endAdd = (IntPtr)((ulong)baseAddress + (ulong)size);
 			for(; ; ) {
 				MemoryBasicInformation.Native native;
 				var result = VirtualQueryEx(handle, baseAddress, out native, (uint)Marshal.SizeOf<MemoryBasicInformation.Native>());
