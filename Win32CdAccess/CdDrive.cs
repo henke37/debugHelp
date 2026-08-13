@@ -12,7 +12,7 @@ using Henke37.Win32.Files;
 using static Henke37.Win32.CdAccess.Configuration;
 
 namespace Henke37.Win32.CdAccess {
-	public class CdDrive {
+	public class CdDrive : IDisposable {
 		internal NativeFileObject file;
 		private const int TOCTrackCount = 100;
 
@@ -402,6 +402,10 @@ namespace Henke37.Win32.CdAccess {
 					//nop
 				}
 			}
+		}
+
+		public void Dispose() {
+			file.Dispose();
 		}
 	}
 }
