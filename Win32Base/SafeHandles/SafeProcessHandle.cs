@@ -66,7 +66,7 @@ namespace Henke37.Win32.SafeHandles {
 
 		public override bool IsInvalid {
 			get {
-				if(handle.ToInt32() == -1) return false;
+				if(handle == (IntPtr)(-1)) return false;
 				return base.IsInvalid;
 			}
 		}
