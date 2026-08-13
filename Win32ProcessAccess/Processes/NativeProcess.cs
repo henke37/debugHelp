@@ -187,6 +187,7 @@ namespace Henke37.Win32.Processes {
 		}
 
 		internal NativeProcess(SafeProcessHandle handle) {
+			if(handle == null) throw new ArgumentNullException(nameof(handle));
 			if(handle.IsInvalid) throw new ArgumentException("Handle must be valid!", nameof(handle));
 			this.handle = handle;
 		}
