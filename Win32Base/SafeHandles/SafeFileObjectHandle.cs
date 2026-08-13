@@ -21,6 +21,7 @@ namespace Henke37.Win32.SafeHandles {
 		}
 
 		public bool Equals(SafeFileObjectHandle other) {
+			if(other == null) return false;
 			if(other.handle == handle) return true;
 			return CompareObjectHandles(other.handle, handle);
 		}

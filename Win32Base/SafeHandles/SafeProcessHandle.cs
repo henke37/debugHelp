@@ -61,6 +61,8 @@ namespace Henke37.Win32.SafeHandles {
 
 		[SecuritySafeCritical]
 		public bool Equals(Microsoft.Win32.SafeHandles.SafeProcessHandle other) {
+			if(other == null) return false;
+			if(other.DangerousGetHandle() == handle) return true;
 			return CompareObjectHandles(other.DangerousGetHandle(), handle);
 		}
 

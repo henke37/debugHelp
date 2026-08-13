@@ -25,6 +25,7 @@ namespace Henke37.Win32.SafeHandles {
 
 		[SecuritySafeCritical]
 		public bool Equals(SafeJobHandle other) {
+			if(other == null) return false;
 			if(other.handle == handle) return true;
 			return CompareObjectHandles(other.handle, handle);
 		}
