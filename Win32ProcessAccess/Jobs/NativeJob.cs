@@ -18,6 +18,8 @@ namespace Henke37.Win32.Jobs {
 		private SafeJobHandle handle;
 
 		private NativeJob(SafeJobHandle handle) {
+			if(handle == null) throw new ArgumentNullException(nameof(handle));
+			if(handle.IsInvalid) throw new ArgumentException("Invalid handle", nameof(handle));
 			this.handle = handle;
 		}
 
@@ -45,11 +47,13 @@ namespace Henke37.Win32.Jobs {
 		[SecuritySafeCritical]
 		[SuppressUnmanagedCodeSecurity]
 		public void AttachProcess(NativeProcess process) {
+			if(process == null) throw new ArgumentNullException(nameof(process));
 			AttachProcess(process.handle);
 		}
 
 		[SecuritySafeCritical]
 		internal void AttachProcess(SafeProcessHandle processHandle) {
+			if(processHandle == null) throw new ArgumentNullException(nameof(processHandle));
 			bool success = AssignProcessToJobObject(handle, processHandle);
 			if(!success) throw new Win32Exception();
 		}
@@ -72,8 +76,9 @@ namespace Henke37.Win32.Jobs {
 		}
 
 		[SecuritySafeCritical]
-		void Terminate(UInt32 exitCode) {
-			TerminateJobObject(handle, exitCode);
+		public void Terminate(UInt32 exitCode) {
+			bool success = TerminateJobObject(handle, exitCode);
+			if(!success) throw new Win32Exception();
 		}
 
 		public BasicLimitInformation BasicLimitInformation {
