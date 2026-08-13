@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Henke37.Win32.BatteryAccess {
-	public class BatteryPort {
+	public class BatteryPort : IDisposable {
 		internal NativeFileObject file;
 
 		internal const UInt64 InvalidTag = 0;
@@ -68,7 +68,7 @@ namespace Henke37.Win32.BatteryAccess {
 
 		public TimeSpan GetEstimatedTime(UInt64 BatteryTag) {
 			var secs=QueryInformation<UInt64>(QueryInformationLevel.EstimatedTime, BatteryTag);
-			return new TimeSpan(0, 0, (int)secs);
+			return TimeSpan.FromSeconds(secs);
 		}
 
 		public UInt64 GetTemperature(UInt64 BatteryTag) {
@@ -91,14 +91,20 @@ namespace Henke37.Win32.BatteryAccess {
 			return file.DeviceControlInputOutput<QueryInformation, T>(DeviceIoControlCode.BatteryQueryInformation, ref query);
 		}
 
-		private string QueryInfoString(QueryInformationLevel informationLevel, ulong batteryTag, int buffSize=128) {
+		private string QueryInfoString(QueryInformationLevel informationLevel, ulong batteryTag, int buffSize = 256) {
 			QueryInformation query = new QueryInformation(batteryTag, informationLevel);
 
-			byte[] strBuff=new byte[buffSize];
+			byte[] buffer = new byte[buffSize];
 
-			var written=file.DeviceControlInputOutput<QueryInformation>(DeviceIoControlCode.BatteryQueryInformation, ref query, strBuff);
+			uint written = file.DeviceControlInputOutput(DeviceIoControlCode.BatteryQueryInformation, ref query, buffer);
 
-			return Encoding.UTF8.GetString(strBuff, 0, (int)written);
+			if(written == 0) return string.Empty;
+
+			return Encoding.Unicode.GetString(buffer, 0, (int)written).TrimEnd('\0');
+		}
+
+		public void Dispose() {
+			file.Dispose();
 		}
 	}
 }
