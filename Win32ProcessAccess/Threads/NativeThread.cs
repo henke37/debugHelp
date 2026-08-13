@@ -46,6 +46,10 @@ namespace Henke37.Win32.Threads {
 			return new NativeThread(new SafeThreadHandle(rawHandle));
 		}
 
+		public override int GetHashCode() {
+			return (int)ThreadId;
+		}
+
 		public void Dispose() => Close();
 		public void Close() {
 			UnregisterExitedWait();

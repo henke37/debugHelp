@@ -208,6 +208,10 @@ namespace Henke37.Win32.Processes {
 			return new NativeProcess(new SafeProcessHandle(rawHandle));
 		}
 
+		public override int GetHashCode() {
+			return (int)ProcessId;
+		}
+
 		private static NativeProcess? CachedCurrent;
 		public static NativeProcess Current {
 			get {

@@ -21,6 +21,7 @@ namespace Henke37.Win32.Tokens {
 		private const int ERROR_NOT_ALL_ASSIGNED = 1300;
 
 		internal NativeToken(SafeTokenHandle tokenHandle) {
+			if(tokenHandle.IsInvalid) throw new ArgumentException("Handle must be valid", nameof(tokenHandle));
 			this.tokenHandle = tokenHandle;
 		}
 
@@ -40,14 +41,24 @@ namespace Henke37.Win32.Tokens {
 
         [SecuritySafeCritical]
         public bool Equals(NativeToken other) {
+			if(other == null) return false;
+
 			var status = NtCompareTokens(tokenHandle, other.tokenHandle, out bool equal);
-			if(status.Severity != PInvoke.NTSTATUS.SeverityCode.STATUS_SEVERITY_SUCCESS) {
-				throw new PInvoke.NTStatusException(status);
-			}
+			status.ThrowOnError();
 			return equal;
 		}
 
-        [SecurityCritical]
+		public override bool Equals(object obj) {
+			if(obj is NativeToken other) return Equals(other);
+			return false;
+		}
+
+		public override int GetHashCode() {
+			var stats = TokenStatistics;
+			return (int)stats.TokenId;
+		}
+
+		[SecurityCritical]
         internal unsafe void GetTokenInformation<T>(TokenInformationClass infoClass, out T buff) where T : unmanaged {
 			fixed (void* buffP = &buff) {
 				bool success = GetTokenInformation(tokenHandle, infoClass, buffP, (uint)sizeof(T), out _);
@@ -249,7 +260,7 @@ namespace Henke37.Win32.Tokens {
         [SecuritySafeCritical]
         public NativeToken GetLinkedToken() {
             GetTokenInformation(TokenInformationClass.LinkedToken, out IntPtr newHandle);
-            return new NativeToken(new SafeTokenHandle(newHandle));
+            return new NativeToken(new SafeTokenHandle(newHandle, true));
         }
 
         public TokenType TokenType {

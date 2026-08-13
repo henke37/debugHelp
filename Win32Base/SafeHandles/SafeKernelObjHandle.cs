@@ -114,6 +114,10 @@ namespace Henke37.Win32.SafeHandles {
 			return new KernelObjWaitHandle(this);
 		}
 
+		public override int GetHashCode() {
+			return (int)handle;
+		}
+
 		[DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CloseHandle(IntPtr handle);
