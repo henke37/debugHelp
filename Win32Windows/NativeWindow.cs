@@ -88,7 +88,7 @@ namespace Henke37.Win32.Windows {
 			}
 		}
 
-		public IntPtr Handle { get => handle; set => handle = value; }
+		public IntPtr Handle { get => handle; }
 
 		[SecurityPermission(SecurityAction.Assert, Flags = SecurityPermissionFlag.UnmanagedCode)]
 		public void Move(int x, int y, int width, int height) {
@@ -110,24 +110,31 @@ namespace Henke37.Win32.Windows {
 			ShowWindowNative(handle, (UInt32)mode);
 		}
 
-		public NativeWindow GetParent() {
-			return new NativeWindow(GetAncestor(Handle, 1));
+		public NativeWindow? GetParent() {
+			var parentHandle = GetAncestor(Handle, 0);
+			if(parentHandle == IntPtr.Zero) return null;
+			return new NativeWindow(parentHandle);
 		}
-		public NativeWindow GetRoot() {
-			return new NativeWindow(GetAncestor(Handle, 2));
+		public NativeWindow? GetRoot() {
+			var rootHandle = GetAncestor(Handle, 2);
+			if(rootHandle == IntPtr.Zero) return null;
+			return new NativeWindow(rootHandle);
 		}
-		public NativeWindow GetRootOwner() {
-			return new NativeWindow(GetAncestor(Handle, 3));
+		public NativeWindow? GetRootOwner() {
+			var rootOwnerHandle = GetAncestor(Handle, 3);
+			if(rootOwnerHandle == IntPtr.Zero) return null;
+			return new NativeWindow(rootOwnerHandle);
 		}
 
 		public Dictionary<string, IntPtr> GetWindowProps() {
 			var props = new Dictionary<string, IntPtr>();
 
 			GCHandle gch = GCHandle.Alloc(props, GCHandleType.Normal);
-
-			EnumPropsExW(Handle, windPropEnumCallback, GCHandle.ToIntPtr(gch));
-
-			gch.Free();
+			try { 
+				EnumPropsExW(Handle, windPropEnumCallback, GCHandle.ToIntPtr(gch));
+			} finally {
+				gch.Free();
+			}
 
 			return props;
 		}
@@ -212,7 +219,7 @@ namespace Henke37.Win32.Windows {
 			if(buffSize == 0 && Marshal.GetLastWin32Error() != 0) {
 				throw new Win32Exception();
 			}
-			var buff = new char[buffSize];
+			var buff = new char[buffSize+1];
 			fixed(char* buffp = buff) {
 				var len = GetWindowTextW(handle, buffp, buffSize);
 
@@ -236,6 +243,10 @@ namespace Henke37.Win32.Windows {
 			if(!success) throw new Win32Exception();
 
 			return new WindowInfo(info);
+		}
+
+		public override int GetHashCode() {
+			return (int)handle;
 		}
 
 		public static List<NativeWindow> GetTopWindows() {
