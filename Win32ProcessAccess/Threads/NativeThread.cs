@@ -32,6 +32,7 @@ namespace Henke37.Win32.Threads {
 		}
 
 		internal NativeThread(SafeThreadHandle handle) {
+			if(handle.IsInvalid) throw new ArgumentException("Handle must be valid!", nameof(handle));
 			this.handle = handle;
 		}
 
