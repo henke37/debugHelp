@@ -20,6 +20,10 @@ namespace Henke37.Win32.Snapshots {
 			Path = path ?? throw new ArgumentNullException(nameof(path));
 		}
 
+		public override int GetHashCode() {
+			return (int)BaseAddress;
+		}
+
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		internal struct Native {
 			internal UInt32 dwSize;

@@ -46,6 +46,10 @@ namespace Henke37.Win32.Snapshots {
 			return $"{ProcessId}: \"{Executable}\"";
 		}
 
+		public override int GetHashCode() {
+			return (int)ProcessId;
+		}
+
 		public void Deconstruct(
 			out UInt32 ProcessId,
 			out UInt32 ThreadCount,

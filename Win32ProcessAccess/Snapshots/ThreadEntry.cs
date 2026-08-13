@@ -34,6 +34,10 @@ namespace Henke37.Win32.Snapshots {
 			return $"{ThreadId}";
 		}
 
+		public override int GetHashCode() {
+			return (int)ThreadId;
+		}
+
 		public void Deconstruct(out UInt32 ThreadId, out UInt32 ProcessId) {
 			ThreadId = this.ThreadId;
 			ProcessId = this.ProcessId;
