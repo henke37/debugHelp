@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Henke37.Win32.DeviceEnum {
 	[SuppressUnmanagedCodeSecurity]
@@ -28,13 +25,15 @@ namespace Henke37.Win32.DeviceEnum {
 		internal DeviceInformationSet(string enumerator, DeviceInformationClassFlags flags) {
 			handle = SetupDiGetClassDevsEnumerator(IntPtr.Zero, enumerator, IntPtr.Zero, flags);
 			if(handle.IsInvalid) throw new Win32Exception();
+
+			this.guid = Guid.Empty;
 		}
 
 		public IEnumerable<DeviceInterface> GetDevices() {
 
 			for(uint interfaceIndex=0;;++interfaceIndex) {
-				bool succes= TryGetInterface(interfaceIndex, out var inter);
-				if(succes) {
+				bool success= TryGetInterface(interfaceIndex, out var inter);
+				if(success) {
 					yield return inter!;
 				} else {
 					yield break;
